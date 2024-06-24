@@ -1,15 +1,17 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-06-24 11:15:28 leo>
+# Time-stamp: <2024-06-24 11:28:31 leo>
 
 from sage.all import *
 
+from prg import ReproduciblePRG
 
 
 # !TODO! implement EA-LPN
 
 def prg(length):
     return randint(0, Integer(1 << length)-1)
+
 
 def greater_than(x, k):
     if x >= k:
@@ -37,7 +39,7 @@ class EALPN:
                  N = 2**45,
                  t = 660,
                  l = 11,
-                 key):
+                 seed):
         # checking validity of parameters
         assert (t % l) == 0
         # initializing the variables
@@ -45,11 +47,14 @@ class EALPN:
         self.t = t
         self.l = l
         self.t_over_l = Integer(t / l)
-
+        # !TODO! generate key from seed
+        
+        assert len(self.key) == l
+        assert len(self.key[0]) == self.t_over_l
         
 
         
-    def __eval__(self, xj, key):
+    def __eval__(self):
         """The input is a list of length l of tuples (x_i, j_i), where
 
         - all x_i are integers in {1, ..., 5N/t}
@@ -57,9 +62,7 @@ class EALPN:
         - all j_i are integers in {1, ..., t/l}
 
         """
-        # checking input validity
-        assert len(key) == l
-        assert len(key[0]) == int(t / l)
+        # !TODO! modify logic to encapsulate the queries 
         assert len(x) == l
         assert len(x[0]) = 2
         # evaluating the function
@@ -67,13 +70,13 @@ class EALPN:
         j = [xj[i][1] for i in range(0, l)]
         result = 0
         for i in range(0, l):
-            result += greater_than(x[i], key[j[i]])
+            result += greater_than(x[i], self.key[j[i]])
         return result % 2
 
 
 
 # parameters
-# !TODO! double check parameters 
+# !TODO! double check parameters
 aggressive_ealpn = EALPN(N = 2**45,
                          t = 660,
                          l = 11)
@@ -82,4 +85,8 @@ safe_ealpn = EALPN(N = 2**45,
                    t = 660,
                    l = 11)
 
+if __name__ == "__main__":
+    print("bla")
+
+    # !TODO! write tests 
 
