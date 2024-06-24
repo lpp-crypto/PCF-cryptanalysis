@@ -1,9 +1,9 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-06-24 11:35:16 leo>
+# Time-stamp: <2024-06-24 14:44:59 leo>
 
 from sage.all import *
-
+from prg import ReproduciblePRG
 
 # !TODO! implement BIPSW
 
@@ -25,13 +25,12 @@ class BIPSW:
     """
     def __init__(self,
                  n = 770,
-                 seed):
-
-        # !TODO! implement verification in initialization
-        # !TODO! implement generation of the key from the seed
+                 seed = b"seed"):
+        self.prg = ReproduciblePRG(seed)
         self.n = n
+        self.k = self.prg(0, 2**self.n)
     
-    def __eval__(self):
+    def __call__(self):
         pseudo_rounding = {
             0: 0,
             1: 0,
@@ -40,5 +39,14 @@ class BIPSW:
             4: 1,
             5: 1
         }
-        # !TODO! generate x randomly 
-        return pseudo_rounding[scalar_product(x, self.k)]
+        x = self.prg(0, 2**self.n)
+        return pseudo_rounding[scalar_product(x, self.k) % 6]
+
+
+if __name__ == "__main__":
+    pcf = BIPSW()
+    row = ""
+    for t in range(0, 50):
+        row += "{:d} ".format(pcf())
+    print(row)
+
