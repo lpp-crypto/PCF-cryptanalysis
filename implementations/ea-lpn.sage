@@ -1,13 +1,11 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-06-24 11:28:31 leo>
+# Time-stamp: <2024-06-24 14:30:21 leo>
 
 from sage.all import *
-
 from prg import ReproduciblePRG
 
 
-# !TODO! implement EA-LPN
 
 def prg(length):
     return randint(0, Integer(1 << length)-1)
@@ -39,22 +37,21 @@ class EALPN:
                  N = 2**45,
                  t = 660,
                  l = 11,
-                 seed):
-        # checking validity of parameters
-        assert (t % l) == 0
+                 seed = b"seed"):
         # initializing the variables
         self.N = N
-        self.t = t
+        self.t = l * ceil(t / l)
         self.l = l
-        self.t_over_l = Integer(t / l)
-        # !TODO! generate key from seed
-        
-        assert len(self.key) == l
-        assert len(self.key[0]) == self.t_over_l
-        
+        self.t_over_l = Integer(self.t / self.l)
+        self.prg = ReproduciblePRG(seed)
+        self.word_size = ceil((5*self.N) / self.t)
+        self.k = [
+            self.prg(1, self.word_size)
+            for i in range(0, self.t)
+        ]
 
         
-    def __eval__(self):
+    def __call__(self):
         """The input is a list of length l of tuples (x_i, j_i), where
 
         - all x_i are integers in {1, ..., 5N/t}
@@ -62,15 +59,12 @@ class EALPN:
         - all j_i are integers in {1, ..., t/l}
 
         """
-        # !TODO! modify logic to encapsulate the queries 
-        assert len(x) == l
-        assert len(x[0]) = 2
-        # evaluating the function
-        x = [xj[i][0] for i in range(0, l)]
-        j = [xj[i][1] for i in range(0, l)]
+        # generating the random input
+        x = [self.prg(1, self.word_size) for i in range(0, self.l)]
+        j = [self.prg(0, self.t_over_l) for i in range(0, self.l)]
         result = 0
-        for i in range(0, l):
-            result += greater_than(x[i], self.key[j[i]])
+        for i in range(0, self.l):
+            result += greater_than(x[i], self.k[j[i]])
         return result % 2
 
 
@@ -85,8 +79,14 @@ safe_ealpn = EALPN(N = 2**45,
                    t = 660,
                    l = 11)
 
-if __name__ == "__main__":
-    print("bla")
+eval_time_optimized = EALPN(N = 2**45,
+                            t = 1000,
+                            l = 7)
 
-    # !TODO! write tests 
+if __name__ == "__main__":
+    for pcf in [aggressive_ealpn, safe_ealpn, eval_time_optimized]:
+        row = ""
+        for t in range(0, 50):
+            row += "{:d} ".format(pcf())
+        print(row)
 
