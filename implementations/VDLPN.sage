@@ -1,13 +1,12 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-06-24 12:13:13 leo>
+# Time-stamp: <2024-06-24 12:13:56 leo>
 
 from sage.all import *
-
 from prg import ReproduciblePRG
 
-# !TODO! implement VDLPN
 
+# !TODO! write documentation on VDLPN
 
 def triangular(_x):
     x = _x

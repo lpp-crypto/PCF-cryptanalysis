@@ -1,11 +1,9 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-06-24 14:44:59 leo>
+# Time-stamp: <2024-06-24 14:45:49 leo>
 
 from sage.all import *
 from prg import ReproduciblePRG
-
-# !TODO! implement BIPSW
 
 
 def scalar_product(x, y):
