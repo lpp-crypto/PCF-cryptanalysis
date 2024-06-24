@@ -1,0 +1,14 @@
+*~
+*#
+*install*
+*thunderbird*
+*.o
+*.out
+*.so
+*.aux
+*.snm
+*.nav
+*.log
+*.bbl
+*.blg
+*.toc
