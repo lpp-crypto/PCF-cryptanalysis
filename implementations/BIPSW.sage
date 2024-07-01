@@ -1,9 +1,9 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-07-01 15:00:41 leo>
+# Time-stamp: <2024-07-01 15:21:17 leo>
 
 from sage.all import *
-from prg import ReproduciblePRG
+from utils import *
 
 
 def scalar_product(x, y):
@@ -50,9 +50,5 @@ class BIPSW:
 
 
 if __name__ == "__main__":
-    pcf = BIPSW()
-    row = ""
-    for t in range(0, 50):
-        row += "{:d} ".format(pcf())
-    print(row)
+    print(pretty_sequence(get_sequence(BIPSW(), 50)))
 

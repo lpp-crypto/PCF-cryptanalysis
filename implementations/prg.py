@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #-*- Python -*-
-# Time-stamp: <2024-06-24 14:42:54 leo>
+# Time-stamp: <2024-07-01 15:10:56 leo>
 
 
 import hashlib
@@ -53,7 +53,14 @@ class ReproduciblePRG:
         return lower_bound + (alea % (upper_bound - lower_bound))
         
 
+class OneBitGenerator:
+    """A PRNG that returns a single bit at each call."""
+    def __init__(self, seed):
+        self.internal_prg = ReproduciblePRG(seed)
 
+    def __call__(self):
+        return self.internal_prg(lower_bound=0, upper_bound=1)
+    
 
 if __name__ == "__main__":
     prg = ReproduciblePRG(b"blabli")

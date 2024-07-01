@@ -1,9 +1,9 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-07-01 14:59:47 leo>
+# Time-stamp: <2024-07-01 15:23:24 leo>
 
 from sage.all import *
-from prg import ReproduciblePRG
+from utils import *
 
 
 def greater_than(x, k):
@@ -80,8 +80,5 @@ eval_time_optimized = EALPN(N = 2**45,
 
 if __name__ == "__main__":
     for pcf in [aggressive_ealpn, safe_ealpn, eval_time_optimized]:
-        row = ""
-        for t in range(0, 50):
-            row += "{:d} ".format(pcf())
-        print(row)
+        print(pretty_sequence(get_sequence(pcf, 50)))
 

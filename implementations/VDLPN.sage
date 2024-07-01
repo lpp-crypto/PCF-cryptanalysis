@@ -1,9 +1,9 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-07-01 14:58:02 leo>
+# Time-stamp: <2024-07-01 15:22:31 leo>
 
 from sage.all import *
-from prg import ReproduciblePRG
+from utils import *
 
 
 def triangular(_x):
@@ -48,8 +48,5 @@ class VDLPN:
 
 
 if __name__ == "__main__":
-    pcf = VDLPN()
-    print("init")
-    for i in range(0, 100):
-        print(pcf())
+    print(pretty_sequence(get_sequence(VDLPN(), 50)))
     
