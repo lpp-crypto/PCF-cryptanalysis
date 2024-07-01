@@ -1,12 +1,16 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-06-24 14:45:49 leo>
+# Time-stamp: <2024-07-01 15:00:41 leo>
 
 from sage.all import *
 from prg import ReproduciblePRG
 
 
 def scalar_product(x, y):
+    """Returns The scalar product in F_2^n of the binary
+    representation of `x` and `y`.
+
+    """
     t = x & y
     result = 0
     while t != 0:
@@ -18,8 +22,8 @@ def scalar_product(x, y):
 
 class BIPSW:
     """Parameters:
-    # !TODO! write description of BIPSW 
-    
+    `n` the block size (and security parameter)
+    `seed` the seed used to seed the PRG generating the key.
     """
     def __init__(self,
                  n = 770,
@@ -29,6 +33,10 @@ class BIPSW:
         self.k = self.prg(0, 2**self.n)
     
     def __call__(self):
+        """Generate a random element of {0, ..., 2^n-1}, and evaluates
+        the function on it.
+
+        """
         pseudo_rounding = {
             0: 0,
             1: 0,

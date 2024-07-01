@@ -1,14 +1,16 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-06-24 12:13:56 leo>
+# Time-stamp: <2024-07-01 14:58:02 leo>
 
 from sage.all import *
 from prg import ReproduciblePRG
 
 
-# !TODO! write documentation on VDLPN
-
 def triangular(_x):
+    """The Boolean function x_1(1 + x_2(1 + ... )) applied to the
+    binary list `_x`.
+
+    """
     x = _x
     counter = 0
     while ((x & 1) != 0) and (x != 0):
@@ -18,6 +20,14 @@ def triangular(_x):
 
 
 class VDLPN:
+    """Parameters:
+    `d` is the degree of the boolean function
+    `w` is the number of binary variables that are simply added
+    `seed` is used to seed the PRG used to generate the key
+
+
+    # !TODO! Add reference 
+    """
     def __init__(self,
                  d = 40,
                  w = 120,

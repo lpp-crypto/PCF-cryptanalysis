@@ -1,14 +1,9 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-06-24 14:30:21 leo>
+# Time-stamp: <2024-07-01 14:59:47 leo>
 
 from sage.all import *
 from prg import ReproduciblePRG
-
-
-
-def prg(length):
-    return randint(0, Integer(1 << length)-1)
 
 
 def greater_than(x, k):
@@ -29,9 +24,7 @@ class EALPN:
 
     l: the number of cells in the input, it has to be a divisor of t
 
-    key: a two dimensional array (list of list) with l rows and t/l
-    columns
-
+    # !TODO! Add reference 
     """    
     def __init__(self,
                  N = 2**45,
@@ -52,7 +45,8 @@ class EALPN:
 
         
     def __call__(self):
-        """The input is a list of length l of tuples (x_i, j_i), where
+        """Generates a random input and evaluates the function on it.
+        The input is a list of length l of tuples (x_i, j_i), where
 
         - all x_i are integers in {1, ..., 5N/t}
 
@@ -62,6 +56,7 @@ class EALPN:
         # generating the random input
         x = [self.prg(1, self.word_size) for i in range(0, self.l)]
         j = [self.prg(0, self.t_over_l) for i in range(0, self.l)]
+        # computing the function
         result = 0
         for i in range(0, self.l):
             result += greater_than(x[i], self.k[j[i]])
