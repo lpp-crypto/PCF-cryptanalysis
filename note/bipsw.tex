@@ -1,32 +1,77 @@
-\section{BIPSW (``Crypto Darkmatter'')}
+\section{BIPSW}
 \label{sec:ealpn}
 
+In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu proposed new weak PRF (wPRF) candidates for the MPC setting and other applications~\cite{TCC:BIPSW18}. These candidates have a very simple mathematical description and are built by combining  linear functions over different moduli. Among the designs in~\cite{TCC:BIPSW18}, we focus on the one referred to as the \emph{alternative mod-2/mod-3 weak PRF}, also labeled as Construction 6.3 in the original paper. This particular construction is  suitable for two-party distributed evaluation. Hereafter, we will refer to it as {\tt BIPSW}, derived from the initials of its authors.
 
 \subsubsection*{Original Reference}
-% !TODO! write about the original reference
 
-\subsubsection*{Security Arguments and Cryptanalysis}
-%!TODO! Write about security arguments and cryptanalysis
+Let $n$ denote the key length and the block message length. In practice, $n$ depends on a security parameter $\lambda$. To simplify the notation, we omit explicitly indexing all parameters that depend on $n$ by $\lambda$. For instance, we write $n$ instead of $n(\lambda)$ and $\mathcal{K}$ instead of $\mathcal{K}_{\lambda}$ for the key space.
+
+The construction {\tt BIPSW} defines a function $F : \{0,1\}^n \times \{0,1\}^n \to \{0,1\}$, where the key space is $\mathcal{K} = \{0,1\}^n$, the domain is $\mathcal{X} = \{0,1\}^n$, and the output space is $\mathcal{Y} = \{0,1\}$. For a key $k \in \{0,1\}^n$, we use the notation $F_k(x)$ to represent the function $F(k, x)$.
+
+In its original formulation, $F_k$ is defined as follows:
+    \begin{equation} \label{eq:bipsw_orig}
+    F_k(x) := \left(\sum_{i = 0}^{n-1} k_i x_i \mod 2 + \sum_{i = 0}^{n-1} k_i x_i \mod 3\right) \mod{2}, \quad \text{ for } x \in \{0,1\}^n.  
+    \end{equation}
+
+
+As it can be seen from this equation, in this computation first the inner product between the key $k$ and the input $x$ is computed. Then this inner product is evaluated both modulo 2 and modulo 3 and the two results are finally added modulo 2 to produce the final result.  
+
+However, as the designers point out, the above description can have the following alternative representation, that stems from the observation that $F_k(x) = 1$ if and only if the inner product $\langle k, x \rangle  \mod{6} = \sum_{i = 0}^{n-1} k_i x_i \mod{6} \in \{3,4,5\}$. For this, denote by $\lfloor \cdot \rceil_2 : \mathbb{Z}_6 \rightarrow \{0,1\}$ the rounding operator defined as:
+
+\begin{equation*}
+\lfloor u \rceil_2 = \left\{
+\begin{array}{rl}
+0 & \text{ if } u \in \{0,1,2\}, \\
+1 & \text{ if } u \in \{3,4,5\}.
+\end{array}
+\right.
+\end{equation*}
+
+Then, following the above remark, $F_k$ can alternatively be defined as
+
+ \begin{equation} \label{eq:bipsw}
+F_k(x) = \left\lfloor \sum_{i = 0}^{n-1} k_i x_i  \mod{6} \right\rceil_2.
+\end{equation}
+
+The algorithmic description of this BIPSW PRF is provided in Algorithm~\ref{alg:bipsw}. 
+ 
+ \begin{algorithm}
+  \caption{\label{alg:bipsw}The {\tt BIPSW} PRF} 
+  \begin{algorithmic} 
+  \State \textbf{Input:} $k,x \in \{0,1\}^n$
+    \State $u \leftarrow \sum_{i=0}^{n-1} k_i \cdot x_i \mod 6$ 
+    \If{$u \in \{0, 1, 2\}$} 
+    \State	\Return 0 
+    \Else
+    	\State { }\Return 1
+     \EndIf
+  \end{algorithmic}
+\end{algorithm}
+
+
+
 
 
 \subsubsection*{Parameters}
+In the original paper, for a target security of $\lambda = 128$ bits, the authors propose to set $n = 384$. This is considered to be a rather conservative choice and is chosen so that the candidate resists known attacks for the LPN problem, from the observation that the candidate resembles an LPN instance with a deterministic noise rate 1/3.
 % !TODO! write about the parameters and their role
 
 
 \subsubsection*{Implementation}
 %!TODO! write about the implementation 
 
-Algorithm~\ref{alg:bipsw}
 
-\begin{algorithm}
-  \caption{\label{alg:bipsw}The BIPSW PRF \\
-    Parameters: $n$ ...}
-  \begin{algorithmic}
-    \State $x = 0$
-    \Return False
-  \end{algorithmic}
-\end{algorithm}
 
+    
+
+\subsubsection*{Security Arguments and Cryptanalysis}
+
+To date, two different papers have analyzed the security of the {\tt BIPSW} construction.
+
+First, in~\cite{PKC:CCKK21}, Cheon, Cho, Kim, and Kim proposed a distinguishing attack with a complexity of $\mathcal{O}(2^{0.21n})$, where $n$ is the input length, by exploiting a statistical weakness of the construction. The authors used the observation that the function $F_k$ can be interpreted as operating over the space $\mathbb{Z}_6$. However, due to the binary nature of both the key $k$ and the input $x$, the function does not uniformly cover the entire space $\mathbb{Z}_6$. This distinguisher requires however a large number of samples to succeed and performs better when the Hamming weight of the key is low. To mitigate this issue, the authors suggested using keys with high Hamming weights as a patch. For instance, they recommended using keys with a Hamming weight of 310 when $n = 384$.
+
+Later, in~\cite{JMN23}, Johansson, Meier, and Nguyen introduced a different distinguishing attack against {\tt BIPSW}. This attack has a better computational complexity than that of~\cite{PKC:CCKK21}, achieving $\mathcal{O}(2^{0.166n})$, where $n$ is the input length. Interestingly, unlike the attack in~\cite{PKC:CCKK21}, this approach, which can be interpreted as a differential attack, performs better when the Hamming weight of the key is high.
 
 
 
