@@ -3,6 +3,32 @@
 
 
 \subsubsection*{Original Reference}
+The next weak PRF candidate we present was designed by Boyle, Couteau, Gilboa, Ishai, Kohl, and Scholl in 2020~\cite{vdlpn}. The original candidate introduced in their work is defined as follows:
+
+\begin{equation} \label{eq:vdlpn_orig}
+    f_k(x) = \bigoplus_{i=1}^D \bigoplus_{j=1}^w\bigwedge_{\ell=1}^i (x_{i,j,\ell} \oplus k_{i,j,\ell}),
+\end{equation}
+where $D$ and $w$ are carefully chosen parameters. An interesting remark is that this candidate can also be expressed as a sum of triangular functions $T(x) = T(x_1, x_2, \dots) = x_1 \oplus x_2x_3 \oplus x_4x_5x_6 \oplus \cdots$. Indeed, Eq.~\eqref{eq:vdlpn_orig} can be rewritten as:  
+\[
+    f_k(x) = \bigoplus_{j=1}^w T(x_j \oplus k_j),
+\]
+where $x_j$ corresponds to the vector $(x_{j, 1}, \dots, x_{j,D})$. \textcolor{red}{Christina: Will correct later as the indices are wrong.}
+
+This section focuses on a \emph{weaker} variant of the above function, which we now describe in detail. Let $w$ and $D$ be two positive integers. Both the secret key $k \in \{0,1\}^{w \cdot D}$ and the input $x \in \{0,1\}^{w \cdot D}$ are viewed as binary matrices, represented as $(k_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$ and $(x_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$, respectively. The function $f_k(x)$ is then computed as:
+
+\begin{equation} \label{eq:vdlpn_agg}
+    f_k(x) = \bigoplus_{i=1}^D \bigoplus_{j=1}^w\bigwedge_{\ell=1}^j (x_{j,\ell} \oplus k_{j,\ell}).
+\end{equation}
+
+We see now that Eq.~\eqref{eq:vdlpn_agg} can also be rewritten differently, but not as a sum of triangular functions but as a sum of \emph{fake} triangular functions $T_f(x)$, where a \emph{fake} triangular function is defined as follows.
+\[
+    T_f(x) = T_f(x_1, x_2, \dots) = x_1 \oplus x_1 \oplus x_2 \oplus x_1x_2x_3 \oplus \cdots.
+\]
+Specifically, we have:
+\[
+    f_k(x) = \bigoplus_{j=1}^w T_f(x_j \oplus k_j),
+\]
+where $x_j = (x_{j, 1}, \dots, x_{j,D})$ and $k_j = (k_{j, 1}, \dots, k_{j,D})$.  
 % !TODO! write about the original reference
 
 \subsubsection*{Security Arguments and Cryptanalysis}
