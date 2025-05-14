@@ -3,6 +3,37 @@
 
 %!TODO! write introduction 
 
+Potential name of the primitives:
+\begin{itemize}
+\item Shallow PRF
+\item Cryptographic Shallow PRF
+\item SIngle ROund Prf (SIROP)
+\end{itemize}
+
+
+
+Possible outline:
+\begin{enumerate}
+\item What are ``Cryptographic Shallow PRFs''?
+  \begin{enumerate}
+  \item Intended Applications (MPC-friendly in a precise sense, some examples)
+  \item Cost Models: minimal depth where the operations allowed vary. Severe limitation on which operation are allowed, even without considering efficiency.
+  \item Security Model: weak PRF
+  \end{enumerate}
+\item Inventory/Zoo
+  \begin{enumerate}
+  \item BIPSW and variants
+  \item Goldreich (including FLIP as a variant)
+  \item VDLPN/EALPN
+  \end{enumerate}
+\item On their Cryptanalysis
+  \begin{enumerate}
+  \item Discussion on the security (relying on the security of the PRNG is cheating, also, how much can this be relaxed?)
+  \item Common cryptanalysis techniques
+  \item PRF implementations and cryptanalysis challenges
+  \end{enumerate}
+\item Conclusion
+\end{enumerate}
 
 
 %%% Local Variables:
