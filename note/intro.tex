@@ -14,7 +14,7 @@ Potential name of the primitives:
 
 Possible outline:
 \begin{enumerate}
-\item What are ``Cryptographic Shallow PRFs''?
+\item What are ``Shallow Weak PRFs''?
   \begin{enumerate}
   \item Intended Applications (MPC-friendly in a precise sense, some examples)
   \item Cost Models: minimal depth where the operations allowed vary. Severe limitation on which operation are allowed, even without considering efficiency.
@@ -28,8 +28,8 @@ Possible outline:
   \end{enumerate}
 \item On their Cryptanalysis
   \begin{enumerate}
-  \item Discussion on the security (relying on the security of the PRNG is cheating, also, how much can this be relaxed?)
-  \item Common cryptanalysis techniques
+  \item Discussion on the security (relying on the security of the PRNG is cheating, also, how much can this be relaxed? Asymptotic vs. precise, 128 bits of security doesn't really mean 128 bits, it's more of a guesstimate)
+  \item Common cryptanalysis techniques (decoding)
   \item PRF implementations and cryptanalysis challenges
   \end{enumerate}
 \item Conclusion
