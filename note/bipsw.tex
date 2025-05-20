@@ -1,7 +1,10 @@
-\subsection{BIPSW}
+\subsection{Alternating moduli constructions}
 \label{sec:ealpn}
 
-In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu proposed new weak PRF (wPRF) candidates for the MPC setting and other applications~\cite{TCC:BIPSW18}. These candidates have a very simple mathematical description and are built by combining  linear functions over different moduli. Among the designs in~\cite{TCC:BIPSW18}, we focus on the one referred to as the \emph{alternative mod-2/mod-3 weak PRF}, also labeled as Construction 6.3 in the original paper. This particular construction is  suitable for two-party distributed evaluation. Hereafter, we will refer to it as {\tt BIPSW}, derived from the initials of its authors.
+\paragraph{References for this section:}  \cite{C:DGHIKS21} \cite{C:APRR24} (alternative constructions) 
+\cite{EC:ADDG24} \cite{TCHES:DMMS21} \cite{C:HMMRSU23} \cite{AC:CDDKS24} \cite{EC:BCMPR24}
+
+In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu introduced a new design paradigm for constructing MPC-friendly weak PRF (wPRF) candidates~\cite{TCC:BIPSW18}, given in follow-up papers the name of \emph{alternating moduli} paradigm. Candidates designed following this paradigm have the advantage of being of low nonlinear depth but of high algebraic degree.  These candidates have a very simple mathematical description and are built by combining  linear functions over different moduli. Among the designs in~\cite{TCC:BIPSW18}, we focus on the one referred to as the \emph{alternative mod-2/mod-3 weak PRF}, also labeled as Construction 6.3 in the original paper. This particular construction is  suitable for two-party distributed evaluation. Hereafter, we will refer to it as {\tt BIPSW}, derived from the initials of its authors.
 
 \subsubsection*{Original Reference}
 
