@@ -4,13 +4,14 @@
 \paragraph{References for this section:}  \cite{C:DGHIKS21} \cite{C:APRR24} (alternative constructions) 
 \cite{EC:ADDG24} \cite{TCHES:DMMS21} \cite{C:HMMRSU23} \cite{AC:CDDKS24} \cite{EC:BCMPR24}
 
-In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu introduced a new design paradigm for constructing MPC-friendly weak PRF (wPRF) candidates~\cite{TCC:BIPSW18}, given in follow-up papers the name of \emph{alternating moduli} paradigm. Candidates designed following this paradigm have the advantage of being of low nonlinear depth but of high algebraic degree.  These candidates have a very simple mathematical description and are built by combining  linear functions over different moduli. Among the designs in~\cite{TCC:BIPSW18}, we focus on the one referred to as the \emph{alternative mod-2/mod-3 weak PRF}, also labeled as Construction 6.3 in the original paper. This particular construction is  suitable for two-party distributed evaluation. Hereafter, we will refer to it as {\tt BIPSW}, derived from the initials of its authors.
+In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu introduced a new design paradigm for constructing MPC-friendly weak pseudorandom functions (wPRFs), which was later described in the literature as the \emph{alternating moduli paradigm}~\cite{TCC:BIPSW18}. Constructions based on this paradigm benefit from a low nonlinear depth while exhibiting a high algebraic degree. They are mathematically simple, built by combining linear functions over different moduli.
 
-\subsubsection*{Original Reference}
+The original paper~\cite{TCC:BIPSW18} presented two such constructions: a primary one outputting elements in $\mathbb{Z}_3$, and an alternative design that ultimately attracted more attention from the community. This second construction, referred to as the \emph{alternative mod-2/mod-3 weak PRF} and labeled as Construction 6.3 in the original paper, is the only from this work that we will describe. Notably, this construction is particularly well-suited for two-party distributed evaluation.
+\subsubsection*{Original Construction (\cite{TCC:BIPSW18})}
 
 Let $n$ denote the key length and the block message length. In practice, $n$ depends on a security parameter $\lambda$. To simplify the notation, we omit explicitly indexing all parameters that depend on $n$ by $\lambda$. For instance, we write $n$ instead of $n(\lambda)$ and $\mathcal{K}$ instead of $\mathcal{K}_{\lambda}$ for the key space.
 
-The construction {\tt BIPSW} defines a function $F : \{0,1\}^n \times \{0,1\}^n \to \{0,1\}$, where the key space is $\mathcal{K} = \{0,1\}^n$, the domain is $\mathcal{X} = \{0,1\}^n$, and the output space is $\mathcal{Y} = \{0,1\}$. For a key $k \in \{0,1\}^n$, we use the notation $F_k(x)$ to represent the function $F(k, x)$.
+The alternative mod-2/mod-3 wPRF as defined in~\cite{TCC:BIPSW18} is a function $F : \{0,1\}^n \times \{0,1\}^n \to \{0,1\}$, where the key space is $\mathcal{K} = \{0,1\}^n$, the domain is $\mathcal{X} = \{0,1\}^n$, and the output space is $\mathcal{Y} = \{0,1\}$. For a key $k \in \{0,1\}^n$, we use the notation $F_k(x)$ to represent the function $F(k, x)$.
 
 In its original formulation, $F_k$ is defined as follows:
     \begin{equation} \label{eq:bipsw_orig}
@@ -37,10 +38,10 @@ Then, following the above remark, $F_k$ can alternatively be defined as
 F_k(x) = \left\lfloor \sum_{i = 0}^{n-1} k_i x_i  \mod{6} \right\rceil_2.
 \end{equation}
 
-The algorithmic description of this BIPSW PRF is provided in Algorithm~\ref{alg:bipsw}. 
+The algorithmic description of the alternative mod-2/mod-3 wPRF is provided in Algorithm~\ref{alg:bipsw}. 
  
  \begin{algorithm}
-  \caption{\label{alg:bipsw}The {\tt BIPSW} PRF} 
+  \caption{\label{alg:bipsw}The alternative mod-2/mod-3 wPRF} 
   \begin{algorithmic} 
   \State \textbf{Input:} $k,x \in \{0,1\}^n$
     \State $u \leftarrow \sum_{i=0}^{n-1} k_i \cdot x_i \mod 6$ 
@@ -51,6 +52,10 @@ The algorithmic description of this BIPSW PRF is provided in Algorithm~\ref{alg:
      \EndIf
   \end{algorithmic}
 \end{algorithm}
+
+\christina{Donner ici les avantages de cette construction}
+One of the security arguments given by the designers of the above construction is that it cannot be approximated by any polynomial of low degree. This follows from the classical results of Razborov and Smolensky~\cite{Raz87,Smo87} that show that for $p$ and $q$ two distinct primes, the $\mod{p}$ function cannot be approximated by any low depth $\mod{q}$ circuit.
+
 
 
 
