@@ -1,13 +1,13 @@
 \subsection{Alternating moduli constructions}
 \label{sec:ealpn}
 
-\paragraph{References for this section:}  \cite{C:DGHIKS21} \cite{C:APRR24} (alternative constructions) 
+\paragraph{References for this section:}  \cite{C:APRR24} (alternative constructions) 
 \cite{EC:ADDG24} \cite{TCHES:DMMS21} \cite{C:HMMRSU23} \cite{AC:CDDKS24} \cite{EC:BCMPR24}
 
 In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu introduced a new design paradigm for constructing MPC-friendly weak pseudorandom functions (wPRFs), which was later described in the literature as the \emph{alternating moduli paradigm}~\cite{TCC:BIPSW18}. Constructions based on this paradigm benefit from a low nonlinear depth while exhibiting a high algebraic degree. They are mathematically simple, built by combining linear functions over different moduli.
 
 The original paper~\cite{TCC:BIPSW18} presented two such constructions: a primary one outputting elements in $\mathbb{Z}_3$, and an alternative design that ultimately attracted more attention from the community. This second construction, referred to as the \emph{alternative mod-2/mod-3 weak PRF} and labeled as Construction 6.3 in the original paper, is the only from this work that we will describe. Notably, this construction is particularly well-suited for two-party distributed evaluation.
-\subsubsection*{Original Construction (\cite{TCC:BIPSW18})}
+\subsubsection{Original Construction (\cite{TCC:BIPSW18})}
 
 Let $n$ denote the key length and the block message length. In practice, $n$ depends on a security parameter $\lambda$. To simplify the notation, we omit explicitly indexing all parameters that depend on $n$ by $\lambda$. For instance, we write $n$ instead of $n(\lambda)$ and $\mathcal{K}$ instead of $\mathcal{K}_{\lambda}$ for the key space.
 
@@ -41,7 +41,7 @@ F_k(x) = \left\lfloor \sum_{i = 0}^{n-1} k_i x_i  \mod{6} \right\rceil_2.
 The algorithmic description of the alternative mod-2/mod-3 wPRF is provided in Algorithm~\ref{alg:bipsw}. 
  
  \begin{algorithm}
-  \caption{\label{alg:bipsw}The alternative mod-2/mod-3 wPRF} 
+  \caption{\label{alg:bipsw}The mod-2/mod-3 wPRF} 
   \begin{algorithmic} 
   \State \textbf{Input:} $k,x \in \{0,1\}^n$
     \State $u \leftarrow \sum_{i=0}^{n-1} k_i \cdot x_i \mod 6$ 
@@ -53,18 +53,37 @@ The algorithmic description of the alternative mod-2/mod-3 wPRF is provided in A
   \end{algorithmic}
 \end{algorithm}
 
-\christina{Donner ici les avantages de cette construction}
-One of the security arguments given by the designers of the above construction is that it cannot be approximated by any polynomial of low degree. This follows from the classical results of Razborov and Smolensky~\cite{Raz87,Smo87} that show that for $p$ and $q$ two distinct primes, the $\mod{p}$ function cannot be approximated by any low depth $\mod{q}$ circuit.
 
-
-
-
-
+One of the security arguments put forward by the designers of the above construction is that it cannot be approximated by any low-degree polynomial. This is supported by the classical results of Razborov and Smolensky~\cite{Raz87,Smo87}, which show that for two distinct primes $p$ and $q$, the $\mod{p}$ function cannot be approximated by low-depth $\mod{q}$ circuits. In this construction, the moduli 2 and 3 were chosen not only because they are the simplest such primes, but also because they lead to the best efficiency in practice.
 
 \subsubsection*{Parameters}
 In the original paper, for a target security of $\lambda = 128$ bits, the authors propose to set $n = 384$. This is considered to be a rather conservative choice and is chosen so that the candidate resists known attacks for the LPN problem, from the observation that the candidate resembles an LPN instance with a deterministic noise rate 1/3.
 % !TODO! write about the parameters and their role
 
+
+\subsection{Variants and generalizations}
+
+The alternating moduli design paradigm quickly gained popularity as an approach for constructing weak PRFs. Several subsequent works proposed generalized or alternative versions of the construction presented in the previous section. In this part, we describe some of the most notable and interesting variants.
+
+\subsubsection*{A generalized construction~\cite{C:DGHIKS21}}
+
+In 2021, Dinur, Goldfeder, Halevi, Ishai, Kelkar, Sharma, and Zaverucha revisited the alternative mod-2/mod-3 constructions from~\cite{TCC:BIPSW18} and proposed a generalized version. Their focus was primarily on the alternative variant (the one presented in the previous subsection), as having an output over $\mathbb{Z}_2$ is more convenient in many applications. The proposed generalization extends the original design in two main directions. First, the secret key is no longer a vector in $\mathbb{Z}_2^n$, but a matrix $K \in \mathbb{Z}_2^{m \times n}$. Second, a public compression matrix $B \in \mathbb{Z}_2^{t \times m}$ is applied before producing the output. This generalized construction has the advantage of outputting multiple bits at once instead of a single bit, resulting in improved latency.
+
+More precisely, the proposed construction is parameterized by positive integers $n$, $m$, and $t$, with the constraints $m \geq n$ and $m \geq t$. These parameters respectively represent the input vector size, the size of the intermediate vector(s), and the output vector size. As in the original design, they are functions of a security parameter $\lambda$.
+
+The variant described in~\cite{C:DGHIKS21} defines a function $F : \{0,1\}^{m \times n} \times \{0,1\}^{n} \to \{0,1\}^t$, where the key space is $\mathcal{K} = \{0,1\}^{m \times n}$, the input space is $\mathcal{X} = \{0,1\}^n$, and the output space is $\mathcal{Y} = \{0,1\}^t$. For a key $K \in \mathcal{K}$, we write $F_K(x)$ to denote $F(K, x)$.
+
+The first step of the construction is to compute an intermediate vector \$w\$ as follows:
+
+\[
+w = \left[ (Kx \bmod 2) + \left((Kx \bmod 3) \bmod 2\right) \right] \bmod 2.
+\]
+The final output is then computed as
+
+\[
+F_K(x) = Bw \bmod 2 \in \{0,1\}^t,
+\]
+where $B \in \{0,1\}^{t \times m}$ is a public compression matrix.
 
 \subsubsection*{Implementation}
 %!TODO! write about the implementation 
