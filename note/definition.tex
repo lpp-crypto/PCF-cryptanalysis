@@ -1,13 +1,56 @@
+%!TEX root=main.tex
+
 \section{What are Shallow Weak PRFs?}
 \label{sec:definition}
 
+A pseudorandom function (PRF)~\cite{FOCS:GolGolMic84} is a family of efficient keyed functions such that no polynomial-time adversary can distinguish the input-output behavior of a random function from the family from that of a uniformly random function (from the set of all functions with the same domain and range). A \emph{weak} PRF (wPRF) is only guaranteed to be indistinguishable from a random function when the adversary is restricted to querying random inputs. Formally:
 
+\begin{definition}[(Weak) Pseudorandom Function (\wPRF, \PRF), \cite{FOCS:GolGolMic84,FOCS:NaoRei95}]
+	Let $\secpar\in\N$ be a security parameter. A (weak) pseudorandom function with domain $\setX = \{\setX_{\lambda}\}_{\lambda \in \N}$, key space $\setK= \{\setK_{\lambda}\}_{\lambda \in \N}$, and range $\setY = \{\setY_{\lambda}\}_{\lambda \in \N}$, consists of the following two polynomial-time algorithms: 
+	\begin{itemize}
+		\item[$\bullet$]$\KeyGen(1^{\lambda}) \rightarrow \msk$: A probabilistic algorithm that on input the security parameter $\lambda$, outputs a master secret key $\msk \in \mathcal{K}$.
+		
+		\item[$\bullet$]$\Eval(\msk,x) \rightarrow y$: A deterministic algorithm that on input the master secret key $\msk$, and an input value $x \in \setX$, outputs a value $y \in \setY$.
+	\end{itemize}
+	
+	We say that the pair $(\KeyGen,\Eval)$ is a \textbf{weak pseudorandom function (\wPRF)} if for any PPT adversary $\adva$ and any polynomially bounded number $Q \in \N$, it holds that %\Anote{Q is not defined}%\Mnote{Done}
+		
+		\begin{multline*}
+		\resizebox{.95\hsize}{!}{$\left\{ \left( \left(x_i,\Eval(\msk,x_i)\right)_{i \in [Q]} \right)\middle| \begin{array}{c} \msk \sample \KeyGen(1^{\lambda})\\ \forall i \in [Q]: x_i \sample \setX \end{array}\right\} \approx_c \left\{ \left(\left(x_i,y_i \right)_{i \in [Q]} \right) \middle| \begin{array}{c}
+		\forall i \in [Q]: \\
+		x_i \sample \setX , \ y_i \sample \setY
+		\end{array} \right\}.$}
+		\end{multline*}
+\end{definition}
 
+Weak pseudorandom functions enjoy a broad range of applications in cryptography and beyond. Of interest to the current work is the notion of \emph{shallow} wPRF. Informally, we say that a wPRF is shallow if it can be computed in low-depth in a suitable computational model. Slightly more formally:
+
+\paragraph{Circuits.} We will be interested in wPRF computable by a circuit in some computational model. A circuit is a directed acyclic graph with two types of nodes: nodes of indegree 0 are called input nodes, and the other nodes are called gates. Each gate of indegree $\indeg$ and outdegree $\outdeg$ is labeled with a function $g:\bit^\indeg\to\bit^\outdeg$. Computing a circuit $C$ with $n$ input nodes on an input $x \in \bit^n$ is done by labelling the wires leaving each input gate $i$ with the bit $x_i$, and whenever the $\indeg$ input wires of a gate have been labelled with $(z_1, \cdots, z_\indeg)$, iteratively labelling the $\outdeg$ output wires with the bits of $g(z_1, \cdots, z_\indeg)$. A gate with outdegree 0 is an output gate; once all wires have been labelled, the output of the computation is the bitstring $y$ that consists of all the bits computed by the output gates. We define a \emph{circuit class} to be $\class = \{\class_n\}_{n\in\N}$ where each $\class_n$ is a set of circuits with $n$ input gates. A circuit class can typically capture circuits using a certain set of allowed gates, and sometimes satisfying additional constraints (on the indegree, outdegree, size, depth, or topology).
+
+\paragraph{Shallow wPRF.} Fix a circuit class $\class$ and a function $s:\N\to\N$. We say that a pair $(\KeyGen,\Eval)$ is an $s$-shallow wPRF over $\class$ if for every $\msk$ in the range of $\KeyGen$, the function $f:x\mapsto \Eval(\msk,x)$ is computable by a depth-$s(|x|)$ circuit in $\class$. The notion of shallow wPRFs captures wPRFs that can be computed in parallel-time complexity $s$ given a sufficiently large number of computation units in the computational model defined by $\class$.
 
 \subsection{Intended Applications}
 \label{sec:definition-applications}
 
+The existence of pseudorandom functions computable by low-depth circuits has a long history, with strong ties to fundamental questions in complexity theory such as circuit lower bounds~\cite{STOC:RazRud94,C:MilVio12,SerVio12}, derandomization~\cite{FOCS:NisWig88,STOC:Williams13}, and learning theory~\cite{valiant1984theory,kearns1994cryptographic,C:BCGIKS21}. We do not intend to provide a detailed coverage of these connections here, as they are of little relevance to cryptanalysis and symmetric cryptography. We do note, however, that the tools and results developped in these works have significantly influenced the design of shallow wPRFs that we will cover here. Therefore, on several occasions, we will refer to some of these early works to explain the security rationale underlying some candidates.
 
+In this work, we will be mostly concerned with cryptographic constructions that use of wPRF as an \emph{inner component} within an \emph{outer component}, where the latter is a high-end cryptographic building block (a primitive or a protocol) that uses internally the \emph{circuit description} of the wPRF (that is, we do not consider cryptographic protocols that make a ``black-box'' use of a wPRF, since such protocols are not sensitive to low-level details of the computational model where the wPRF is computed). Unlike the traditional study of shallow wPRFs, whose focus was generally on low-depth wPRFs in standard computational models of complexity theory (that is, the usual ``low-depth'' complexity classes: $\AC^0$, $\AC^0[\oplus]$, $\ACC^0$, $\TC^0$, $\NC^1$, and related classes), the computational models that best captures these target applications are slightly more exotic at first sight. Indeed, as will become clear next, there is a duality between the computational model in which a wPRF is implemented, and the class of functions that the outer cryptographic primitive or protocol can ``evaluate'' efficiently.
+
+Below, we cover the main target applications of these cryptographic constructions. For each target application, we provide some motivation, list the high-end cryptographic building blocks used as outer component to realize the application, and extract the computational model that captures the wPRFs that can be evaluated within each outer component.
+
+\subsubsection{Oblivious pseudorandom functions}
+
+\paragraph{From general secure computation.}
+
+\paragraph{From TFHE.}
+
+\subsubsection{Pseudorandom correlation generators and functions}
+
+\paragraph{From function secret sharing.}
+
+\paragraph{From constrained pseudorandom functions.}
+
+\subsubsection{Zero-knowledge proofs}
 
 \subsection{Cost Models}
 \label{sec:definition-cost}
