@@ -109,7 +109,7 @@ As with the previous variants, the moduli 2 and 3 can be replaced with any disti
 
 The core idea behind this generalization is to allow for a better of the terms $k_i x_i$. In the previous alternating moduli constructions, these terms were combined in a highly structured manner. For example, in the construction from~\cite{C:DGHIKS21}, the matrix-vector product $Kx$ mixed the key and input variables in a very regular  way. In contrast, the use of a random matrix $A$ in this construction results in random linear combinations over the variables composing the shared input vector $k \odot x$. As a result, each product term $k_i x_i$ is reused multiple times throughout the computation,  leading to a higher diffusion.
 
-The authors also propose a variant that produces binary output. In this version, the vector $z$ is first interpreted as an element of $\mathbb{Z}_3^n$. The function output is then computed as:
+The authors also propose a variant that produces binary output. For this variant, the key would be an element of $\mathbb{Z}_3^n$, but in practice it is seen an element of $\mathbb{Z}_2^n$. In this version, the vector $z$ is first interpreted as an element of $\mathbb{Z}_3^n$. The function output is then computed as:
 \[
 F_k(x) = B(Az \bmod 3) \bmod 2 \in \mathbb{Z}_2^t,
 \]
