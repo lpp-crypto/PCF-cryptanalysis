@@ -2,7 +2,7 @@
 \label{sec:ealpn}
 
 \paragraph{References for this section:} 
-\cite{EC:ADDG24} 
+
 
 In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu introduced a new design paradigm for constructing MPC-friendly weak pseudorandom functions (wPRFs), which was later described in the literature as the \emph{alternating moduli paradigm}~\cite{TCC:BIPSW18}. Constructions based on this paradigm benefit from a low nonlinear depth while exhibiting a high algebraic degree. They are mathematically simple, built by combining linear functions over different moduli.
 
@@ -95,7 +95,7 @@ The authors of~\cite{C:DGHIKS21} also argue that the construction can be further
 
 In 2024, Alamati, Policharla, Raghuraman, and Rindal proposed a further generalization of the constructions in~\cite{TCC:BIPSW18} and~\cite{C:DGHIKS21} as follows. Let $n$, $m$, and $t$ be non-negative integers. Both the input $x$ and the secret key $k$ are elements of $\mathbb{Z}_2^n$. Let $A \in \mathbb{Z}_2^{m \times n}$ be a random matrix and $B \in \mathbb{Z}_3^{t \times m}$ a random compression matrix; both matrices are public.
 
-The construction proceeds in two steps. First, compute
+The construction, named the $(\mathbb{F}_2, \mathbb{F}_3)$-wPRF proceeds in two steps. First, compute
 \[
 z = k \odot  x:= (k_0 x_0, k_1 x_1, \dots, k_{n-1} x_{n-1}) \in \mathbb{Z}_2^n.
 \]
@@ -107,9 +107,9 @@ where, as before, we write $F_k(x)$ for a key $k \in \mathbb{Z}_2^n$ to denote $
 
 As with the previous variants, the moduli 2 and 3 can be replaced with any distinct prime numbers $p$ and $q$ without affecting security.
 
-The core idea behind this generalization is to allow for a better of the terms $k_i x_i$. In the previous alternating moduli constructions, these terms were combined in a highly structured manner. For example, in the construction from~\cite{C:DGHIKS21}, the matrix-vector product $Kx$ mixed the key and input variables in a very regular  way. In contrast, the use of a random matrix $A$ in this construction results in random linear combinations over the variables composing the shared input vector $k \odot x$. As a result, each product term $k_i x_i$ is reused multiple times throughout the computation,  leading to a higher diffusion.
+The core idea behind this generalization is to allow for a better of the terms $k_i x_i$. In the previous alternating moduli constructions, these terms were combined in a highly structured manner. For example, in the construction from~\cite{C:DGHIKS21}, the matrix-vector product $Kx$ mixed the key and input variables in a very regular  way. In contrast, the use of a random matrix $A$ in this construction results in random linear combinations over the variables composing the shared input vector $k \odot x$. As a result, each product term $k_i x_i$ is reused multiple times throughout the computation,  leading to a higher diffusion. On the other hand, as we briefly discuss in the next subsection, combining the key and input variables using an AND operation introduces a strong bias in the output, which can significantly weaken the security of the construction.
 
-The authors also propose a variant that produces binary output. For this variant, the key would be an element of $\mathbb{Z}_3^n$, but in practice it is seen an element of $\mathbb{Z}_2^n$. In this version, the vector $z$ is first interpreted as an element of $\mathbb{Z}_3^n$. The function output is then computed as:
+The authors also propose a variant, named the \emph{reversed-moduli} variant that produces binary output. For this variant, the key would be an element of $\mathbb{Z}_3^n$, but in practice it is seen an element of $\mathbb{Z}_2^n$. In this version, the vector $z$ is first interpreted as an element of $\mathbb{Z}_3^n$. The function output is then computed as:
 \[
 F_k(x) = B(Az \bmod 3) \bmod 2 \in \mathbb{Z}_2^t,
 \]
@@ -120,16 +120,22 @@ where $A \in \mathbb{Z}_3^{m \times n}$ and $B \in \mathbb{Z}_2^{t \times m}$.
 
 \subsubsection{Security arguments and cryptanalysis}
 
-To date, three different papers have analyzed the security of the alternating moduli construction that permit to better estimate the security level and guide the optimal choice of parameters.
+To date, two papers have analyzed the security of the original construction of~\cite{TCC:BIPSW18} that permit to better estimate the security level and guide the optimal choice of parameters.
 
 First, in~\cite{PKC:CCKK21}, Cheon, Cho, Kim, and Kim proposed a distinguishing attack with a complexity of $\mathcal{O}(2^{0.21n})$, where $n$ is the input length, by exploiting a statistical weakness of the construction. The authors used the observation that the function $F_k$ can be interpreted as operating over the space $\mathbb{Z}_6$. However, due to the binary nature of both the key $k$ and the input $x$, the function does not uniformly cover the entire space $\mathbb{Z}_6$. This distinguisher requires however a large number of samples to succeed and performs better when the Hamming weight of the key is low. To mitigate this issue, the authors suggested using keys with high Hamming weights as a patch. For instance, they recommended using keys with a Hamming weight of 310 when $n = 384$.
 
 Later, in~\cite{JMN23}, Johansson, Meier, and Nguyen introduced a different distinguishing attack against the original alternating modulo construction of~\cite{TCC:BIPSW18}. This attack has a better computational complexity than that of~\cite{PKC:CCKK21}, achieving $\mathcal{O}(2^{0.166n})$, where $n$ is the input length. Interestingly, unlike the attack in~\cite{PKC:CCKK21}, this approach, which can be interpreted as a differential attack, performs better when the Hamming weight of the key is high. This attack also suggests that $n = 384$ does not potentially offer a sufficient security margin.
 
+Recently, the security of the generalized construction introduced in~\cite{C:APRR24} was analyzed in~\cite{ToSC:AR25}. The authors present a key-recovery attack with a complexity of $\mathcal{O}(2^{\lambda/2} \log_2 \lambda)$ against the first (standard) variant described in that work, and an attack of complexity $\mathcal{O}(2^{0.84\lambda})$ against the reversed-moduli variant. Both attacks rely on a similar principle: they exploit the fact that key and input bits are combined using the AND operation, which causes any input bit multiplied by a zero key bit to have no influence on the output. This weakness leads to collisions after processing approximately $2^{\lambda/2}$ inputs, leading to a key recovery attack.
+
+
 
 \subsubsection{Use of the alternating moduli construction within cryptographic protocols}
-The original alternating modulo construction~\cite{TCC:BIPSW18} has been used inside different cryptographic protocols, each of them suggesting a concrete set of parameters. The framework of \cite{AC:CDDKS24} suggest to use  the construction   with key and  input length of $n = 768$ for a security level of $\lambda = 128$ bits. The approach of~\cite{EC:BCMPR24} for constructing Pseudorandom Correlation Functions (PCFs) for Oblivious Transfert (OT) correlation relies on the same PRF with  $n = 770$ for achieving the same 128-bit security level. For both these works, the parameter $n$ was estimated by taking into consideration the attacks of~\cite{PKC:CCKK21} and~\cite{JMN23}. For a different kind of applications, the generalized construction from~\cite{C:DGHIKS21} was used in re-keying protocols~\cite{TCHES:DMMS21} and~\cite{C:HMMRSU23}.
+The original alternating moduli construction~\cite{TCC:BIPSW18} has been incorporated into various cryptographic protocols, each proposing its own concrete set of parameters. The framework of~\cite{AC:CDDKS24} suggests using the construction with a key and input length of $n = 768$ to achieve a security level of $\lambda = 128$ bits. Similarly, the approach of~\cite{EC:BCMPR24} for constructing Pseudorandom Correlation Functions (PCFs) for Oblivious Transfer (OT) correlations relies on the same PRF with $n = 770$ to reach the same 128-bit security level. In both cases, the choice of $n$ was guided by taking into account the attacks of~\cite{PKC:CCKK21} and~\cite{JMN23}.
 
+For other types of applications, the generalized construction from~\cite{C:DGHIKS21} has been used in re-keying protocols, such as in~\cite{TCHES:DMMS21} and~\cite{C:HMMRSU23}. More recently,~\cite{EC:ADDG24} introduced a novel application domain for this weak PRF by combining it with the TFHE scheme~\cite{JC:CGGI20}, a fully homomorphic encryption construction based on programmable bootstrapping to reduce noise. In this context, the authors target a security level of $\lambda = 128$ bits and set $n = 256$, interpreting the key as a square matrix of dimension $n$.
+
+\christina{Yann, tu pourras dire quelque chose sur les parametres pour les applications re-keying ?}
 
 %%% Local Variables:
 %%% mode: latex
