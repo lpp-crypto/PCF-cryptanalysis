@@ -1,5 +1,4 @@
 %!TEX root=main.tex
-
 % Time-stamp: <2024-06-24 16:19:20 leo>
 
 \usepackage[utf8]{inputenc}
@@ -7,20 +6,38 @@
 
 \usepackage[russian,english]{babel}
 
+\usepackage{hyperref}
+%\usepackage[a4paper,hmargin=1.5in,vmargin=1.5in]{geometry}
+\hypersetup{colorlinks = true, urlcolor = blue, linkcolor = blue, citecolor = red}
+\usepackage{cleveref}
+%\usepackage{hyperxmp}
 
 \usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{dsfont}
 \usepackage{mathrsfs}
-
-\usepackage{hyperref}
-%\usepackage[a4paper,hmargin=1.5in,vmargin=1.5in]{geometry}
-\hypersetup{colorlinks = true, urlcolor = blue, linkcolor = blue, citecolor = red}
-\usepackage{cleveref}
+\usepackage[
+n,
+operators,
+advantage,
+sets,
+adversary,
+landau,
+probability,
+notions,
+logic,
+ff,
+mm,
+primitives,
+events,
+complexity,
+asymptotics,
+keys]{cryptocode}
 
 \usepackage{graphicx} % including pictures
 \usepackage[export]{adjustbox} % use max width and max height for figures
+\usepackage{xspace}
 
 % \usepackage{mathspec}
 % \setmainfont{Inria Serif}[Scale=MatchLowercase]
@@ -107,6 +124,7 @@
 
 \newcommand\LL{\mathcal{L}}
 \newcommand\Z{\mathcal{Z}}
+\newcommand\N{\mathbb{N}}
 \newcommand\F{\mathbb{F}}
 \newcommand\ftwo{\mathbb{F}_2}
 \newcommand\field[1]{\mathbb{F}_{2^{#1}}}
@@ -117,7 +135,7 @@
 \newcommand\traceSub[1]{\mathrm{Tr}_{#1}}
 \newcommand\charac[1]{\mathds{1}_{#1}}
 
-\newcommand\xor{\textsc{xor}}
+\renewcommand\xor{\textsc{xor}}
 \newcommand\xored{\textsc{xor}ed}
 \newcommand\xors{\textsc{xor}s}
 \newcommand\Tand{\textsc{And}}
@@ -132,7 +150,7 @@
 \newcommand\coveredby{\preccurlyeq}
 \newcommand\lat[1]{\mathcal{W}_{#1}}
 
-\newcommand\ind[2]{\mathbf{1}_{#1}\left( #2 \right)}
+\renewcommand\ind[2]{\mathbf{1}_{#1}\left( #2 \right)}
 
 \newcommand\openbutterfly[3]{\mathsf{H}^{#1}_{#2, #3}}
 \newcommand\newbutterfly[1]{\mathsf{N}_{#1}}
