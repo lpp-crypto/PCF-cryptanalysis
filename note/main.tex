@@ -1,4 +1,4 @@
-\documentclass[journal=tosc,submission]{iacrtrans}
+\documentclass[journal=tosc,submission,nohyperref]{iacrtrans} % Fix for the following error I had: Package hyperxmp Error: hyperref must be loaded before hyperxmp.
 \pagestyle{plain}
 
 
@@ -7,9 +7,6 @@
 \newcommand\cb[1]{\textcolor{red!80}{\textbf{Christina:} #1}}
 \newcommand\gc[1]{\textcolor{olive!80}{\textbf{Geoffroy:} #1}}
 \newcommand\yr[1]{\textcolor{brown!80}{\textbf{Geoffroy:} #1}}
-
-
-
 
 \author{authors}
 \institute{institutions}
@@ -22,10 +19,6 @@
 \maketitle
 
 \keywords{some \and keywords}
-
-\begin{abstract}
-  abstract
-\end{abstract}
 
 \vfill
 \tableofcontents
