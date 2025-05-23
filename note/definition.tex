@@ -67,7 +67,53 @@ Let $\ring = \{\ring_n\}_{n\in \N}$ denote a family of commutative rings. Let $\
 
 The ``OT correlation'' (short for oblivious transfer correlation) is, without going into details, the most standard correlation required by secure computation protocols. Hence, the theorem above says that PCFs for useful correlations can be constructed, provided that there are wPRFs that fit (up to scalar multiples) into a class of function for which there exists an FSS scheme. In turn, the class of functions for which we know \emph{efficient} FSS schemes\footnote{Theoretically, there exists advanced constructions of FSS for all polynomial-time functions from strong forms of fully-homomorphic encryption~\cite{C:DHRW16} that are known to exist from the LWE assumption. However, these results are purely of theoretical interest.} is fairly limited~\cite{CCS:BoyGilIsh16}.
 
-\paragraph{From constrained pseudorandom functions.}
+\begin{definition}
+Fix a ring $\ring$ and an integer $N\in \N$. Let $\setI = \setI_N(\ring) \subset \ring^{N}$ denote the set of \emph{intervale functions} $f_{a,b,\Delta}:[N] \to \ring$ for $a,b \in [N]$ and $\Delta\in \ring$ defined as follows:
+\[f_{a,b,\Delta}:x\mapsto \begin{cases} \Delta \text{ if } x\in[a,b]\\
+0 \text{ else}
+\end{cases}\]
+Fix $t\in \N$, and let $\setF = \setF_{t,N}(\ring)$ denote the set of all functions $(x_1,\cdots, x_t) \mapsto L(f_1(x_1), \cdots,\allowbreak f_t(x_t))$ where $f_1, \cdots, f_t \in \setI$ and $L:\ring^t\to \ring$ is a linear function.
+\end{definition}
+
+Equivalently, the class $\setF$ can be viewed as the class of functions computable by a depth-$2$ circuit with indegree-1 comparison gates on the bottom (that output a fixed payload if the input is above, or below, a given threshold) and a $t$-ary linear combination gate on top. In the following, we will slightly abuse the definition and view $\setF$ both as a class of function and as the corresponding class of circuits. The following informal lemma summarizes what is known about the existence of efficient FSS schemes for the class $\setF$ (a more formal statement can be found in~\cite{CCS:BoyGilIsh16}):
+
+\begin{lemma}[Informal]
+\label{lemma:efficient-fss}
+Assume the existence of a length-doubling pseudorandom generator. There exists an FSS for the class $\setF$ where the shares $(f_0,f_1)$ of a function $f\in\setF$ have size $t\cdot (\secpar\cdot \log N + \log|\ring|)$ and the cost of evaluating a share on an input $x$ is dominated by $2t(\log N + (\log|\ring|)/\secpar)$ invocations of the PRG.
+\end{lemma}
+
+In practice, the pseudorandom generator is typically instantiated using AES, and the cost of evaluating the FSS becomes dominated by $2t(\log N + (\log|\ring|)/\secpar)$ calls to AES, which is extremly efficient (for moderate values of $t$) using modern hardware with support for AES instructions. Lemma~\ref{lemma:efficient-fss} can be generalized slightly (to multidimensional intervals, or fixed-topology decision trees). FSS constructions for more complex classes are known, but they make a heavy use of public-key cryptography and are considerably less efficient. Therefore, past works on PCGs and PCFs have focussed on developping PRGs and wPRFs compatible with the FSS schemes promised by Lemma~\ref{lemma:efficient-fss}---that is, computable by a depth-$2$ circuit in the class $\setF$ over a suitable ring (typically, the field $\F_{2^\secpar}$):
+
+\qbox{Are there weak pseudorandom functions computable by a circuit in $\setF_{t,N}(\F_{2^\secpar})$ for some value $t \ll N$?}
+
+In the PCF-from-FSS compiler, $N$ translates to an upperbound on the target number of samples from the correlation (for a wPRF, $N$ must be superpolynomial), and $t$ is a parameter that influences both the PCF key size and the evaluation time. The works of~\cite{FOCS:BCGIKS20,PKC:CouDuc23,C:BCGIKR22} introduced respectively the VDLPN-wPRF, a variant of the VDLPN-wPRF, and the EALPN-wPRF, as candidate solutions to the above challenge (with a value $t$ polylogarithmic in $N$). We cover both candidates in Section~\gc{TODO}.
+
+\paragraph{From constrained pseudorandom functions.} Recently, an alternative paradigm for building PCFs has emerged in~\cite{EC:BCMPR24,AC:CDDKS24}. This paradigm replaces the outer FSS component with a constrained pseudorandom function (CPRF): a pseudorandom function equipped with a special ``constraining'' algorithm that, on input a constraint $C$ (a function with binary output from a target class of constraints $\class$) and a PRF key $\msk$, outputs a \emph{constrained key} $\key_C$ that allows evaluating the PRF on all inputs $x$ such that $C(x) = 1$, but leaks no information about the PRF output when $C(x)=0$. The PCFs built from this paradigm enjoy a number of appealing procedures compared to the traditional paradigm: most notably, they come with a \emph{public key setup} (a one-round protocol for securely generating the PCF keys), while efficient (one-round or multi-round) key distribution protocols for earlier PCF constructions are still an open problem. At the heart of this alternative paradigm is the following theorem:
+
+\begin{theorem}
+Let $\PRF = (\KeyGen,\Eval)$ denote a weak pseudorandom function with binary output and let $\setF$ denote the family of all functions $x\to \Eval(msk,x)$ and $x\to 1-\Eval(\msk,x)$ for some PRF key $\msk$. If there exists a CPRF for the class of constraints $\setF$, then there exists a PCF for the OT correlation.
+\end{theorem}
+
+The work of~\cite{EC:BCMPR24} additionally introduced an efficient CPRF construction where the cost of evaluating the CPRF (and therefore the PCF) is dominated by a single exponentiation over an elliptic curve (on a modern laptop and for the fastest OpenSSL curves, this can be done in about $8\mu$s). This CPRF builds upon the seminal Naor-Reingold PRF~\cite{FOCS:NaoRei97}, and is restricted to constraints computable by an \emph{inner-product membership} predicate:
+
+\begin{definition}
+Fix a security parameter $\secpar$, integers $B,n \in \N$, and let $g:\bit^\secpar \to [B]^n$ be a function and $S \subset \N$ be a finite set. Let $\IPM = \IPM_{B,n}(S,g)$ denote the set of \emph{inner-product membership predicates over $S$} $P_{y}:[B]^n\to \bit$ for $y \in [B]^n$ defined as follows:
+\[P_{y}:x\mapsto \begin{cases} 1 \text{ if } \langle g(x),y\rangle \in S \algcomment{The inner product is computed over $\N$}\\
+0 \text{ else}
+\end{cases}\]
+\end{definition}
+In other words, after fixing some public ``preprocessing'' function $g$ on the input, and a subset $S$, an IPM predicate is a depth-$3$ circuit with a $g$-gate at the bottom (that takes a single input $x$ and has $n$ outputs), an arbitrary $n$-ary linear combination gate in the middle, and an indegree-1 membership-test gate on top. A formal statement of the following informal lemma can be found in~\cite{EC:BCMPR24}:
+
+\begin{lemma}[Informal]
+\label{lemma:efficient-cprf}
+Assume the power-DDH assumption over a group $\G$ of prime order $p$. There exists a CPRF for the class of constraints $\IPM = \IPM_{B,n}(S,g)$ where the size of a constrained key is $(n+|S|)\cdot \log|\G|$, and the cost of evaluating the CPRF is dominated by $n$ multiplications over $\Z_p$ and one exponentiation over $\G$.
+\end{lemma}
+
+Above, the number of multiplications can be reduced to the Hamming weight of $g(x)$. Then, to obtain efficient PCFs, it remains to find wPRFs that can be computed by an inner-product membership predicate, called IPM-wPRF in~\cite{EC:BCMPR24}:
+
+\qbox{Are there weak pseudorandom functions computable by a circuit from $\IPM_{B,n}(S,g)$ where $B$ is some integer bound and $S$ is a small subset of integers?}
+
+In the PCF-from-CPRF compiler, a larger $S$ translates to a larger key size (as it grows linearly with $|S|$). The work of~\cite{EC:BCMPR24} showed that two wPRF from previous works are actually IPM-wPRF: the Boneh-Ishai-Passelègue-Sahai-Wu wPRF~\cite{TCC:BIPSW18} and the Goldreich-Applebaum-Raykov wPRF~\cite{EPRINT:Goldreich00b,TCC:AppRay16b}. We cover both candidates in Section~\gc{TODO} and Section~\gc{TODO} respectively.
 
 \subsubsection{Zero-knowledge proofs}
 

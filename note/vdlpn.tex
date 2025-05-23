@@ -3,32 +3,72 @@
 
 
 \subsubsection*{Original Reference}
-The next weak PRF candidate we present was designed by Boyle, Couteau, Gilboa, Ishai, Kohl, and Scholl in 2020~\cite{vdlpn}. The original candidate introduced in their work is defined as follows:
+The next shallow weak PRF we present was proposed by Boyle, Couteau, Gilboa, Ishai, Kohl, and Scholl in 2020~\cite{vdlpn}. The main candidate introduced in their work, that we will refer to as {\tt VDLPN}, is defined as follows:
 
 \begin{equation} \label{eq:vdlpn_orig}
-    f_k(x) = \bigoplus_{i=1}^D \bigoplus_{j=1}^w\bigwedge_{\ell=1}^i (x_{i,j,\ell} \oplus k_{i,j,\ell}),
+    F_k(x) = \bigoplus_{i=1}^D \bigoplus_{j=1}^w \bigwedge_{\ell=1}^i \left(x_{i,j,\ell} \oplus k_{i,j,\ell}\right),
 \end{equation}
-where $D$ and $w$ are carefully chosen parameters. An interesting remark is that this candidate can also be expressed as a sum of triangular functions $T(x) = T(x_1, x_2, \dots) = x_1 \oplus x_2x_3 \oplus x_4x_5x_6 \oplus \cdots$. Indeed, Eq.~\eqref{eq:vdlpn_orig} can be rewritten as:  
-\[
-    f_k(x) = \bigoplus_{j=1}^w T(x_j \oplus k_j),
-\]
-where $x_j$ corresponds to the vector $(x_{j, 1}, \dots, x_{j,D})$. \textcolor{red}{Christina: Will correct later as the indices are wrong.}
+where $\bigwedge$ corresponds to the AND operation and $D$ and $w$ are parameters that depend on the desired security level $\lambda$.
 
-This section focuses on a \emph{weaker} variant of the above function, which we now describe in detail. Let $w$ and $D$ be two positive integers. Both the secret key $k \in \{0,1\}^{w \cdot D}$ and the input $x \in \{0,1\}^{w \cdot D}$ are viewed as binary matrices, represented as $(k_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$ and $(x_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$, respectively. The function $f_k(x)$ is then computed as:
+An interesting observation is that this function can also be interpreted as a sum of \emph{triangular functions}. Given a sequence of variables $ z = (z_1, z_2, z_3, \dots) $, a triangular function is defined as:
+\[
+T(z) := z_1 \oplus z_2 z_3 \oplus z_4 z_5 z_6 \oplus \cdots,
+\]
+where each term in the sum is a product of an increasing number of consecutive variables. 
+
+Using this definition, Equation~\eqref{eq:vdlpn_orig} can be rewritten more compactly as:
+\[
+F_k(x) = \bigoplus_{j=1}^w T(X_j \oplus K_j),
+\]
+where $ X_j $ is the vector $(x_{i,j,\ell})$ with indices $ 1 \leq i \leq D $, $ 1 \leq \ell \leq i $, and similarly, $ K_j $ is the vector $(k_{i,j,\ell})$ over the same index set.
+
+\paragraph{Example (toy instance of the main variant with \(w = 2\), \(D = 3\)).}
+For \(w = 2\) and \(D = 3\), $F_k(x)$ can be written as 
+\[
+F_k(x) = T(Z_1) \oplus T(Z_2),
+\]
+where $T(Z_j) = z_1 \oplus z_2 z_3 \oplus z_4 z_5 z_6$,  and
+\begin{align*}
+Z_1 &= \left(
+x_{1,1,1} \oplus k_{1,1,1},
+x_{2,1,1} \oplus k_{2,1,1}, 
+x_{2,1,2} \oplus k_{2,1,2},
+x_{3,1,1} \oplus k_{3,1,1}, 
+x_{3,1,2} \oplus k_{3,1,2}, 
+x_{3,1,3} \oplus k_{3,1,3}
+\right), \\[0.5em]
+Z_2 &= \left(
+x_{1,2,1} \oplus k_{1,2,1},
+x_{2,2,1} \oplus k_{2,2,1}, 
+x_{2,2,2} \oplus k_{2,2,2}, 
+x_{3,2,1} \oplus k_{3,2,1}, 
+x_{3,2,2} \oplus k_{3,2,2}, 
+x_{3,2,3} \oplus k_{3,2,3}
+\right).
+\end{align*}
+
+We focus however on an alternative low-complexity variant of the above function, that was equally presented in~\cite{vdlpn}, which we now describe in detail. Let $w$ and $D$ be two positive integers. Both the secret key $k \in \mathbb{Z}_2^{w \times D}$ and the input $x \in \mathbb{Z}_2^{w \times D}$ are viewed as binary matrices, represented as $(k_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$ and $(x_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$, respectively. The function $F_K(x)$ is then computed as:
 
 \begin{equation} \label{eq:vdlpn_agg}
-    f_k(x) = \bigoplus_{i=1}^D \bigoplus_{j=1}^w\bigwedge_{\ell=1}^j (x_{j,\ell} \oplus k_{j,\ell}).
+    F_k(x) := \bigoplus_{i=1}^D \bigoplus_{j=1}^w\bigwedge_{\ell=1}^i (x_{j,\ell} \oplus k_{j,\ell}).
 \end{equation}
 
-We see now that Eq.~\eqref{eq:vdlpn_agg} can also be rewritten differently, but not as a sum of triangular functions but as a sum of \emph{fake} triangular functions $T_f(x)$, where a \emph{fake} triangular function is defined as follows.
+We see now that Eq.~\eqref{eq:vdlpn_agg} can also be rewritten differently, but not as a sum of triangular functions but as a sum of \emph{somewhat} triangular functions $T'(z)$, defined in the following way, where  $ z = (z_1, z_2, z_3, \dots) $ is a sequence of variables:
 \[
-    T_f(x) = T_f(x_1, x_2, \dots) = x_1 \oplus x_1 \oplus x_2 \oplus x_1x_2x_3 \oplus \cdots.
+    T'(z) := z_1 \oplus z_1 z_2 \oplus z_1z_2z_3 \oplus \cdots.
 \]
 Specifically, we have:
 \[
-    f_k(x) = \bigoplus_{j=1}^w T_f(x_j \oplus k_j),
+    F_k(x) = \bigoplus_{j=1}^w T'(X_j \oplus K_j),
 \]
-where $x_j = (x_{j, 1}, \dots, x_{j,D})$ and $k_j = (k_{j, 1}, \dots, k_{j,D})$.  
+where $ X_j $ is the vector $(x_{j,\ell})$ with indices $ 1 \leq \ell \leq D $, and similarly, $ K_j $ is the vector $(k_{j,\ell})$ over the same index set.
+
+\paragraph{Example (toy instance of the low-complexity variant with \(w = 2\), \(D = 3\)).}
+In this case, 
+\[
+F_k(x) = \bigoplus_{j = 1}^2 (x_{j,1} \oplus k_{j,1}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2} \oplus k_{j,2}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2}\oplus k_{j,2})(x_{j,3}\oplus k_{j,3}).
+\]
+\cite{Ducros24} \cite{PKC:CouDuc23}
 % !TODO! write about the original reference
 
 \subsubsection*{Security Arguments and Cryptanalysis}
