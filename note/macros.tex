@@ -34,6 +34,7 @@ events,
 complexity,
 asymptotics,
 keys]{cryptocode}
+\usepackage{awesomebox}
 
 \usepackage{graphicx} % including pictures
 \usepackage[export]{adjustbox} % use max width and max height for figures
@@ -100,12 +101,18 @@ keys]{cryptocode}
 % \theoremstyle{remark}
 % \newtheorem{remark}{Remark}
 
+\newcommand{\qbox}[1]{{\vspace{-.3cm}\awesomebox[gray]{2pt}{\faQuestionCircle}{gray}{#1}\vspace{-.3cm}}}
+\newcommand{\qboxx}[1]{\awesomebox[gray][\abShortLine]{2pt}{\faQuestionCircle}{gray}{#1}}
+\newcommand*{\algcomment}[1]{{\color{gray} \text{\hspace{.5cm}$\triangleright$ #1}}}
+
 \newcommand\adva{\ensuremath{\mathcal{A}}\xspace}
 \newcommand\setX{\ensuremath{\mathcal{X}}\xspace}
 \newcommand\setF{\ensuremath{\mathcal{F}}\xspace}
 \newcommand\setK{\ensuremath{\mathcal{K}}\xspace}
 \newcommand\ring{\ensuremath{\mathcal{R}}\xspace}
 \newcommand\setY{\ensuremath{\mathcal{Y}}\xspace}
+\newcommand\setI{\ensuremath{\mathcal{I}}\xspace}
+\newcommand\IPM{\ensuremath{\mathcal{IP\mkern-4mu M}}\xspace}
 \newcommand\class{\ensuremath{\mathcal{C}}\xspace}
 \newcommand\indeg{\ensuremath{\mathsf{in}}\xspace}
 \newcommand\outdeg{\ensuremath{\mathsf{out}}\xspace}
@@ -119,11 +126,13 @@ keys]{cryptocode}
 \newcommand\wPRF{\ensuremath{\mathsf{wPRF}}\xspace}
 \renewcommand\secpar{\ensuremath{\lambda}\xspace}
 \newcommand\msk{\ensuremath{\mathsf{msk}}\xspace}
+\renewcommand\key{\ensuremath{\mathsf{k}}\xspace}
 \renewcommand\negl{\ensuremath{\mathsf{negl}}\xspace}
 \newcommand\KeyGen{\ensuremath{\mathsf{KeyGen}}\xspace}
 \newcommand\Eval{\ensuremath{\mathsf{Eval}}\xspace}
 
 \newcommand\LL{\mathcal{L}}
+\newcommand\G{\mathbb{G}}
 \newcommand\Z{\mathcal{Z}}
 \newcommand\N{\mathbb{N}}
 \newcommand\F{\mathbb{F}}
