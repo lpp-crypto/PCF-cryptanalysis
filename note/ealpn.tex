@@ -3,7 +3,8 @@
 
 
 \subsubsection*{Original Reference}
-% !TODO! write about the original reference
+Boyle, Couteau, Gilboa, Ishai, Kohl, Resch, Scholl 
+\cite{C:BCGIKR22} \cite{C:RagRinTan23}
 
 \subsubsection*{Security Arguments and Cryptanalysis}
 %!TODO! Write about security arguments and cryptanalysis
@@ -19,14 +20,19 @@
 Algorithm~\ref{alg:ealpn}
 
 \begin{algorithm}
-  \caption{\label{alg:ealpn}The VDLPN PRF \\
-    Parameters: $n$ ...}
+  \caption{\label{alg:ealpn}The {\tt EA-LPN} PRF \\
+    Parameters:  integers $N$, $t$, $\ell$,  $w = \lceil \frac{5N}{t} \rceil$}
   \begin{algorithmic}
-    \State $x = 0$
-    \Return False
-  \end{algorithmic}
+  \State \textbf{Input:}  $x = ((j_1,x_1), \dots, (j_\ell,x_\ell)) \in ([0, \frac{t}{\ell} - 1] \times \mathbb{Z}_{2^w})^\ell$; $k = (k_0, \dots, k_{t-1}) \in (\mathbb{Z}_{2^w})^t$
+    \State $r \gets 0$
+\For{$i = 1$ to $\ell$}
+    \If{$x_i \geq k_{j_i}$}
+        \State $r \gets r + 1$
+    \EndIf
+\EndFor\\
+\Return $r \bmod 2$
+ \end{algorithmic}
 \end{algorithm}
-
 
 
 
