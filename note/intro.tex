@@ -3,12 +3,12 @@
 
 %!TODO! write introduction 
 
-Potential name of the primitives:
-\begin{itemize}
-\item Shallow PRF
-\item Cryptographic Shallow PRF
-\item SIngle ROund Prf (SIROP)
-\end{itemize}
+%Potential name of the primitives:
+%\begin{itemize}
+%\item Shallow PRF
+%\item Cryptographic Shallow PRF
+%\item SIngle ROund Prf (SIROP)
+%\end{itemize}
 
 
 
@@ -46,15 +46,7 @@ Things we must introduce:
 \item circuit depth
 \end{itemize}
 
-%Notes réunion Christina: 
-
-%Définir MPC-friendly (toutes les opérations linéaires et les opérations non-linéaires peuvent être faites à conditions qu'ils opèrent sur un petit nombre, eg. 8 bits.) petite profondeur multiplicative. Notion principale pour toutes ces opérations.
-
-%Grandes familles de primitives MPC: secret-sharing, tout ce qui est basé sur FHE (y compris TFHE), function secret-sharing 
-%Tout cela ça vient de GGM 84
-
-
-
+The rest of the article is organized as follows. Section~\ref{sec:definition} introduces preliminary notions on shallow weak PRFs, discusses their intended applications, and outlines their cost and security models. Section~\ref{sec:zoo} then presents several families of shallow weak PRFs, providing both mathematical and algorithmic descriptions, known variants, and parameter sets that serve as targets for cryptanalysis. We cover four distinct families, which are detailed in Sections~\ref{sec:bipsw},\ref{sec:goldreich},\ref{sec:ealpn}, and~\ref{sec:vdlpn}, respectively.
 
 %%% Local Variables:
 %%% mode: latex

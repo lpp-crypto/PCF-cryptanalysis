@@ -1,5 +1,5 @@
 \subsection{Alternating moduli constructions}
-\label{sec:ealpn}
+\label{sec:bipsw}
 
 %\paragraph{References for this section.} 
 
@@ -66,7 +66,7 @@ In the original paper, for a target security of $\lambda = 128$ bits, the author
 % !TODO! write about the parameters and their role
 
 
-\subsubsection{Variants and generalizations}
+\subsubsection{Variants and Generalizations}
 
 The alternating moduli design paradigm quickly gained popularity as an approach for constructing weak PRFs \lp{il faut qu'on choisisse un terme (``weak shallow PRF''?) et qu'on s'y tienne partout}. Several subsequent works proposed generalized or alternative versions of the construction presented in the previous section. In this part, we describe some of the most notable and interesting variants.
 
@@ -120,7 +120,7 @@ where $A \in \mathbb{Z}_3^{m \times n}$ and $B \in \mathbb{Z}_2^{t \times m}$.
 
 %parameters
 
-\subsubsection{Security arguments and cryptanalysis}
+\subsubsection{Security Arguments and Cryptanalysis}
 
 To date, two papers have analyzed the security of the original construction of~\cite{TCC:BIPSW18} that permit to better estimate the security level and guide the optimal choice of parameters.
 
@@ -132,7 +132,7 @@ Recently, the security of the generalized construction introduced in~\cite{C:APR
 
 
 
-\subsubsection{Use of the alternating moduli construction within cryptographic protocols}
+\subsubsection{Use of the Alternating Moduli Construction within Cryptographic Protocols}
 The original alternating moduli construction~\cite{TCC:BIPSW18} has been incorporated into various cryptographic protocols, each proposing its own concrete set of parameters. The framework of~\cite{AC:CDDKS24} suggests using the construction with a key and input length of $n = 768$ to achieve a security level of $\lambda = 128$ bits. Similarly, the approach of~\cite{EC:BCMPR24} for constructing Pseudorandom Correlation Functions (PCFs) for Oblivious Transfer (OT) correlations relies on the same PRF with $n = 770$ to reach the same 128-bit security level. In both cases, the choice of $n$ was guided by taking into account the attacks of~\cite{PKC:CCKK21} and~\cite{JMN23}.
 
 For other types of applications, the generalized construction from~\cite{C:DGHIKS21} has been used in re-keying protocols, such as in~\cite{TCHES:DMMS21} and~\cite{C:HMMRSU23}. More recently,~\cite{EC:ADDG24} introduced a novel application domain for this weak PRF by combining it with the TFHE scheme~\cite{JC:CGGI20}, a fully homomorphic encryption construction based on programmable bootstrapping to reduce noise. In this context, the authors target a security level of $\lambda = 128$ bits and set $n = 256$, interpreting the key as a square matrix of dimension $n$.
