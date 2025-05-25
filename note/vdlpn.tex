@@ -63,6 +63,8 @@ Specifically, we have:
 \]
 where $ X_j $ is the vector $(x_{j,\ell})$ with indices $ 1 \leq \ell \leq D $, and similarly, $ K_j $ is the vector $(k_{j,\ell})$ over the same index set.
 
+\yr{In other words, it is a triangular function, for which the variables are reused in higher degree monomials, leading to a dependency in the algebraic expression. (Je pense d'ailleurs que c'est cette dépendance qui fait que ce n'est pas prouvable ?)}
+
 \paragraph{Example (toy instance of the low-complexity variant with $w = 2$, $D = 3$).}
 In this case, 
 \[
@@ -75,6 +77,7 @@ In the original paper~\cite{vdlpn}, the authors suggested the following paramete
 
 This initial proposal was later revisited and refined in subsequent works. In~\cite{PKC:CouDuc23}, the authors conducted a detailed security analysis, allowing them to correct several errors from the original paper and to propose concrete parameters for achieving 128-bit security : $w = 380$, $D = 80$, under the assumption that the adversary is limited to at most $2^D$ queries. No close formula was however provided. In the same work, the authors also explore more aggressive parameter choices. They notably propose $w = 120$ and $D = 30$, while maintaining the same upper bound on the number of allowed queries. They conjecture that these parameters likely still yield a secure instance for a security level of $\lambda = 80$ bits. A more comprehensive analysis can be found in~\cite{Ducros24}.
 
+\yr{Je crois que la variante agressive n'est pas non plus prouvée quand l'original l'est avec une réduction}
 
 The algorithmic description of the low-complexity {\tt VDLPN} variant, that we consider to be the most relevant target for cryptanalysis, is provided in Algorithm~\ref{alg:vdlpn}.
 

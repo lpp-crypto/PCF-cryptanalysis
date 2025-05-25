@@ -6,13 +6,13 @@
 
 In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu introduced a new design paradigm for constructing MPC-friendly weak pseudorandom functions (wPRFs), which was later described in the literature as the \emph{alternating moduli paradigm}~\cite{TCC:BIPSW18}. Constructions based on this paradigm benefit from a low nonlinear depth while exhibiting a high algebraic degree. They are mathematically simple, built by combining linear functions over different moduli.
 
-The original paper~\cite{TCC:BIPSW18} presented two such constructions: a primary one outputting elements in $\mathbb{Z}_3$, and an alternative design that ultimately attracted more attention from the community. This second construction, referred to as the \emph{alternative mod-2/mod-3 weak PRF} and labeled as Construction 6.3 in the original paper, is the only one from this work that we describe below. Notably, this construction is particularly well-suited for two-party distributed evaluation. \lp{why? ref?}
+The original paper~\cite{TCC:BIPSW18} presented two such constructions: a primary one outputting elements in $\mathbb{Z}_3$, and an alternative design that ultimately attracted more attention from the community. This second construction, referred to as the \emph{alternative mod-2/mod-3 weak PRF} and labeled as Construction 6.3 in the original paper, is the only one from this work that we describe below. Notably, this construction is particularly well-suited for two-party distributed evaluation. \lp{why? ref?} \yr{Je propose d'enlever cette dernière phrase: en fait, et partout, je propose de ne pas parler des applications quand on présente les constructions: on dit dans les premières phrases que des gens s'intéressent à utiliser ça on peut ne pas rementionner dans le corps non ?}
 
 
 \subsubsection{Original Construction (\cite{TCC:BIPSW18})}
 
 Let $n$ denote the key length and the block message length. In practice, $n$ depends on a security parameter $\lambda$. To simplify the notation, we omit explicitly indexing all parameters that depend on $n$ by $\lambda$. For instance, we write $n$ instead of $n(\lambda)$ and $\mathcal{K}$ instead of $\mathcal{K}_{\lambda}$ for the key space.
-\lp{la phrase ci-dessus devrait sans doute aller genre Section~\ref{sec:notations} parce que ça va être vrai pour toutes les PRFs, non ?}
+\lp{la phrase ci-dessus devrait sans doute aller genre Section~\ref{sec:notations} parce que ça va être vrai pour toutes les PRFs, non ?} \yr{Oui, je suis d'accord, à mettre juste en dessous d'une version "pratique" et "symétrique" de la définition de wPRF.}
 
 The alternative mod-2/mod-3 wPRF as defined in~\cite{TCC:BIPSW18} is a function $F : \mathbb{Z}_2^n \times \mathbb{Z}_2^n \to \mathbb{Z}_2$, where the key space is $\mathcal{K} = \mathbb{Z}_2^n$, the domain is $\mathcal{X} = \mathbb{Z}_2^n$, and the output space is $\mathcal{Y} = \mathbb{Z}_2$. For a key $k \in \mathbb{Z}_2^n$, we use the notation $F_k(x)$ to represent the function $F(k, x)$.
 
@@ -55,7 +55,7 @@ The algorithmic description of the alternative mod-2/mod-3 wPRF is provided in A
 \end{algorithm}
 
 
-One of the security arguments put forward by the designers of the above construction is that it cannot be approximated by any low-degree polynomial. This is supported by the classical results of Razborov and Smolensky~\cite{Raz87,Smo87}, which show that for two distinct primes $p$ and $q$, the $\mod{p}$ function cannot be approximated by low-depth $\mod{q}$ circuits. In this construction, the moduli 2 and 3 were chosen not only because they are the simplest such primes, but also because they lead to the best efficiency in practice. Indeed, their use leads to more efficient modulus conversion protocols.
+One of the security arguments put forward by the designers of the above construction is that it cannot be approximated by any low-degree polynomial. This is supported by the classical results of Razborov and Smolensky~\cite{Raz87,Smo87}, which show that for two distinct primes $p$ and $q$, the $\mod{p}$ function cannot be approximated by low-depth $\mod{q}$ circuits. \yr{Je suppose que c'est pour une taille d'espace assez grande par rapport à $p$ et $q$ sinon ça ne marche pas non ?} In this construction, the moduli 2 and 3 were chosen not only because they are the simplest such primes, but also because they lead to the best efficiency in practice. Indeed, their use leads to more efficient modulus conversion protocols. \yr{Je comprends pas trop ces deux dernières phrases, et puis ça dépend du contexte d'utilisation ? Si je prends l'exemple de rekeying on a $p=2^{31}-1$ parce que c'est utilisé pour du masquage. Comme on est sur des trucs qui ne seront jamais utilisés seuls, je pense qu'il faut s'en tenir aux "premiers choix: les deux premiers premiers" ?}
 
 \subsubsection{Parameters}
 
@@ -86,9 +86,9 @@ The final output is then computed as
 \[
 F_K(x) = Bw \bmod 2 \in \mathbb{Z}_2^t~,
 \]
-where $B \in \mathbb{Z}_2^{t \times m}$ is a public compression matrix, which can be chosen either uniformly at random or  as a full-rank circulant matrix. This matrix can also been seen as a generator matrix for a linear code that has high minimum distance. Its application permits to resolve correlation issues between the key and the output, that would for example exploit linear biases in the output.
+where $B \in \mathbb{Z}_2^{t \times m}$ is a public compression matrix, which can be chosen either uniformly at random or  as a full-rank circulant matrix \yr{also taken uniformly at random ?}. This matrix can also been seen as a generator matrix for a linear code that has high minimum distance. Its application permits to resolve correlation issues between the key and the output, that would for example exploit linear biases in the output.
 
-It is straightforward to verify that this construction is a generalization of the alternative scheme proposed in~\cite{TCC:BIPSW18}. Specifically, the original candidate described in the previous section corresponds to a special case of the construction in~\cite{C:DGHIKS21}, obtained by setting $m = 1$, $t = 1$, and choosing $B = 1$.
+It is straightforward to verify that this construction is a generalization of the alternative scheme proposed in~\cite{TCC:BIPSW18}. Specifically, the original candidate described in the previous section corresponds to a special case of the construction in~\cite{C:DGHIKS21}, obtained by setting $m = 1$, $t = 1$, and choosing $B = 1$. \yr{Pas besoin de ce paragraphe non ?}
 
 The authors of~\cite{C:DGHIKS21} also argue that the construction can be further generalized by replacing the moduli 2 and 3 with any distinct prime moduli $p$ and $q$.
 
@@ -107,9 +107,9 @@ Then, compute the output as
 F_k(x) = B(Az \bmod 2) \bmod 3 \in \mathbb{Z}_3^t~,
 \]
 where, as before, we write $F_k(x)$ for a key $k \in \mathbb{Z}_2^n$ to denote $F(k, x)$.
-As with the previous variants, the moduli 2 and 3 can be replaced with any distinct prime numbers $p$ and $q$ without affecting security. \lp{il faudrait le dire plus haut du coup, non?}
+As with the previous variants, the moduli 2 and 3 can be replaced with any distinct prime numbers $p$ and $q$ without affecting security. \lp{il faudrait le dire plus haut du coup, non?} \yr{C'est déjà dit surtout + pas fan de "ça n'affecte pas la sécurité", puisque les paramètres sont choisis en fonction de $p$ et $q$, et selon les tailles $n$, $m$ et $t$, à mon avis ça change en pratique quand on fixe les paramètres.}
 
-The core idea behind this generalization is to allow for a better \lp{a better what?} of the terms $k_i x_i$. In the previous alternating moduli constructions, these terms were combined in a highly structured manner. For example, in the construction from~\cite{C:DGHIKS21}, the matrix-vector product $Kx$ mixed the key and input variables in a very regular  way. In contrast, the use of a random matrix $A$ in this construction results in random linear combinations over the variables composing the shared input vector $k \odot x$. As a result, each product term $k_i x_i$ is reused multiple times throughout the computation,  leading to a higher diffusion. On the other hand, as we briefly discuss in the next subsection, combining the key and input variables using an AND operation introduces a strong bias in the output, which can significantly weaken the security of the construction.
+The core idea behind this generalization is to allow for a better \lp{a better what?} of the terms $k_i x_i$. In the previous alternating moduli constructions, these terms were combined in a highly structured manner. For example, in the construction from~\cite{C:DGHIKS21}, the matrix-vector product $Kx$ mixed \yr{mix or mixes au présent ?} the key and input variables in a very regular  way. In contrast, the use of a random matrix $A$ in this construction results in random linear combinations over the variables composing the shared input vector $k \odot x$. As a result, each product term $k_i x_i$ is reused multiple times throughout the computation,  leading to a higher diffusion. On the other hand, as we briefly discuss in the next subsection, combining the key and input variables using an AND operation introduces a strong bias in the output, which can significantly weaken the security of the construction.
 
 The authors also propose a variant, named the \emph{reversed-moduli} variant that produces binary output. For this variant, the key would be an element of $\mathbb{Z}_3^n$, but in practice it is seen an element of $\mathbb{Z}_2^n$. In this version, the vector $z$ is first interpreted as an element of $\mathbb{Z}_3^n$. The function output is then computed as:
 \[
@@ -135,9 +135,14 @@ Recently, the security of the generalized construction introduced in~\cite{C:APR
 \subsubsection{Use of the Alternating Moduli Construction within Cryptographic Protocols}
 The original alternating moduli construction~\cite{TCC:BIPSW18} has been incorporated into various cryptographic protocols, each proposing its own concrete set of parameters. The framework of~\cite{AC:CDDKS24} suggests using the construction with a key and input length of $n = 768$ to achieve a security level of $\lambda = 128$ bits. Similarly, the approach of~\cite{EC:BCMPR24} for constructing Pseudorandom Correlation Functions (PCFs) for Oblivious Transfer (OT) correlations relies on the same PRF with $n = 770$ to reach the same 128-bit security level. In both cases, the choice of $n$ was guided by taking into account the attacks of~\cite{PKC:CCKK21} and~\cite{JMN23}.
 
-For other types of applications, the generalized construction from~\cite{C:DGHIKS21} has been used in re-keying protocols, such as in~\cite{TCHES:DMMS21} and~\cite{C:HMMRSU23}. More recently,~\cite{EC:ADDG24} introduced a novel application domain for this weak PRF by combining it with the TFHE scheme~\cite{JC:CGGI20}, a fully homomorphic encryption construction based on programmable bootstrapping to reduce noise. In this context, the authors target a security level of $\lambda = 128$ bits and set $n = 256$, interpreting the key as a square matrix of dimension $n$.
+For other types of applications, the generalized construction from~\cite{C:DGHIKS21} has been used in re-keying protocols, such as in~\cite{TCHES:DMMS21} and~\cite{C:HMMRSU23}. The idea behind those proposals is to use the secret matrix as a master key, use a randomness in a chip and to consider the output as secret, in a presence of an attacker that would have access to linear leakage of the output which serves as an ephemaral symmetric key. The idea is that masking the product matrix vector is easy, and specially for $p=2^{31}-1$. In~\cite{TCHES:DMMS21} proposal, the authors explain that the moduli $3$ is not a good choice and proposed to use a matrix of size $4$ by $4$ and $p=2^{31}-1$. However, depending on the leakage model, this construction might not be secure. In~\cite{C:HMMRSU23}, the authors detail the cryptanalysis more, by bounding the number of leakages an attacker has access to, leading to the same parameter sets. \yr{page 424, toute fin de la section 5 de~\cite{C:HMMRSU23} dans CRYPTO 2023, pas forcément besoin de détailler, mais globalement, même paramètres, mais restriction du nombre de sample physiques d'un attaquant}
+
+
+More recently,~\cite{EC:ADDG24} introduced a novel application domain for this weak PRF by combining it with the TFHE scheme~\cite{JC:CGGI20}, a fully homomorphic encryption construction based on programmable bootstrapping to reduce noise. In this context, the authors target a security level of $\lambda = 128$ bits and set $n = 256$, interpreting the key as a square matrix of dimension $n$.
 
 \christina{Yann, tu pourras dire quelque chose sur les parametres pour les applications re-keying ?}
+
+\yr{J'ai fait et mis dans le paragraphe du dessus.}
 
 %%% Local Variables:
 %%% mode: latex
