@@ -4,6 +4,7 @@
 \yr{Toute cette section est réalisée ajd vendredi 23 mai, sans vraiment grand relecture, pas convaincu de ce que j'écris, n'hésitez pas à me dire c'est nul.} \cb{J'ai relu et modifié le début de cette section, à relire.}
 
 Twenty-five years ago, Goldreich posed the question of whether it is possible to securely construct a very simple function that is hard to invert. By \emph{very simple}, we mean a function whose description is transparent and can be expressed using a concise, closed-form formula. This question led to the design of a minimalistic and elegant one-way function. Despite its simplicity, this function is conjectured to offer strong cryptographic guarantees, and has become, over the years, a central object of study in the theory of cryptography and complexity. \cb{Add original reference}
+\yr{Add: While the description is very simple, its security also relies on an access to long public random and uniform values. ?}
 
 
 \subsubsection*{Original Reference}
@@ -11,6 +12,7 @@ Twenty-five years ago, Goldreich posed the question of whether it is possible to
 Goldreich's proposal for constructing a one-way function is based on a very simple and elegant idea. Let  $n, m \in \mathbb{N}$, and let $(\sigma_i)_{1 \leq i \leq m}$ be a sequence of $ m $ subsets of $\{1, \dots, n\}$, each of size $d(n)$. This value $d(n)$ is referred to as the \emph{locality} of the construction. Let $ P : \{0,1\}^{d(n)} \to \{0,1\} $ be any fixed Boolean predicate (i.e., a function on $d(n)$ input bits).
 
 For $x\in \{0,1\}^n$ and any subset $\sigma$, define $x[i]\in\{0,1\}^{d(n)}$ as $x_{\sigma(1)}||\cdots||x_{\sigma(d(n))}$ where $\sigma(j)$ is the $j$-th element in the subset $\sigma$. Then the candidate one-way function $f:\{0,1\}^n \to \{0,1\}^m$ can be expressed as the concatenation of the respective $m$ evaluations of the predicate $P$ over $x[i]$ for $i$ from $1$ to $m$. \cb{Je trouve ce dernier paragraph peu clair. Comment $x[i]$ est relié à $x$ ? Une formule explicite pour $f$ pourrait aider.}
+\yr{En fait, ça donne $P(x[1])||P(x[2])||\cdots||P(x[m])$, et je ne vois pas comment faire plus simple puisqu'il y a les subsets. On en parle lundi.}
 
 
 %\cb{Better description? Check if this is correct.}
@@ -26,8 +28,9 @@ For $x\in \{0,1\}^n$ and any subset $\sigma$, define $x[i]\in\{0,1\}^{d(n)}$ as 
 %\]
 %that is, the concatenation of $ m $ applications of the predicate $ P $ to the corresponding local views of $ x $.
 
+\yr{Ah oui ta description en commentaire est bien mieux.}
 
-This proposal can be instantiated to yield various cryptographic primitives, such as one-way functions (when $m = n$) or pseudorandom generators with polynomial stretch (when $m = \mathcal{O}(n)$).
+This proposal can be instantiated to yield various cryptographic primitives, such as one-way functions (when $m = n$) or pseudorandom generators with polynomial stretch (when $m = \mathcal{O}(n^{\mathsf{s}})$ for some $\mathsf{s}\geq 1$).
 While this construction may at first appear purely theoretical, its security properties offer valuable insights for practical applications. In particular, the \emph{locality} parameter $d(n)$ serves as a useful measure of the maximum arithmetic depth or complexity of the circuit implementing the function.
 
 One of the most compact instantiations of this proposal uses locality $d = 5$ and the predicate
@@ -41,8 +44,28 @@ P_5(x_1, x_2, x_3, x_4, x_5) = x_1 + x_2 + x_3 + x_4 x_5.
 More generally the \textit{a priori} good candidates for predicates are the $\mathsf{XOR-MAJ}$ and $\mathsf{XOR-THR}$ predicates, that is the $\mathsf{XOR}$ of a linear function that takes a number of bits and the majority function for independent bits (or respectively a threshold function, that outputs $0$ if and only if the number of bits equal. to $1$ is less than a given threshold).
 \yr{Pas sûr que ce qui vient d'être dit va ici} \cb{Si, moi je trouve cela bien, mais il faut donner les formules pour ces fonctions, tout le monde ne les a pas en tête}.
 
+More formally, let $\mathsf{w}$ denote the Hamming weight, then the majority function on $t\in\mathbb{N}^*$ variables is defined as
+$$
+\begin{array}{ccccc}
+\mathsf{MAJ} & : & \{0,1\}^t & \to & \{0,1\} \\
+ & & x & \mapsto & 0\text{ iff }\mathsf{w}(x) \leq \frac{t}{2}\,. \\
+\end{array}
+$$
+A threshold function on $t$ variables with parameter $\mathsf{th}\leq t+1$ is defined as 
+$$
+\begin{array}{ccccc}
+\mathsf{THR} & : & \{0,1\}^t & \to & \{0,1\} \\
+ & & x & \mapsto & 0\text{ iff }\mathsf{w}(x) < \mathsf{th}\,. \\
+\end{array}
+$$
+
+\yr{En fait on peut définir que THreshold et dire que majorité c'est simplement le cas particulier $t/2$}
+
+\yr{Est-ce qu'on donne le total ou est-ce qu'on garde que ça ? J'ai l'impression que c'est plus simple et lisible comme ça}
+
 \subsubsection*{Generic cryptanalysis}
 \cb{Il faut ajouter une phrase introductive a cette section.}
+\yr{Oui, je suis d'accord, en fait c'est à discuter de quelle quantité on veut mettre avant, il y a des trucs qui prouvent en partie, mais je pense qu'il ne faut pas trop s'étendre dessus, à discuter}
 An other but more generic cryptanalysis \cb{Il y a "Another" mais rien qui précède ..} (that is without taking into considerations the specificities of the predicate) has been made by Bogdanov and Qiao~\cite{DBLP:conf/approx/BogdanovQ09} for linear stretch (that is $m=\lambda n$), where they show that one cryptanalyst wins when it finds an $x'$ that is close with respect to the Hamming distance to the secret value $x$. The work then led to a subexponential attack~\cite{EPRINT:Applebaum15} in time $\mathsf{poly}(n)\cdot 2^{2\varepsilon n}$ if $m\in\Omega (n/ \varepsilon^{2d})$.
 
 Naturally, the choice of the predicate should be non-degenerate: it should at least be unbiased and not linear. In the next section we describe some other criteria that the predicate should satisfy. 
