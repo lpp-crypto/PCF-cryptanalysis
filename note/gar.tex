@@ -1,23 +1,49 @@
 \subsection{Goldreich's PRG}
 \label{sec:goldreich}
 
-\yr{Toute cette section est réalisée ajd vendredi 23 mai, sans vraiment grand relecture, pas convaincu de ce que j'écris, n'hésitez pas à me dire c'est nul.}
+\yr{Toute cette section est réalisée ajd vendredi 23 mai, sans vraiment grand relecture, pas convaincu de ce que j'écris, n'hésitez pas à me dire c'est nul.} \cb{J'ai relu et modifié le début de cette section, à relire.}
+
+Twenty-five years ago, Goldreich posed the question of whether it is possible to securely construct a very simple function that is hard to invert. By \emph{very simple}, we mean a function whose description is transparent and can be expressed using a concise, closed-form formula. This question led to the design of a minimalistic and elegant one-way function. Despite its simplicity, this function is conjectured to offer strong cryptographic guarantees, and has become, over the years, a central object of study in the theory of cryptography and complexity. \cb{Add original reference}
+
 
 \subsubsection*{Original Reference}
-25 years ago, Goldreich asked the question if it is possible to securely have a very simple function that is hard to invert. By very simple, we mean if the description of the function is without obscurity and if it can be express with a very simple closed formula.
 
-The suggestion made by Goldreich to build a one-way function is as follows. Let $n,m\in\mathbb{N}$ and let $(\sigma_i)_{1\leq i\leq m}$ an $m$-sequence of (ordered) subsets of $1,n$ of size $d(n)$ which is called the \textit{locality}. Let $P:\{0,1\}^{d(n)} \to \{0,1\}$ be any fixed predicate (Boolean function with $d(n)$ variables). For $x\in \{0,1\}^n$ and any subset $\sigma$, define $x[i]\in\{0,1\}^{d(n)}$ as $x_{\sigma(1)}||\cdots||x_{\sigma(d(n))}$ where $\sigma(j)$ is the $j$-th element in the subset $\sigma$. Then the candidate one-way function $f:\{0,1\}^n \to \{0,1\}^m$ can be expressed as the concatenation of the respective $m$ evaluations of the predicate $P$ over $x[i]$ for $i$ from $1$ to $m$.
+Goldreich's proposal for constructing a one-way function is based on a very simple and elegant idea. Let  $n, m \in \mathbb{N}$, and let $(\sigma_i)_{1 \leq i \leq m}$ be a sequence of $ m $ subsets of $\{1, \dots, n\}$, each of size $d(n)$. This value $d(n)$ is referred to as the \emph{locality} of the construction. Let $ P : \{0,1\}^{d(n)} \to \{0,1\} $ be any fixed Boolean predicate (i.e., a function on $d(n)$ input bits).
 
-This proposal can be turned into different cryptographic constructions such as one-way functions (with $m=n$) or pseudo-random generators with polynomial stretch if $m = \mathcal{O}(n)$.
-While this construction seem to be purely theoretic, its security provides many insights for new applications. Indeed, the locality itself $d(n)$ serve as an indicator for giving a maximum arithmetic depth or arithmetic complexity of the circuit. 
+For $x\in \{0,1\}^n$ and any subset $\sigma$, define $x[i]\in\{0,1\}^{d(n)}$ as $x_{\sigma(1)}||\cdots||x_{\sigma(d(n))}$ where $\sigma(j)$ is the $j$-th element in the subset $\sigma$. Then the candidate one-way function $f:\{0,1\}^n \to \{0,1\}^m$ can be expressed as the concatenation of the respective $m$ evaluations of the predicate $P$ over $x[i]$ for $i$ from $1$ to $m$. \cb{Je trouve ce dernier paragraph peu clair. Comment $x[i]$ est relié à $x$ ? Une formule explicite pour $f$ pourrait aider.}
 
-Eventually, the proposal with the smallest value for $d$ is for $d=5$ and $P_5(x_1,x_2,x_3,x_4,x_5)=x_1+x_2+x_3+x_4x_5$.
+
+%\cb{Better description? Check if this is correct.}
+%For an input $x \in \{0,1\}^n$ and a subset $\sigma \subseteq \{1, \dots, n\}$ of size $d(n)$, we define $x[\sigma] \in \{0,1\}^{d(n)} $ as the concatenation of the bits of $ x $ at the positions specified by $ \sigma $:
+%\[
+%x[\sigma] = x_{\sigma(1)} \| x_{\sigma(2)} \| \cdots \| x_{\sigma(d(n))},
+%\]
+%where $ \sigma(j) $ denotes the $ j $-th element in the ordered subset $ \sigma $.
+
+%The candidate one-way function $ f : \{0,1\}^n \to \{0,1\}^m $ is then defined as:
+%\[
+%f(x) = P(x[\sigma_1]) \| P(x[\sigma_2]) \| \cdots \| P(x[\sigma_m]),
+%\]
+%that is, the concatenation of $ m $ applications of the predicate $ P $ to the corresponding local views of $ x $.
+
+
+This proposal can be instantiated to yield various cryptographic primitives, such as one-way functions (when $m = n$) or pseudorandom generators with polynomial stretch (when $m = \mathcal{O}(n)$).
+While this construction may at first appear purely theoretical, its security properties offer valuable insights for practical applications. In particular, the \emph{locality} parameter $d(n)$ serves as a useful measure of the maximum arithmetic depth or complexity of the circuit implementing the function.
+
+One of the most compact instantiations of this proposal uses locality $d = 5$ and the predicate
+\[
+P_5(x_1, x_2, x_3, x_4, x_5) = x_1 + x_2 + x_3 + x_4 x_5.
+\]
+
+
+%Eventually, the proposal with the smallest value for $d$ is for $d=5$ and $P_5(x_1,x_2,x_3,x_4,x_5)=x_1+x_2+x_3+x_4x_5$.
 
 More generally the \textit{a priori} good candidates for predicates are the $\mathsf{XOR-MAJ}$ and $\mathsf{XOR-THR}$ predicates, that is the $\mathsf{XOR}$ of a linear function that takes a number of bits and the majority function for independent bits (or respectively a threshold function, that outputs $0$ if and only if the number of bits equal. to $1$ is less than a given threshold).
-\yr{Pas sûr que ce qui vient d'être dit va ici}
+\yr{Pas sûr que ce qui vient d'être dit va ici} \cb{Si, moi je trouve cela bien, mais il faut donner les formules pour ces fonctions, tout le monde ne les a pas en tête}.
 
 \subsubsection*{Generic cryptanalysis}
-An other but more generic cryptanalysis (that is without taking into considerations the specificities of the predicate) has been made by Bogdanov and Qiao~\cite{DBLP:conf/approx/BogdanovQ09} for linear stretch (that is $m=\lambda n$), where they show that one cryptanalyst wins when it finds an $x'$ that is close with respect to the Hamming distance to the secret value $x$. The work then led to a subexponential attack~\cite{EPRINT:Applebaum15} in time $\mathsf{poly}(n)\cdot 2^{2\varepsilon n}$ if $m\in\Omega (n/ \varepsilon^{2d})$.
+\cb{Il faut ajouter une phrase introductive a cette section.}
+An other but more generic cryptanalysis \cb{Il y a "Another" mais rien qui précède ..} (that is without taking into considerations the specificities of the predicate) has been made by Bogdanov and Qiao~\cite{DBLP:conf/approx/BogdanovQ09} for linear stretch (that is $m=\lambda n$), where they show that one cryptanalyst wins when it finds an $x'$ that is close with respect to the Hamming distance to the secret value $x$. The work then led to a subexponential attack~\cite{EPRINT:Applebaum15} in time $\mathsf{poly}(n)\cdot 2^{2\varepsilon n}$ if $m\in\Omega (n/ \varepsilon^{2d})$.
 
 Naturally, the choice of the predicate should be non-degenerate: it should at least be unbiased and not linear. In the next section we describe some other criteria that the predicate should satisfy. 
 
@@ -61,13 +87,15 @@ Four years later, the above cryptanalysis has been improved in~\cite{DBLP:journa
 In table~\ref{tab:subexpattacks} we give some subexponential attacks where $d$ denotes the locality of the PRG, $\mathsf{s}$ is the stretch, that is the output size is in $n^{\mathsf{s}}$ and $n$ is naturally the size of the seed.
 
 \begin{table}
-\begin{tabular}{|c|c|c|}
+\begin{tabular}{lcc}
+\toprule
 Technique & Complexity & Reference\\
-Test and find $x'$ close to $x$ & $2^{\mathcal{O}(n^{1-(\mathsf{s}-1)/2d})}$ & \cite{EPRINT:Applebaum15} + \cite{DBLP:conf/approx/BogdanovQ09} \\
+\midrule
+Test and find $x'$ close to $x$ & $2^{\mathcal{O}(n^{1-(\mathsf{s}-1)/2d})}$ & \cite{EPRINT:Applebaum15,DBLP:conf/approx/BogdanovQ09} \\
 Guess-and-determine & $2^{\mathcal{O}(n^{2-\mathsf{s}})}$ & \cite{AC:CDMRR18} \\
 Adaptative Guess-and-determine & $\mathcal{O}(n^2 2^{\frac{n^{2-\mathsf{s}}}{4}})$ & \cite{DBLP:journals/tit/YangGJL22} \\
-Guess-and-decode & $\mathcal{O}(n^\mathsf{s} 2^{\frac{n^{2-\mathsf{s}}}{4}}$ & \cite{DBLP:journals/tit/YangGJL22}
-
+Guess-and-decode & $\mathcal{O}(n^\mathsf{s} 2^{\frac{n^{2-\mathsf{s}}}{4}}$ & \cite{DBLP:journals/tit/YangGJL22} \\
+\bottomrule
 \end{tabular}
 \label{tab:subexpattacks}
 \caption{Subexponential and concrete cryptanalysis}
