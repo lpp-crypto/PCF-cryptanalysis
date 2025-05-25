@@ -55,6 +55,8 @@ The algorithmic description of the alternative mod-2/mod-3 wPRF is provided in A
 
 One of the security arguments put forward by the designers of the above construction is that it cannot be approximated by any low-degree polynomial. This is supported by the classical results of Razborov and Smolensky~\cite{Raz87,Smo87}, which show that for two distinct primes $p$ and $q$, the $\mod{p}$ function cannot be approximated by low-depth $\mod{q}$ circuits. \yr{Je suppose que c'est pour une taille d'espace assez grande par rapport à $p$ et $q$ sinon ça ne marche pas non ?} In this construction, the moduli 2 and 3 were chosen not only because they are the simplest such primes, but also because they lead to the best efficiency in practice. Indeed, their use leads to more efficient modulus conversion protocols. \yr{Je comprends pas trop ces deux dernières phrases, et puis ça dépend du contexte d'utilisation ? Si je prends l'exemple de rekeying on a $p=2^{31}-1$ parce que c'est utilisé pour du masquage. Comme on est sur des trucs qui ne seront jamais utilisés seuls, je pense qu'il faut s'en tenir aux "premiers choix: les deux premiers premiers" ?} \cb{J'ai repris ce qui a été dit dans le papier d'origine et les généralisations qui ont suivi. On peut peut-être dire que que 2, 3 sont les choix les plus naturels, que à priori cela se généralise à n'importe quel p et q (ce qui est dit dans tous ces papiers) mais qu'une analyse de sécurité plus fine et dédiée est nécessaire et qu'il y a peut être des questions de complexité qui se posent. Reformulez comme vous le sentez !}
 
+\yr{Proposition: While $p$ and $q$ can be chosen \textit{a priori} arbitrary (but different of course), the first natural choice is $p=2$ and $q=3$ as the simplest one. While the versatility of the construction permits different choices for different applications (e.g. in~\cite{TCHES:DMMS21, C:HMMRSU23}, the authors choose $p=2^{31}-1$), the concrete security, when instantiated with different $p$ and $q$ can be downgraded (or not). Therefore, dedicated cryptanalysis for different choices needs to be done.}
+
 %\subsubsection{Parameters}
 
 %In the original paper, for a target security of $\lambda = 128$ bits, the authors propose to set $n = 384$. This is considered to be a rather conservative choice, and is chosen so that the candidate resists known attacks based on solving the LPN problem. Indeed, this function resembles an LPN instance with a deterministic noise rate equal to 1/3.
@@ -65,6 +67,7 @@ One of the security arguments put forward by the designers of the above construc
 
 \subsubsection{Variants and Generalizations}
 \cb{Je ne sais pas quoi faire avec ces constructions. On les donne comme target à la cryptanalyse aussi ?}
+\yr{Oui, complètement}
 
 The alternating moduli design paradigm quickly gained popularity as an approach for constructing weak shallow PRFs. Several subsequent works proposed generalized or alternative versions of the construction presented in the previous section. In this part, we describe some of the most notable and interesting variants.
 
