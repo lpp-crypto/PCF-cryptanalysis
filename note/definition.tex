@@ -19,7 +19,7 @@ A \emph{weak} pseudorandom function (\wPRF) offers a relaxed guarantee: it is on
 		\item[$\bullet$]$\Eval(\msk,x) \rightarrow y$: A deterministic algorithm that on input the master secret key $\msk$, and an input value $x \in \setX$, outputs a value $y \in \setY$.
 	\end{itemize}
 	
-	We say that the pair $(\KeyGen,\Eval)$ is a \textbf{weak pseudorandom function (\wPRF)} if for any PPT \cb{C'est quoi PPT ?} \gc{Probabilistic Polynomial Time} adversary $\adva$ and any polynomially bounded number $Q \in \N$, it holds that %\Anote{Q is not defined}%\Mnote{Done}
+	We say that the pair $(\KeyGen,\Eval)$ is a \textbf{weak pseudorandom function (\wPRF)} if for any Probabilistic Polynomial Time (PPT) adversary $\adva$ and any polynomially bounded number $Q \in \N$, representing the maximal number of authorised samples, it holds that %\Anote{Q is not defined}%\Mnote{Done}
 		
 		\begin{multline*}
 		\resizebox{.95\hsize}{!}{$\left\{ \left( \left(x_i,\Eval(\msk,x_i)\right)_{i \in [Q]} \right)\middle| \begin{array}{c} \msk \sample \KeyGen(1^{\lambda})\\ \forall i \in [Q]: x_i \sample \setX \end{array}\right\} \approx_c \left\{ \left(\left(x_i,y_i \right)_{i \in [Q]} \right) \middle| \begin{array}{c}
@@ -28,7 +28,7 @@ A \emph{weak} pseudorandom function (\wPRF) offers a relaxed guarantee: it is on
 		\end{array} \right\}.$}
 		\end{multline*}
 \end{definition}
-\cb{Expliquer le rôle du paramètre Q et le symbole 'c'.} \gc{$Q$ est le nombre maximum de samples autorisés. En effet, il faudra ajouter dans les préliminaires que $\approx_c$ indique ``calculatoirement indistinguable''}
+\cb{Expliquer le symbole 'c'.} \gc{En effet, il faudra ajouter dans les préliminaires que $\approx_c$ indique ``calculatoirement indistinguable''}
 
 
 Weak pseudorandom functions have a broad range of applications in cryptography and beyond. Of particular relevance to this work is the notion of \emph{shallow} \wPRF. Informally, a \wPRF is said to be \emph{shallow} if it can be computed by a function of low depth in an appropriate computational model. Slightly more formally:
