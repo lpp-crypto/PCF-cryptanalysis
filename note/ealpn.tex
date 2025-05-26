@@ -23,7 +23,7 @@ Algorithm~\ref{alg:ealpn}
   \caption{\label{alg:ealpn}The {\tt EA-LPN} PRF \\
     Parameters:  integers $N$, $t$, $\ell$,  $w = \lceil \frac{5N}{t} \rceil$}
   \begin{algorithmic}
-  \State \textbf{Input:}  $x = ((j_1,x_1), \dots, (j_\ell,x_\ell)) \in ([0, \frac{t}{\ell} - 1] \times \mathbb{Z}_{2^w})^\ell$; $k = (k_0, \dots, k_{t-1}) \in (\mathbb{Z}_{2^w})^t$
+  \State \textbf{Input:}  $x = ((j_1,x_1), \dots, (j_\ell,x_\ell)) \in ( \mathbb{Z}_{\frac{t}{\ell}}\times \mathbb{Z}_{w})^\ell$; $k = (k_0, \dots, k_{t-1}) \in (\mathbb{Z}_{w})^t$
     \State $r \gets 0$
 \For{$i = 1$ to $\ell$}
     \If{$x_i \geq k_{j_i}$}
