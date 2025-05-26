@@ -11,22 +11,35 @@ Boyle, Couteau, Gilboa, Ishai, Kohl, Resch, Scholl
 
 
 \subsubsection*{Parameters}
-% !TODO! write about the parameters and their role
+Two sets of parameters are provided for a security level of $\lambda = 128$, one that can be considered as standard and an agressive one. These are summarized in Table~\ref{tab:parameters_ealpn}.
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{lccc}
+\toprule
+& $t$ & $\ell$ & $N$ \\
+\midrule
+&85 & $3\ln(5N)$ & $2^{45}$ \\ 
+&660 & $11$ & $2^{45}$ \\ 
+\bottomrule
+\end{tabular}
+\caption{\label{tab:parameters_ealpn}Suggested parameters for the {\sc EA-LPN} PRF as targets for cryptanalysis.}
+\end{table}
 
 
-\subsubsection*{Implementation}
+%\subsubsection*{Implementation}
 %!TODO! write about the implementation 
 
-Algorithm~\ref{alg:ealpn}
+Algorithm~\ref{alg:ealpn} provides an algorithmic description of the {\sf EA-LPN}.
 
 \begin{algorithm}
-  \caption{\label{alg:ealpn}The {\tt EA-LPN} PRF \\
+  \caption{\label{alg:ealpn}The {\sf EA-LPN} PRF \\
     Parameters:  integers $N$, $t$, $\ell$,  $w = \lceil \frac{5N}{t} \rceil$}
   \begin{algorithmic}
-  \State \textbf{Input:}  $x = ((j_1,x_1), \dots, (j_\ell,x_\ell)) \in ( \mathbb{Z}_{\frac{t}{\ell}}\times \mathbb{Z}_{w})^\ell$; $k = (k_0, \dots, k_{t-1}) \in (\mathbb{Z}_{w})^t$
+  \State \textbf{Input:}  $x = ((j_1,x_1), \dots, (j_\ell,x_\ell)) \in ( \mathbb{Z}_{\frac{t}{\ell}}\times \mathbb{Z}_{w})^\ell$; $k = (k_1, \dots, k_{\ell}) \in (\mathbb{Z}_{w}^{\frac{t}{\ell}})^{\ell}$
     \State $r \gets 0$
 \For{$i = 1$ to $\ell$}
-    \If{$x_i \geq k_{j_i}$}
+    \If{$x_i \geq k_{i,j_i}$}
         \State $r \gets r + 1$
     \EndIf
 \EndFor\\
