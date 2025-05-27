@@ -57,9 +57,7 @@ More formally, let $\mathsf{w}(x)$  denote the Hamming weight of $x \in \{0,1\}^
 \]
 
 
-These predicates are the two most popular choices, as they offer both high algebraic immunity~\cite{C:Courtois03,EC:CouMei03} and a high resiliency order~\cite{DBLP:journals/tit/Siegenthaler84}. For the \textsf{XOR-MAJ} and \textsf{XOR-THR} functions in particular, these cryptographic criteria have been thoroughly analyzed in~\cite{DBLP:journals/ccds/Meaux21,DBLP:journals/dam/Meaux22}. Another interesting, though theoretical, question is whether there exists a predicate that simultaneously achieves optimal resiliency order and algebraic immunity for any given locality $d$~\cite{DBLP:journals/dcc/DupinMR23}.
-\yr{J'ai mis ça là, mais avant c'était après les cryptanalyses qui expliquent, ça peut se descendre.}
- 
+These predicates are the two most popular choices, as they offer both high algebraic immunity~\cite{C:Courtois03,EC:CouMei03} and a high resiliency order~\cite{DBLP:journals/tit/Siegenthaler84}. For the \textsf{XOR-MAJ} and \textsf{XOR-THR} functions in particular, these cryptographic criteria have been thoroughly analyzed in~\cite{DBLP:journals/ccds/Meaux21,DBLP:journals/dam/Meaux22}.  
 
 \subsection{Cryptanalysis}
 
@@ -89,92 +87,92 @@ This type of attack is particularly efficient when the predicate has a low \emph
 
 \subsubsection{Algebraic Attacks}
 
-Unsurprisingly, one of the most powerful classes of attacks on Goldreich's PRG is algebraic in nature. A straightforward observation is that the generator's output can be inverted in polynomial time whenever the output length satisfies $m \in \Omega(n^{\delta})$, where  $\delta$ is the algebraic degree of the predicate $P$. However, more refined algebraic attacks have been proposed.
+Unsurprisingly, one of the most powerful classes of attacks on Goldreich's PRG is algebraic in nature. A straightforward observation is that the generator's output can be inverted in polynomial time whenever the output length satisfies $m \in \Omega(n^{\delta})$, where  $\delta$ is the algebraic degree of the predicate $P$. Beyond this basic observation, more refined algebraic attacks have been proposed.
 
-A first example appears in~\cite{STOC:AppLov16}, where the authors introduce the notion of \emph{bit-fixing degree} as an important criterion for resisting linear tests. This quantity refers to the highest degree that the predicate $P$ can attain when some of its input bits are fixed. Another important criterion discussed in the same work is the \emph{algebraic immunity} of the predicate~\cite{C:Courtois03,EC:CouMei03}, which measures the minimal degree of a nonzero Boolean function that annihilates $P$ or $P \oplus 1$. Low algebraic immunity implies that high-degree relations can be transformed into lower-degree equations, potentially leading more efficient attacks.
+A first example appears in~\cite{STOC:AppLov16}, where the authors introduce the notion of \emph{bit-fixing degree} as an important criterion for resisting linear tests. This quantity refers to the highest degree that the predicate $P$ can attain when some of its input bits are fixed. Another important criterion discussed in the same work is the \emph{algebraic immunity} of the predicate~\cite{C:Courtois03,EC:CouMei03}, which measures the minimal degree of a nonzero Boolean function that annihilates $P$ or $P \oplus 1$. Low algebraic immunity implies that high-degree relations can be transformed into lower-degree equations, potentially leading to more efficient attacks.
 
+This is precisely why functions such as \( P_5 \), \textsf{XOR-MAJ}, and \textsf{XOR-THR} are often considered in this context: they offer both good algebraic immunity and high resiliency, as discussed in~\cite{DBLP:journals/ccds/Meaux21, DBLP:journals/dam/Meaux22}. Another interesting, though theoretical, question is whether there exists a predicate that simultaneously achieves optimal resiliency order and algebraic immunity for any given locality $d$~\cite{DBLP:journals/dcc/DupinMR23}.
 
-The output of Goldreich's PRG is \textit{a priori} in $\{0,1\}$ that is the field with two elements, but it can naturally be defined other a bigger alphabet $\mathbb{Z}_q$. In 2023, Akin Ünal proposed three distinguishing attacks~\cite{EC:Unal23} that work with different regimes. More precisely, if $m = n^{1+e}$, then there is an attack with space and time complexity in $n^{\mathcal{O}(n^{1-\frac{e}{\delta-1}})}$ with good advantage. A second attack is proposed that works when the alphabet is of size $n^{1-\frac{e}{\delta-1}}$. Eventually a third attack is proposed when the locality is $d$ and the field size $q$ is constant of complexity $2^{\mathcal{O}(n^{1-\frac{e'}{(q-1)d-1}})}$, where $e'<e$ and changing accordingly the advantage of the distinguisher.
-
-Eventually and building up on its work, Akin proposed a way to extend the outputs of $\mathbb{Z}_2$ into larger fields in order to find algebraic relations in the outputs. Indeed, all previous attacks work only other larger fields. Up to now, its work has not been published and is only on eprint~\cite{EPRINT:Unal23b}.
-\yr{Ce papier est à sur eprint depuis deux ans: un peu de mal à le traiter comme si c'était tout ok... à décider si on laisse ce paragraphe ou pas.}
+Finally, the output of Goldreich's PRG is \textit{a priori} defined over $\{0,1\}$, that is, the field with two elements $\mathbb{F}_2$. However, the construction can naturally be extended to larger alphabets, such as $\mathbb{Z}_q$, for an integer $q > 2$. In 2023, Akin Ünal proposed three distinguishing attacks~\cite{EC:Unal23}, each effective in different parameter regimes. More precisely, if the output length satisfies $m = n^{1+e}$, then the first attack achieves good distinguishing advantage with time and space complexity $n^{\mathcal{O}(n^{1 - \frac{e}{\delta - 1}})}$, where  $\delta$ is the algebraic degree of the predicate. A second attack is applicable when the alphabet size satisfies $q = n^{1 - \frac{e}{\delta - 1}}$. Finally, a third attack targets the case where the locality is $d$ and the alphabet size $q$ is constant. \cb{Je ne comprends pas. La localité c'est toujours $d$ et $q$ est à priori toujours fixe, donc c'est quoi les requirements pour cette attaque ?} In this setting, the attack has complexity $2^{\mathcal{O}(n^{1 - \frac{e'}{(q - 1)d - 1}})}$, where $e' < e$, with a corresponding adjustment in the advantage of the distinguisher.
 
 
-\subsubsection{On the Analysis of Specific Predicates}
-
-Eventually, this is exactly why $P_5$ or $\mathsf{XOR-MAJ}$ or $\mathsf{XOR-THR}$ functions are considered, as they provide both a good algebraic immunity and resiliency as explained in~\cite{DBLP:journals/ccds/Meaux21, DBLP:journals/dam/Meaux22}. An other interesting (but theoretic) question is whether a predicate can achieve best resiliency order and algebraic immunity for any possible locality $d$~\cite{DBLP:journals/dcc/DupinMR23}.
-
-\paragraph{Instantiations and concrete cryptanalysis.}
+%Eventually and building up on its work, Akin proposed a way to extend the outputs of $\mathbb{Z}_2$ into larger fields in order to find algebraic relations in the outputs. Indeed, all previous attacks work only other larger fields. Up to now, its work has not been published and is only on eprint~\cite{EPRINT:Unal23b}.
+%\yr{Ce papier est à sur eprint depuis deux ans: un peu de mal à le traiter comme si c'était tout ok... à décider si on laisse ce paragraphe ou pas.}
 
 
-\yr{Cette section peut être divisée en deux ?}
-Up to now, all the works that are described above give insights on whether a polynomial algorithm exist or not, and give criteria for the predicates for which the construction is good or bad. As we said before, many constructions are nowadays looking for specific applications and are looking to instantiate with concrete parameters such constructions. Therefore we need analysis that tackle this challenge, that will at the end provide confidence in instantiations for a very specific security level (e.g. 128 bits of security).
+%\subsubsection{Analysis of Specific Predicates}
 
-The first (but slightly different) construction that look like Goldreich's PRG is the FLIP family of stream ciphers~\cite{EC:MJSC16} and it's follow ups~\cite{DBLP:conf/indocrypt/MeauxCJS19} FiLIP~\cite{DBLP:conf/indocrypt/HoffmannMR20} and Elisabeth~\cite{DBLP:conf/indocrypt/HoffmannMS23}. However, those proposals suffer from some flaws~\cite{C:DuvLalRot16, AC:GBJR23} (mainly algebraic) that require to increase the size of the initial register to achieve a sufficient security level.
+%Eventually, this is exactly why $P_5$ or $\mathsf{XOR-MAJ}$ or $\mathsf{XOR-THR}$ functions are considered, as they provide both a good algebraic immunity and resiliency as explained in~\cite{DBLP:journals/ccds/Meaux21, DBLP:journals/dam/Meaux22}. Another interesting, though theoretical, question is whether there exists a predicate that simultaneously achieves optimal resiliency order and algebraic immunity for any given locality $d$~\cite{DBLP:journals/dcc/DupinMR23}.
 
-For a proposal without fixed parameters, it is very unlikely that a guess-and-determine approach will lead to a polynomial-time attack, it however reveals very powerful for subexponential-time attack and even more important it helps drastically to improve the complexity of attacks when the parameters are fixed. This has been done in~\cite{AC:CDMRR18} where the determine part is just a Gaussian elimination, together with some experiments that use Gröbner basis methods, but without the ability to prove or disprove the security with cryptographic sizes, as it is often the case in algebraic-like attacks. 
+\subsubsection{Instantiations and Concrete Cryptanalysis}
 
-Four years later, the above cryptanalysis has been improved in~\cite{DBLP:journals/tit/YangGJL22} by making adaptative guesses, reducing the number of necessary guesses drastically and as the authors follow~\cite{AC:CDMRR18}, they broke the parameters sets intially proposed (for the $P_5$ predicate) and provide new ones as a challenge. Up to now, their parameters are not broken. In their work, Yang, Guo, Johansson and Lentmaier also propose a very interesting strategy: the guess-and-decode. Eventually, their work also targets other predicates but without an analysis of the algorithm, as each predicate requires an other deep work of analysis.
+Up to this point, all the works discussed above provide insights into whether a polynomial-time attack exists, and offer criteria for determining when the predicate used in Goldreich's construction leads to a secure or insecure instance. As previously mentioned, many modern constructions now aim to target specific applications and are instantiated with concrete parameters. In this context, we need analyses that directly address this challenge and ultimately help build confidence in concrete instantiations for very specific security levels (e.g., 128-bit security).
 
-\subsection{Bit-Fixing Correlation Attack}
-While resiliency and algebraic immunity appeared to be the two most important criteria, it appeared recently that those ones are not enough~\cite{EPRINT:FLLL24}. Indeed, for \textsf{XOR-MAJ} and \textsf{XOR-THR} functions, their resiliency order and algebraic immunity is good, but in~\cite{EPRINT:FLLL24}, the authors observed that if some bits are guessed to be zero's or one's, then the output can be seen as noisy linear equations, with a noise much higher than the original one that is given by the original function. The attack is powerfull as the number of bits taken in entry by the majority or threshold function increases. Eventually this work highlights again the necessity for having dedicated cryptanalysis and asks the natural question of a good predicate that will be secure against algebraic attacks, linearity tests and naturally guess-and-determine strategies.
+The first (but slightly different) family of constructions inspired by Goldreich's PRG is the {\sf FLIP} family of stream ciphers~\cite{EC:MJSC16}, along with its follow-ups: {\sf FiLIP}~\cite{INDOCRYPT:MCJS19, INDOCRYPT:HofMeaRic20} and {\sf Elisabeth-4}~\cite{INDOCRYPT:HofMeaSta23}. However, these proposals suffer from certain weaknesses—primarily algebraic in nature—as highlighted in~\cite{C:DuvLalRot16, AC:GBJR23}. In particular, addressing these vulnerabilities requires increasing the size of the initial register \cb{c'est quoi le initial register?} to achieve a satisfactory security level.
 
-In Table~\ref{tab:subexpattacks} we give some subexponential attacks where $d$ denotes the locality of the PRG, $\mathsf{s}$ is the stretch, that is the output size is in $n^{\mathsf{s}}$ and $n$ is naturally the size of the seed.
+For constructions without fixed parameters, a guess-and-determine approach is very unlikely to yield a polynomial-time attack. However, it proves to be a powerful tool for designing subexponential-time attacks. More importantly, such approaches can significantly reduce the complexity of attacks when concrete parameters are fixed. This strategy was first applied in~\cite{AC:CDMRR18}, where the “determine” phase consists of a simple Gaussian elimination step. The authors also performed experiments using Gröbner basis techniques. However, as is often the case with algebraic attacks, these methods did not allow the authors to prove or disprove the security of the construction at cryptographic parameter sizes.
+
+Four years later, the above cryptanalysis was improved in~\cite{DBLP:journals/tit/YangGJL22} by making adaptative guesses, which drastically reduce the number of required guesses. Building upon~\cite{AC:CDMRR18}, the authors successfully broke the original parameter sets proposed for the predicate $P_5$, and provided new ones as open challenges. To date, these revised parameters remain unbroken.
+In the same work, Yang, Guo, Johansson, and Lentmaier also introduced a very interesting variation: the \emph{guess-and-decode} strategy. While they also considered attacks on other predicates, no detailed analysis was provided in those cases, as each predicate requires a separate, in-depth study to evaluate its resistance to such methods.
+
+
+\subsubsection{Bit-Fixing Correlation Attack}
+
+While resiliency and algebraic immunity have long been regarded as the two most important criteria for selecting a secure predicate, recent work~\cite{EPRINT:FLLL24} has shown that these properties alone are not sufficient. In particular, for the \textsf{XOR-MAJ} and \textsf{XOR-THR} predicates—which exhibit good resiliency and algebraic immunity—the authors of~\cite{EPRINT:FLLL24} observed a new vulnerability: if certain input bits are guessed to be fixed to 0 or 1, the resulting output can be interpreted as a system of noisy linear equations, where the noise level is significantly lower than what is induced by the original function.
+This attack becomes increasingly effective as the number of input bits to the majority or threshold function grows. This article highlights the strength of such an approach and emphasizes the necessity of predicate-specific cryptanalysis. This work also naturally raises the question of identifying predicates that resist  algebraic, linearity-based attacks and naturally guess-and-determine strategies at the same time.
+
+Table~\ref{tab:subexpattacks} summarizes several known subexponential attacks. In this table, $d$ denotes the locality of the PRG, $\mathsf{s}$ is the stretch—meaning that the output size satisfies $m = \mathcal{O}(n^{\mathsf{s}})$—and $n$ is the size of the seed.
+
 
 \begin{table}[!ht]
 \centering
-\begin{tabular}{lcc}
+\begin{tabular}{@{}lcl@{}}
 \toprule
-Technique & Complexity & Reference\\
+Technique & Complexity & Reference \\
 \midrule
-Test and find $x'$ close to $x$ & $2^{\mathcal{O}(n^{1-(\mathsf{s}-1)/2d})}$ & \cite{EPRINT:Applebaum15,DBLP:conf/approx/BogdanovQ09} \\
-Guess-and-determine & $2^{\mathcal{O}(n^{2-\mathsf{s}})}$ & \cite{AC:CDMRR18} \\
-Adaptative Guess-and-determine & $\mathcal{O}(n^2 2^{\frac{n^{2-\mathsf{s}}}{4}})$ & \cite{DBLP:journals/tit/YangGJL22} \\
-Guess-and-decode & $\mathcal{O}(n^\mathsf{s} 2^{\frac{n^{2-\mathsf{s}}}{4}}$ & \cite{DBLP:journals/tit/YangGJL22} \\
+Hamming-distance test ($x'$ close to $x$) & $2^{\mathcal{O}(n^{1 - \frac{\mathsf{s} - 1}{2d}})}$ & \cite{EPRINT:Applebaum15,DBLP:conf/approx/BogdanovQ09} \\
+Guess-and-determine & $2^{\mathcal{O}(n^{2 - \mathsf{s}})}$ & \cite{AC:CDMRR18} \\
+Adaptive guess-and-determine & $\mathcal{O}(n^2 \cdot 2^{\frac{n^{2 - \mathsf{s}}}{4}})$ & \cite{DBLP:journals/tit/YangGJL22} \\
+Guess-and-decode & $\mathcal{O}(n^{\mathsf{s}} \cdot 2^{\frac{n^{2 - \mathsf{s}}}{4}})$ & \cite{DBLP:journals/tit/YangGJL22} \\
 \bottomrule
 \end{tabular}
-\caption{\label{tab:subexpattacks}Subexponential and concrete cryptanalysis. The first technique applies for any predicate of locality $d$ while the three other look into the $P_5$ predicate.}
+\caption{\label{tab:subexpattacks}Subexponential and concrete cryptanalysis. The first technique applies to any predicate with locality $d$, while the three others specifically target the $P_5$ predicate.}
 \end{table}
 
 
+\subsection{Targets for Cryptanalysis}
+The high versatility of Goldreich's PRG raises several important questions. In particular, it remains unclear how to choose an optimal predicate that achieves the best possible stretch $\mathsf{s}$ for the smallest possible locality $d(n)$.
 
+Arguably the simplest and most natural target is the instantiation using the $P_5$ predicate, for which concrete parameters are proposed in~\cite{DBLP:journals/tit/YangGJL22}. These parameters are summarized in Table~\ref{tab:paramgar}.
 
-
-
-
-\subsection{Targets for cryptanalysis}
-The high versatility in Goldreich's PRG asks many questions. First it is not clear how to choose the best predicate that will achieve the best stretch $\mathsf{s}$ for the smallest locality $d(n)$. 
-
-Maybe the simplest target would be the instantiation with the $P_5$ predicate and which are given in~\cite{DBLP:journals/tit/YangGJL22}.
 \begin{table}[!ht]
 \centering
-\begin{tabular}{lc}
+\begin{tabular}{cc}
 \toprule
-Seed size & stretch \\
+Seed size ($n$) & stretch ($\mathsf{s}$)\\
 \midrule
 1024 & 1.02  \\
 2048 & 1.10 \\
 4096 & 1.19 \\
 \bottomrule
 \end{tabular}
-\label{tab:paramgar}
-\caption{Challenge parameters for Goldreich's PRG with $P_5$ predicate for a security level of 128 bits.}
+\caption{\label{tab:paramgar}Challenge parameter sets for Goldreich's PRG instantiated with the $P_5$ predicate, targeting a 128-bit security level.}
 \end{table}
 
 \subsection{Implementation}
-The PRG differs from the other weak shallow PRFs presented, in the sense that we do not have a key. However, the adversary is given the subset $\sigma_i$ that are uniformly distributed among the sets of subsets of size $d$ and this plays the role as the $x$'s in the other algorithm (it is public but not choosable by the attacker). The secret is the seed that is called previously $x$ as the seed and for readability we call it $k$ in Algorithm~\ref{alg:gar}.
+The PRG differs from the other shallow weak PRFs presented in this survey in that it does not rely on a secret key. Instead, the adversary is given the subsets $\sigma_i$, which are sampled uniformly at random from all subsets of size $d$. These subsets play a similar role to the inputs $x$ in the other constructions: they are public, but not adversarially chosen. The actual secret in this case is the seed, which was previously denoted by $x$. For clarity and consistency with Algorithm~\ref{alg:gar}, we now refer to the seed as $k$.
 
 \yr{Je veux bien qu'on appelle $k,x$ comme les autres j'essaie un truc mais je suis pas si convaincu. J'utiliserais au moins $\sigma$ ?}
 
 \begin{algorithm}
   \caption{\label{alg:gar}The Goldreich's PRF/PRG \\
-    Parameters: $n$ (seed size), $m$ (output size), $d$ (locality) and $P:\{0,1\}^d \to \{0,1\}$ a predicate.}
+    Parameters: $n$ (seed size), $m$ (output size), $d$ (locality) and $P:\{0,1\}^d \to \{0,1\}$ (predicate).}
   \begin{algorithmic}
   \State \textbf{Input:} $k\in\{0,1\}^n$, $x\in [1,\ldots,A^n_d]^{m}$
-    \State $y \gets \epsilon$
+    \State $y \gets \varepsilon$ \cb{c'est quoi $\varepsilon$?}
     \For{$i = 1$ to $m$}
     	\State $y \gets y||P(k[x_i])$
-	\EndFor
+	\EndFor  \\
     \Return $y$
   \end{algorithmic}
 \end{algorithm}
