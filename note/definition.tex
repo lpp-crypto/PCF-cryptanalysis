@@ -12,7 +12,7 @@ A \emph{weak} pseudorandom function (\wPRF) offers a relaxed guarantee: it is on
 
 
 \begin{definition}[(Weak) Pseudorandom Function (\wPRF, \PRF), \cite{FOCS:GolGolMic84,FOCS:NaoRei95}]
-	Let $\secpar\in\N$ be a security parameter. A (weak) pseudorandom function with domain $\setX = \{\setX_{\lambda}\}_{\lambda \in \N}$, key space $\setK= \{\setK_{\lambda}\}_{\lambda \in \N}$, and range $\setY = \{\setY_{\lambda}\}_{\lambda \in \N}$, consists of the following two polynomial-time algorithms: 
+	Let $\secpar\in\N$ be a security parameter. A (weak) pseudorandom function with domain $\setX = \{\setX_{\lambda}\}_{\lambda \in \N}$, key space $\setK= \{\setK_{\lambda}\}_{\lambda \in \N}$, and range $\setY = \{\setY_{\lambda}\}_{\lambda \in \N}$, \lp{c'est le même $\lambda$ qu'au-dessus?} consists of the following two polynomial-time algorithms: 
 	\begin{itemize}
 		\item[$\bullet$]$\KeyGen(1^{\lambda}) \rightarrow \msk$: A probabilistic algorithm that on input the security parameter $\lambda$, outputs a master secret key $\msk \in \mathcal{K}$.
 		
@@ -30,12 +30,14 @@ A \emph{weak} pseudorandom function (\wPRF) offers a relaxed guarantee: it is on
 \end{definition}
 \cb{Expliquer le symbole 'c'.} \gc{En effet, il faudra ajouter dans les préliminaires que $\approx_c$ indique ``calculatoirement indistinguable''}
 
+\lp{rajouter une discussion sur ces claims et la façon de les décrire dans un langage symétricien-ne-s friendly, pointer que un appel à la fonction c'est plein d'opérations élémentaires mais dire que fondamentalement ce qu'on veut c'est avoir moins de $2^{128}$ ``opérations élémentaires''. prendre en compte la proba de succès ($2^k/p$, $p$ la proba de succès par ex). pointer que parfois ils visent 80 bits de sécurité mais c'est du rabotage de bas étage pour limiter la casse en terme de perf $\implies$ motivation du papier et d'une approche basée sur la cryptanalyse}
+\yr{Ici, on a la version poly/exponentielle. Est-e qu'ici on ne mettrait pas aussi et en parallèle que l'on veut en pratique qu'un adversaire n'ait pas de distingueur qui tourne en moins de $2^\lambda$ opérations strictement ? Opérations étant ici peut-être à déterminer en partie ? Cela permettrait de dire dès le début qu'aujourd'hui on cherche à fixer les paramètres concrets ?}
 
 Weak pseudorandom functions have a broad range of applications in cryptography and beyond. Of particular relevance to this work is the notion of \emph{shallow} \wPRF. Informally, a \wPRF is said to be \emph{shallow} if it can be computed by a function of low depth in an appropriate computational model. Slightly more formally:
 
-\paragraph{Circuits.} We are interested in \wPRF{}s that are computable by circuits within a given computational model. A circuit is a directed acyclic graph composed of two types of nodes: \emph{input nodes}, which have indegree 0, and \emph{gates}, which have indegree at least 1. Each gate with indegree~$\indeg$ and outdegree~$\outdeg$ is labeled by a function $g: \{0,1\}^\indeg \to \{0,1\}^\outdeg$. To evaluate a circuit~$C$ with $n$ input nodes on an input $x \in \{0,1\}^n$, we proceed as follows: each input node~$i$ is labeled with the corresponding bit~$x_i$. Then, for each gate whose $\indeg$ input wires have been assigned values $(z_1, \dots, z_\indeg)$, we compute the output $g(z_1, \dots, z_\indeg)$ and assign its $\outdeg$ bits to the outgoing wires of the gate. Gates with outdegree~0 are called \emph{output gates}, and the final output of the circuit is the bitstring composed of the values on these output wires. We define a \emph{circuit class} as a family $\mathcal{C} = \{\mathcal{C}_n\}_{n \in \mathbb{N}}$, where $\mathcal{C}_n$ denotes the set of allowed circuits with $n$ input nodes. A circuit class typically restricts the set of allowed gate types, and may impose additional structural constraints, such as bounds on indegree, outdegree, depth, size, or overall topology.
+\paragraph{Circuits.} We are interested in \wPRF{}s that are computable by circuits within a given computational model. A circuit is a directed acyclic graph composed of two types of nodes: \emph{input nodes}, which have indegree 0, and \emph{gates}, which have indegree at least 1. Each gate with indegree~$\indeg$ and outdegree~$\outdeg$ is labeled by a function $g: \{0,1\}^\indeg \to \{0,1\}^\outdeg$.\lp{pointer que cette fois-ci on n'est pas dans $\F_p$} To evaluate a circuit~$C$ with $n$ input nodes on an input $x \in \{0,1\}^n$, we proceed as follows: each input node~$i$ is labeled with the corresponding bit~$x_i$. Then, for each gate whose $\indeg$ input wires have been assigned values $(z_1, \dots, z_\indeg)$, we compute the output $g(z_1, \dots, z_\indeg)$ and assign its $\outdeg$ bits to the outgoing wires of the gate. Gates with outdegree~0 are called \emph{output gates}, and the final output of the circuit is the bitstring composed of the values on these output wires. We define a \emph{circuit class} as a family $\mathcal{C} = \{\mathcal{C}_n\}_{n \in \mathbb{N}}$, where $\mathcal{C}_n$ denotes the set of allowed circuits with $n$ input nodes. A circuit class typically restricts the set of allowed gate types, and may impose additional structural constraints, such as bounds on indegree, outdegree, depth, size, or overall topology.
 \cb{Expliquer les notions de indegree et outdegree et peut être introduire clairement la notion de depth.}
-\yr{Ici, on a la version poly/exponentielle. Est-e qu'ici on ne mettrait pas aussi et en parallèle que l'on veut en pratique qu'un adversaire n'ait pas de distingueur qui tourne en moins de $2^\lambda$ opérations strictement ? Opérations étant ici peut-être à déterminer en partie ? Cela permettrait de dire dès le début qu'aujourd'hui on cherche à fixer les paramètres concrets ?}
+\lp{rajouter un dessin ; mettre en intro/prelimaries?}
 
 \begin{figure}
 \centering
@@ -144,6 +146,7 @@ In the PCF-from-CPRF compiler, a larger $S$ translates to a larger key size (as 
 \subsection{Cost Models}
 \label{sec:definition-cost}
 
+\lp{a voir si on garde cette sous-section (et la suivante) : à la refléxion, leur contenu est probablement mieux décrit au sein de la description de chaque cas d'utilisation}
 
 \subsection{Security Model}
 \label{sec:definition-security}
