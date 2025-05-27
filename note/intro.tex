@@ -1,42 +1,59 @@
 \section{Introduction}
+\label{sec:intro}
 
-\lp{We decided to put these functions together because they look alike, though their intended use cases may differ}
+Symmetric cryptography has provided other areas of cryptography and information security with a wide variety of secure algorithms, from high throughput stream ciphers to lightweight message authentication codes, from low latency block ciphers to zero-knowledge friendly hash functions. Yet, another type of symmetric primitive is becoming more prevalent that has mostly escaped the attention of the symmetric community that we shall call \emph{weak shallow pseudo-random functions (wsPRF)}.
 
-\yr{"While the existence or not of secure wPRFs in some complexity class could be seen as purely theoretic, it nowadays received attention for being used concretely in some advanced cryptographic protocols or other constructions. In other words, we need to fix the parameters for those constructions and the non-existence of a polynomial-time adversary gives little information about the concrete security.}
+These functions are symmetric in nature in the sense that they map a secret input to secure output using a procedure that depends only on a secret key, much like the ``usual'' pseudo-random functions. However, these primitives must also satisfy different properties.
+\begin{description}
+\item[Security Model.] They are \emph{weak} in the sense that the adversary is only allowed to perform random queries, and that the number of queries is severely limited. To put it differently, they are only intended to be secure in the known plaintext setting, and with a low number of queries.
+\item[Input/Output Sizes.] The input and key have lengths that are usually consist of many hundreds of bits, while the output can be as small as a single bit. This contrasts with PRFs that are usually expected to have an output of a similar size to the input.
+\item[Cost Model.] The main difference with classical construction lies in the \emph{shallow} requirement: these functions are not iterated. They consist essentially in a single round.
+\end{description}
+It should then come as no surprise that such primitives look very different from what is usually considered in symmetric cryptography. For example, the BIPSW function introduced in~\cite{TCC:BIPSW18} is fully specified by the following equation:
+\begin{equation*}
+  F_k(x) := \left(\sum_{i = 0}^{n-1} k_i x_i \mod 2 + \sum_{i = 0}^{n-1} k_i x_i \mod 3\right) \mod{2}, \quad \text{ for } x,k \in \{0,1\}^n~,
+\end{equation*}
+as detailed in Section~\ref{sec:bipsw}. As we can see, none of the usual building blocks are present: no round function, no S-box layer, no Feistel round... And yet the security goals are very reminiscent of what is usually expected in symmetric cryptography.
 
-%!TODO! write introduction 
 
-%Potential name of the primitives:
-%\begin{itemize}
-%\item Shallow PRF
-%\item Cryptographic Shallow PRF
-%\item SIngle ROund Prf (SIROP)
-%\end{itemize}
+\paragraph{From Complexity Theory...} The motivation for the first constructions of this type came from complexity theory. \lp{expand}
+In this context, the main goal of the designers of such primitives is to identify the asymptotic behaviour of the best attack techniques in order to determine if a polynomial adversary can have an advantage.
 
 
+\paragraph{... To Practical Protocols.}
+While figuring out the existence (or inexistence) of secure wPRFs in some complexity class could be seen as problem of  purely theoretic significance, it recently received renewed attention because of the very practical need for such functions in some protocols. \lp{expand}
 
-Possible outline:
-\begin{enumerate}
-\item What are ``Shallow Weak PRFs''?
-  \begin{enumerate}
-  \item Intended Applications (MPC-friendly in a precise sense, some examples)
-  \item Cost Models: minimal depth where the operations allowed vary. Severe limitation on which operation are allowed, even without considering efficiency.
-  \item Security Model: weak PRF
-  \end{enumerate}
-\item Inventory/Zoo
-  \begin{enumerate}
-  \item BIPSW and variants
-  \item Goldreich (including FLIP as a variant)
-  \item VDLPN/EALPN
-  \end{enumerate}
-\item On their Cryptanalysis
-  \begin{enumerate}
-  \item Discussion on the security (relying on the security of the PRNG is cheating, also, how much can this be relaxed? Asymptotic vs. precise, 128 bits of security doesn't really mean 128 bits, it's more of a guesstimate)
-  \item Common cryptanalysis techniques (decoding)
-  \item PRF implementations and cryptanalysis challenges
-  \end{enumerate}
-\item Conclusion
-\end{enumerate}
+The change of setting, from complexity theory to computer security, implies several significant changes.
+\begin{description}
+\item[Irrelevance of Asymptotic Reasoning.] While figuring out the asymptotic behaviour of an adversary is the correct way to investigate complexity classes, it is hardly relevant when moving to concrete computer security since the aim in this case is not to let a parameter go to infinity, it is instead to fix it to a specific value. Thus, the attacks that were relevant asymptotically might be of lesser interest, while new attack vectors that were previously cast aside because they are exponential may instead become a threat.
+\item[Performance Trade-Offs.] \lp{write}
+\end{description}
+
+
+
+
+% Possible outline:
+% \begin{enumerate}
+% \item What are ``Shallow Weak PRFs''?
+%   \begin{enumerate}
+%   \item Intended Applications (MPC-friendly in a precise sense, some examples)
+%   \item Cost Models: minimal depth where the operations allowed vary. Severe limitation on which operation are allowed, even without considering efficiency.
+%   \item Security Model: weak PRF
+%   \end{enumerate}
+% \item Inventory/Zoo
+%   \begin{enumerate}
+%   \item BIPSW and variants
+%   \item Goldreich (including FLIP as a variant)
+%   \item VDLPN/EALPN
+%   \end{enumerate}
+% \item On their Cryptanalysis
+%   \begin{enumerate}
+%   \item Discussion on the security (relying on the security of the PRNG is cheating, also, how much can this be relaxed? Asymptotic vs. precise, 128 bits of security doesn't really mean 128 bits, it's more of a guesstimate)
+%   \item Common cryptanalysis techniques (decoding)
+%   \item PRF implementations and cryptanalysis challenges
+%   \end{enumerate}
+% \item Conclusion
+% \end{enumerate}
 
 
 \subsection{Background and Notations}
