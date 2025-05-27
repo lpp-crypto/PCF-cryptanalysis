@@ -6,7 +6,7 @@
 Twenty-five years ago, Goldreich posed the question of whether it is possible to securely construct a very simple function that is hard to invert~\cite{DBLP:journals/eccc/ECCC-TR00-090}. By \emph{very simple}, we mean a function whose description is transparent and can be expressed using a concise, closed-form formula. This question led to the design of a minimalistic and elegant one-way function. Despite its simplicity, this function is conjectured to offer strong cryptographic guarantees, and has, over the years, become a central object of study in the theory of cryptography and complexity.  While the function's structure is very simple, its security also relies on access to a large collection of public, uniformly random values. \cb{Il faut dire deux mots de plus sur ce que cette dernière phrase implique.}%\yr{Add: While the description is very simple, its security also relies on an access to long public random and uniform values. ?}
 
 
-\subsubsection*{Original Reference}
+\subsubsection{Original Reference}
 
 Goldreich's proposal for constructing a one-way function is based on a very simple and elegant idea. Let $ n, m \in \mathbb{N}$  , and let $ (\sigma_i)_{1 \leq i \leq m}$   be a sequence of ordered subsets of $ \{1, \dots, n\}$  , each of size $ d(n)$  . The parameter $ d(n)$   is referred to as the \emph{locality} of the construction. Let $ P : \{0,1\}^{d(n)} \to \{0,1\}$   be a fixed Boolean predicate  (i.e., a function on $d(n)$ input bits).
 
@@ -82,7 +82,9 @@ More formally, let $\mathsf{w}(x)$  denote the Hamming weight of $x \in \{0,1\}^
 
 \yr{Est-ce qu'on donne le total ou est-ce qu'on garde que ça ? J'ai l'impression que c'est plus simple et lisible comme ça} \cb{Tu veux dire si on donne d'autres prédicats possibles ? Je pense que ceux deux là sufficent, mais peut être dire en 2 lignes s'il y a d'autres options populaires sans rentrer dans les détails.}
 
-\subsubsection*{Generic cryptanalysis}
+\subsubsection{Cryptanalysis}
+
+\paragraph{Generic cryptanalysis.}
 \cb{Il faut ajouter une phrase introductive a cette section.}
 \yr{Oui, je suis d'accord, en fait c'est à discuter de quelle quantité on veut mettre avant, il y a des trucs qui prouvent en partie, mais je pense qu'il ne faut pas trop s'étendre dessus, à discuter}
 An other but more generic cryptanalysis \cb{Il y a "Another" mais rien qui précède ..} (that is without taking into considerations the specificities of the predicate) has been made by Bogdanov and Qiao~\cite{DBLP:conf/approx/BogdanovQ09} for linear stretch (that is $m=\lambda n$), where they show that one cryptanalyst wins when it finds an $x'$ that is close with respect to the Hamming distance to the secret value $x$. The work then led to a subexponential attack~\cite{EPRINT:Applebaum15} in time $\mathsf{poly}(n)\cdot 2^{2\varepsilon n}$ if $m\in\Omega (n/ \varepsilon^{2d})$.
@@ -91,7 +93,7 @@ Naturally, the choice of the predicate should be non-degenerate: it should at le
 
 More precisely, two classes of attacks arise when the predicate can be approximated by a linear function with fewer variables than $d(n)$ or when the degree or algebraic immunity of the predicate is small.
 
-\subsubsection*{Linearity tests and resiliency}
+\paragraph{Linearity tests and resiliency}
 \yr{Not sure we need the provable side against linear tests, or at least only 1-2 sentences. It is \cite{FOCS:MosShpTre03} first up to $n^{1.25-\varepsilon}$ and \cite{DBLP:conf/coco/ODonnellW14} up to $n^{1.5-\varepsilon}$}
 In 2014, O'Donnell and Witmer~\cite{DBLP:conf/coco/ODonnellW14} explained that if the predicate can be approximated with a function that takes $c<d$ variables as input, then the PRG can be broken as soon as $m\in\Omega(n^{c/2} + n\log n)$. This has been further analyzed in~\cite{EPRINT:Applebaum15}.
 
@@ -99,7 +101,7 @@ Naturally, this attack is thus naturally efficient when the predicate has a low 
 
 \yr{En 2020 sur Arxiv, Garg, Kothari et Raz, montrent sécurité même avec un adversaire avec mémoire, ça me semble sortir du sujet. \url{https://arxiv.org/abs/2002.07235}}
 
-\subsubsection*{Algebraic attacks}
+\paragraph{Algebraic attacks}
 Unsurprisingly, one of the most powerfull attack on Goldreich's PRG is the second type of attacks that is algebraic. Naturally, one can easily notice that a polynomial time algorithm inverts Goldreich's PRG when the output is in $\Omega(n^\delta)$ where $\delta$ is the algebraic degree of the predicate $P$. However, some other tricks can be done. 
 
 A first example is in~\cite{STOC:AppLov16} where one important criteria to resist linear tests is in fact the \textit{bit-fixing degree}, that is the degree achieved by restricting the predicate $P$ by fixing some bits. An other criteria is also needed and explained in the same work: the algebraic immunity~\cite{C:Courtois03,EC:CouMei03} of the predicate that captures equations of smaller degree that can be derived from an equation of higher degree.
@@ -110,10 +112,12 @@ The output of Goldreich's PRG is \textit{a priori} in $\{0,1\}$ that is the fiel
 Eventually and building up on its work, Akin proposed a way to extend the outputs of $\mathbb{Z}_2$ into larger fields in order to find algebraic relations in the outputs. Indeed, all previous attacks work only other larger fields. Up to now, its work has not been published and is only on eprint~\cite{EPRINT:Unal23b}.
 \yr{Ce papier est à sur eprint depuis deux ans: un peu de mal à le traiter comme si c'était tout ok...}
 
-\subsubsection*{On the analysis of specific predicates}
+\paragraph{On the analysis of specific predicates.}
+
 Eventually, this is exactly why $P_5$ or $\mathsf{XOR-MAJ}$ or $\mathsf{XOR-THR}$ functions are considered, as they provide both a good algebraic immunity and resiliency as explained in~\cite{DBLP:journals/ccds/Meaux21, DBLP:journals/dam/Meaux22}. An other interesting (but theoretic) question is whether a predicate can achieve best resiliency order and algebraic immunity for any possible locality $d$~\cite{DBLP:journals/dcc/DupinMR23}.
 
-\subsubsection*{Instantiations and concrete cryptanalysis}
+\paragraph{Instantiations and concrete cryptanalysis.}
+
 \yr{Cette section peut être divisée en deux ?}
 Up to now, all the works that are described above give insights on whether a polynomial algorithm exist or not, and give criteria for the predicates for which the construction is good or bad. As we said before, many constructions are nowadays looking for specific applications and are looking to instanciate with concrete parameters such constructions. Therefore we need analysis that tackle this challenge, that will at the end provide confidence in instantiations for very specific security level (e.g. 128 bits of security).
 
