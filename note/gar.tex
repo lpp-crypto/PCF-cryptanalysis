@@ -8,7 +8,7 @@ Twenty-five years ago, Goldreich posed the question of whether it is possible to
 
 Goldreich's proposal for constructing a one-way function is based on a very simple and elegant idea. Let $ n, m \in \mathbb{N}$, and let $ (\sigma_i)_{1 \leq i \leq m}$   be a sequence of ordered subsets of $\{1, \dots, n\}$, each of size $ d(n)$. The parameter $d(n)$ is referred to as the \emph{locality} of the construction. Let $P : \{0,1\}^{d(n)} \to \{0,1\}$ be a fixed Boolean predicate  (i.e., a function on $d(n)$ input bits).
 
-For any input $x \in \{0,1\}^n$  , and for each $i \in \{1, \dots, m\}$  , define  $x[\sigma_i] \in \{0,1\}^{d(n)}$   as the projection of $ x$   onto the coordinates specified by $ \sigma_i$  :
+For any input $x \in \{0,1\}^n$, and for each $i \in \{1, \dots, m\}$, define  $x[\sigma_i] \in \{0,1\}^{d(n)}$   as the projection of $x$   onto the coordinates specified by $ \sigma_i$  :
 \[
 x[\sigma_i] = \left( x_{\sigma_i(1)},\; x_{\sigma_i(2)},\; \dots,\; x_{\sigma_i(d(n))} \right).
 \]
@@ -18,7 +18,7 @@ The candidate one-way function $F: \{0,1\}^n \to \{0,1\}^m$   is then defined as
 F(x) = \left( P(x[\sigma_1]),\; P(x[\sigma_2]),\; \dots,\; P(x[\sigma_m]) \right).
 \]
 
-We define the notion of \emph{stretch} $\mathsf{s} \geq 1$ as the integer in the expression  $m = \mathcal{O}(n^{\mathsf{s}})$. A fundamental question in the study of Goldreich’s construction is: how large can the stretch be for a fixed locality parameter $d$, while still maintaining security?
+We define the \emph{stretch} $\mathsf{s} \geq 1$ as the integer in the expression  $m = \mathcal{O}(n^{\mathsf{s}})$. A fundamental question in the study of Goldreich’s construction is: how large can the stretch be for a fixed locality parameter $d$, while still maintaining security?
 
 This function is specified by a fixed predicate and a public collection of access patterns. It can be instantiated to yield various cryptographic primitives, such as one-way functions (when $m = n$), \cb{on l'a déjà défini comme une one-way function plus en haut, je ne comprends donc pas la phrase et pourquoi $m = n$?} pseudo-random functions~\cite{TCC:AppRay16b} or pseudorandom generators with polynomial stretch \cb{je ne comprends pas ce que polynomial stretch veut dire},  as the existence of local pseudorandom generators follows from the existence of one-way random local functions~\cite{STOC:Applebaum12}.
 
