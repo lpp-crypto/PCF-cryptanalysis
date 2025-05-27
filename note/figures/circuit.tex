@@ -1,0 +1,47 @@
+
+%\usetikzlibrary{arrows.meta, positioning}
+
+\begin{tikzpicture}[
+    node distance=1cm and 1.2cm,
+    input/.style={
+        draw=blue, 
+        thick, 
+        dashed, 
+        fill=blue!10, 
+        minimum width=1cm, 
+        minimum height=0.7cm, 
+        font=\small
+    },
+    gate/.style={
+        draw=black, 
+        thick, 
+        fill=gray!10, 
+        minimum width=1cm, 
+        minimum height=0.7cm, 
+        font=\small
+    },
+    arrow/.style={-{Latex}, thick}
+]
+
+% Input nodes
+\node[input] (x1) {\large{$x_1$}};
+\node[input, above=of x1] (x0) {\large{$x_0$}};
+
+% Gates
+\node[gate, right=of x1] (g1) {\large{$g_1$}};
+\node[gate] (g2) at (5,1) {\large{$g_2$}};
+\node[gate, above=of g1] (g0) {\large{$g_0$}};
+
+% Arrows to gates
+\draw[arrow] (0.5,-0.125) -- (1.7,-0.125);
+\draw[arrow] (0.5, 0.125) -- (1, 0.125) -- (1, 1.55) -- (1.7,1.55);
+\draw[arrow] (0.5, 1.85) -- (1.7,1.85);
+\draw[arrow] (2.75, 1.75) -- (3.8,1.75) -- (3.8,1.15) -- (4.5,1.15);
+\draw[arrow] (2.75, 0.0) -- (3.8,0.0) -- (3.8,0.85) -- (4.5,0.85);
+
+% Outputs from g2
+\draw[arrow] (5.5,1.25) -- (6.1,1.25);
+\draw[arrow] (g2) -- ++(1.1,0);
+\draw[arrow] (5.5,0.75) -- (6.1,0.75);
+
+\end{tikzpicture}
