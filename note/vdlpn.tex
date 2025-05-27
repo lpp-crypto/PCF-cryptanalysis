@@ -1,9 +1,11 @@
-\subsection{VDLPN}
+\section{VDLPN}
 \label{sec:vdlpn}
 
 \lp{clarifier la métrique de coût : de quel droit est-ce qu'on fait des produits de $t$ variables ?}
 
+
 \subsubsection{Original Reference}
+
 The next shallow weak PRF we present was proposed by Boyle, Couteau, Gilboa, Ishai, Kohl, and Scholl in 2020~\cite{vdlpn}. The main candidate introduced in their work, that we will refer to as {\tt VDLPN}, is defined as follows:
 
 \begin{equation} \label{eq:vdlpn_orig}
@@ -74,6 +76,7 @@ In this case,
 \[
 F_k(x) = \bigoplus_{j = 1}^2 (x_{j,1} \oplus k_{j,1}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2} \oplus k_{j,2}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2}\oplus k_{j,2})(x_{j,3}\oplus k_{j,3}).
 \]
+
 
 
 \subsubsection{Cryptanalysis and concrete parameters}

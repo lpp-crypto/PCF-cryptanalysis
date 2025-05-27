@@ -1,7 +1,5 @@
-\subsection{Alternating moduli constructions}
+\section{Alternating Moduli Constructions}
 \label{sec:bipsw}
-
-%\paragraph{References for this section.} 
 
 
 In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu introduced a new design paradigm for constructing MPC-friendly weak pseudorandom functions (wPRFs), which was later described in the literature as the \emph{alternating moduli paradigm}~\cite{TCC:BIPSW18}. Constructions based on this paradigm benefit from a low nonlinear depth while exhibiting a high algebraic degree. They are mathematically simple, built by combining linear functions over different moduli.
@@ -9,7 +7,7 @@ In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu introduced a new design paradi
 The original paper~\cite{TCC:BIPSW18} presented two such constructions: a primary one outputting elements in $\mathbb{Z}_3$, and an alternative design that ultimately attracted more attention from the community. This second construction, referred to as the \emph{alternative mod-2/mod-3 weak PRF} and labeled as Construction 6.3 in the original paper, is the only one from this work that we describe below. 
 
 
-\subsubsection{Original Construction (\cite{TCC:BIPSW18})}
+\subsection{Original Construction (\cite{TCC:BIPSW18})}
 
 Let $n$ denote the key length and the block message length. 
 The alternative mod-2/mod-3 wPRF as defined in~\cite{TCC:BIPSW18} is a function $F : \mathbb{Z}_2^n \times \mathbb{Z}_2^n \to \mathbb{Z}_2$, where the key space is $\mathcal{K} = \mathbb{Z}_2^n$, the domain is $\mathcal{X} = \mathbb{Z}_2^n$, and the output space is $\mathcal{Y} = \mathbb{Z}_2$. For a key $k \in \mathbb{Z}_2^n$, we use the notation $F_k(x)$ to represent the function $F(k, x)$.
@@ -61,16 +59,13 @@ One of the security arguments put forward by the designers of the above construc
 %In the original paper, for a target security of $\lambda = 128$ bits, the authors propose to set $n = 384$. This is considered to be a rather conservative choice, and is chosen so that the candidate resists known attacks based on solving the LPN problem. Indeed, this function resembles an LPN instance with a deterministic noise rate equal to 1/3.
 
 
-% !TODO! write about the parameters and their role
-
-
-\subsubsection{Variants and Generalizations}
+\subsection{Variants and Generalizations}
 \cb{Je ne sais pas quoi faire avec ces constructions. On les donne comme target à la cryptanalyse aussi ?}
 \yr{Oui, complètement}
 
 The alternating moduli design paradigm quickly gained popularity as an approach for constructing weak shallow PRFs. Several subsequent works proposed generalized or alternative versions of the construction presented in the previous section. In this part, we describe some of the most notable and interesting variants.
 
-\paragraph{A generalized construction~\cite{C:DGHIKS21}.}
+\subsubsection{A Generalized Construction~\cite{C:DGHIKS21}.}
 
 In 2021, Dinur, Goldfeder, Halevi, Ishai, Kelkar, Sharma, and Zaverucha revisited the alternative mod-2/mod-3 constructions from~\cite{TCC:BIPSW18} and proposed a generalized version. Their focus was primarily on the alternative variant (the one presented in the previous subsection), as having an output over $\mathbb{Z}_2$ is more convenient in many applications. The proposed generalization extends the original design in two main directions. First, the secret key is no longer a vector in $\mathbb{Z}_2^n$, but a matrix $K \in \mathbb{Z}_2^{m \times n}$. Second, a public compression matrix $B \in \mathbb{Z}_2^{t \times m}$ is applied before producing the output. This generalized construction has the advantage of outputting multiple bits at once instead of a single bit, resulting in improved throughput \cb{dans ce papier les auteurs disent que c'est de la latency mais je suis d'accord que ça ressemble plus à du throughput}.
 
@@ -94,7 +89,7 @@ The authors of~\cite{C:DGHIKS21} also argue that the construction can be further
 
 The authors of~\cite{C:DGHIKS21} propose two parameter sets: one described as \emph{aggressive} and the other as more \emph{conservative}. For a target security level of $\lambda$ bits, the aggressive setting uses $n = m = 2\lambda$, while the conservative one sets $n = m = 2.5\lambda$. In both cases, the output size is chosen as $t = \lambda / \log_2(3)$. For the standard $128$-bit security level commonly used in symmetric cryptography, this corresponds to $n = m = 256$ in the aggressive case and $n = m = 320$ in the conservative one, with $t \approx 81$ in both settings. The authors further impose a concrete upper bound of $2^{40}$ on the number of samples available to an attacker under a single key.
 
-\paragraph{A further generalization~\cite{C:APRR24}}
+\subsubsection{A Further Generalization~\cite{C:APRR24}}
 
 In 2024, Alamati, Policharla, Raghuraman, and Rindal proposed a further generalization of the constructions in~\cite{TCC:BIPSW18} and~\cite{C:DGHIKS21}. Let $n$, $m$, and $t$ be non-negative integers. Both the input $x$ and the secret key $k$ are elements of $\mathbb{Z}_2^n$. Let $A \in \mathbb{Z}_2^{m \times n}$ and $B \in \mathbb{Z}_3^{t \times m}$ be public, random matrices.
 
@@ -120,7 +115,7 @@ where $A \in \mathbb{Z}_3^{m \times n}$ and $B \in \mathbb{Z}_2^{t \times m}$.
 
 %parameters
 
-\subsubsection{Security Arguments and Cryptanalysis}
+\subsection{Security Arguments and Cryptanalysis}
 
 To date, two papers have analyzed the security of the original construction of~\cite{TCC:BIPSW18} that permit to better estimate the security level and guide the optimal choice of parameters.
 
@@ -132,7 +127,7 @@ Recently, the security of the generalized construction introduced in~\cite{C:APR
 
 
 
-\subsubsection{Use of the Alternating Moduli Construction within Cryptographic Protocols}
+\subsection{Use of the Alternating Moduli Construction within Cryptographic Protocols}
 The original alternating moduli construction~\cite{TCC:BIPSW18} has been incorporated into various cryptographic protocols, each proposing its own concrete set of parameters. The framework of~\cite{AC:CDDKS24} suggests using the construction with a key and input length of $n = 768$ to achieve a security level of $\lambda = 128$ bits. Similarly, the approach of~\cite{EC:BCMPR24} for constructing Pseudorandom Correlation Functions (PCFs) for Oblivious Transfer (OT) correlations relies on the same PRF with $n = 770$ to reach the same 128-bit security level. In both cases, the choice of $n$ was guided by taking into account the attacks of~\cite{PKC:CCKK21} and~\cite{JMN23}.
 
 For other types of applications, the generalized construction from~\cite{C:DGHIKS21} has been used in re-keying protocols, such as those proposed in~\cite{TCHES:DMMS21} and~\cite{C:HMMRSU23}. The core idea behind these approaches is to use the secret matrix as a master key, generate randomness within a secure chip, and treat the output as a secret ephemeral symmetric key—even in the presence of an attacker who can observe linear leakages from the output. The motivation is that masking the matrix-vector product is relatively efficient, especially when working over the prime field~$\mathbb{F}_p$ with $p = 2^{31} - 1$. In the proposal from~\cite{TCHES:DMMS21}, the authors argue that modulus~3 is not a suitable choice, and instead suggest using a $4 \times 4$ matrix over~$\mathbb{F}_{2^{31}-1}$. However, the security of this approach depends on the assumed leakage model, and under certain models it may not be secure. In~\cite{C:HMMRSU23}, the authors provide a more detailed cryptanalysis by explicitly bounding the number of leakages accessible to an attacker. Their analysis supports the same parameter sets as proposed in~\cite{TCHES:DMMS21}.
@@ -141,7 +136,7 @@ For other types of applications, the generalized construction from~\cite{C:DGHIK
 
 More recently,~\cite{EC:ADDG24} introduced a novel application domain for this weak PRF by combining it with the TFHE scheme~\cite{JC:CGGI20}, a fully homomorphic encryption construction based on programmable bootstrapping to reduce noise. In this context, the authors target a security level of $\lambda = 128$ bits and set $n = 256$, interpreting the key as a square matrix of dimension $n$.
 
-\subsubsection{Concerete targets for cryptanalysis}
+\subsection{Concerete Targets for Cryptanalysis}
 In this section, we provide explicit parameter sets for the alternative mod-2/mod-3 construction~\cite{TCC:BIPSW18}, intended as targets for cryptanalysis. Table~\ref{tab:parameters_bipsw} summarizes these parameters, based on the proposals made in the original paper as well as in the related works discussed above.
 
 \cb{Je ne sais pas trop quoi mettre dans cette table. Il faut aussi ajouter un parameter $N$ pour le nombre de requêtes max autorisés mais je ne sais pas où trouver ces nombres. Geoffroy dans sa presentation donne $N = 2^{44.5}$ dans sa présentation, mais je ne sais pas d'où ça vient. Est-ce qu'aussi on tente de donner des paramètres lorsque $\lambda = 80$ mais comment les choisir dans ce cas ?}
