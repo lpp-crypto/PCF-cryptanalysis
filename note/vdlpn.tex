@@ -1,8 +1,8 @@
-\subsection{VDLPN}
+\section{VDLPN}
 \label{sec:vdlpn}
 
 
-\subsubsection*{Original Reference}
+\subsection{Original Reference}
 The next shallow weak PRF we present was proposed by Boyle, Couteau, Gilboa, Ishai, Kohl, and Scholl in 2020~\cite{vdlpn}. The main candidate introduced in their work, that we will refer to as {\tt VDLPN}, is defined as follows:
 
 \begin{equation} \label{eq:vdlpn_orig}
@@ -75,7 +75,7 @@ F_k(x) = \bigoplus_{j = 1}^2 (x_{j,1} \oplus k_{j,1}) \oplus (x_{j,1}\oplus k_{j
 \]
 
 
-\subsubsection*{Cryptanalysis and concrete parameters}
+\subsection{Cryptanalysis and concrete parameters}
 In the original paper~\cite{vdlpn}, the authors suggested the following parameters to instantiate {\tt VDLPN} for achieving $\lambda$ bits of security: $w = 1.5\lambda$, $D = w/4$, and a restriction on the number of queries allowed to an attacker, limited to $N = 2^D$. However, as noted in~\cite{PKC:CouDuc23}, these parameter choices were purely heuristic and not supported by concrete cryptanalysis.
 
 This initial proposal was later revisited and refined in subsequent works. In~\cite{PKC:CouDuc23}, the authors conducted a detailed security analysis, allowing them to correct several errors from the original paper and to propose concrete parameters for achieving 128-bit security : $w = 380$, $D = 80$, under the assumption that the adversary is limited to at most $2^D$ queries. No close formula was however provided. In the same work, the authors also explore more aggressive parameter choices. They notably propose $w = 120$ and $D = 30$, while maintaining the same upper bound on the number of allowed queries. They conjecture that these parameters likely still yield a secure instance for a security level of $\lambda = 80$ bits. A more comprehensive analysis can be found in~\cite{Ducros24}.
