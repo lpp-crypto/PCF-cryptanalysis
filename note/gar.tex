@@ -20,9 +20,9 @@ The candidate one-way function $F: \{0,1\}^n \to \{0,1\}^m$   is then defined as
 F(x) = \left( P(x[\sigma_1]),\; P(x[\sigma_2]),\; \dots,\; P(x[\sigma_m]) \right).
 \]
 
-We define the \emph{stretch} $\mathsf{s} \geq 1$ as the integer in the expression  $m = \mathcal{O}(n^{\mathsf{s}})$. A fundamental question in the study of Goldreich’s construction is: how large can the stretch be for a fixed locality parameter $d$, while still maintaining security?
+We define the \emph{stretch} $\mathsf{s} \geq 1$ as the number in the expression  $m = \mathcal{O}(n^{\mathsf{s}})$, where $m$ denotes the output length of the function. A fundamental question in the study of Goldreich’s construction is: how large can the stretch be for a fixed locality parameter $d$, while still maintaining security?
 
-This function is specified by a fixed predicate and a public collection of access patterns. It can be instantiated to yield various cryptographic primitives, such as one-way functions (when $m = n$), \cb{on l'a déjà défini comme une one-way function plus en haut, je ne comprends donc pas la phrase et pourquoi $m = n$?} pseudo-random functions~\cite{TCC:AppRay16b} or pseudorandom generators with polynomial stretch \cb{je ne comprends pas ce que polynomial stretch veut dire},  as the existence of local pseudorandom generators follows from the existence of one-way random local functions~\cite{STOC:Applebaum12}.
+Goldreich's one-way function is specified by a fixed predicate and a public collection of access patterns. It can be instantiated to yield various cryptographic primitives, such as one-way functions (when $m = n$), \cb{on l'a déjà défini comme une one-way function plus en haut, je ne comprends donc pas la phrase et pourquoi $m = n$?} pseudo-random functions~\cite{TCC:AppRay16b} or pseudorandom generators with polynomial stretch \cb{je ne comprends pas ce que polynomial stretch veut dire},  as the existence of local pseudorandom generators follows from the existence of one-way random local functions~\cite{STOC:Applebaum12}.
 
 
 
@@ -30,11 +30,6 @@ Regarding security, Goldreich's construction is usually used as a pseudorandom g
 
 While this construction may initially seem purely theoretical, its structure and constraints provide valuable insights for practical cryptographic applications. In particular, the \emph{locality} parameter $d(n)$ serves as a measure of the circuit's arithmetic depth or of the complexity of the circuit implementing the functions, and plays an important role in balancing efficiency and security.
 
-%The stretch $\mathsf{s} \geq 1$ is defined as the polynomial extension of the generator: $m = \mathcal{O}(n^{\mathsf{s}})$. One of the fundamental questions is how big can the stretch can be for a given locality $d$ by remaining secure ?
-
-%About security, Goldreich's is a pseudorandom generator, in other words it is secure as soon as the output sequence $y=F(x)$ is indistinguishable from a random one without naturally the knowledge of the seed $x$. \yr{Est-ce que ça suffit ou bien on veut quelque chose de bien plus formel ?}
-
-%While this construction may at first appear purely theoretical, its security properties offer valuable insights for practical applications. In particular, the \emph{locality} parameter $d(n)$ serves as a useful measure of the maximum arithmetic depth or complexity of the circuit implementing the function.
 
 One of the most compact instantiations of this proposal uses locality $d = 5$ and the predicate
 \[
@@ -44,14 +39,6 @@ P_5(x_1, x_2, x_3, x_4, x_5) = x_1 + x_2 + x_3 + x_4 x_5.
 
 
 More generally, natural candidates for the predicate $P$  in Goldreich’s construction include the classes of \textsf{XOR-MAJ} and \textsf{XOR-THR} functions. These correspond to predicates defined as the XOR of the output of a linear function and either a majority or a threshold function applied to independent input bits. 
-
-These predicates are the two most popular choices, as they offer both high algebraic immunity~\cite{C:Courtois03,EC:CouMei03} and a high resiliency order~\cite{DBLP:journals/tit/Siegenthaler84}. For the \textsf{XOR-MAJ} and \textsf{XOR-THR} functions in particular, these cryptographic criteria have been thoroughly analyzed in~\cite{DBLP:journals/ccds/Meaux21,DBLP:journals/dam/Meaux22}.
-
-Another interesting, though theoretical, question is whether there exists a predicate that simultaneously achieves optimal resiliency order and algebraic immunity for any given locality $d$~\cite{DBLP:journals/dcc/DupinMR23}.
-\yr{J'ai mis ça là, mais avant c'était après les cryptanalyses qui expliquent, ça peut se descendre.}
- 
-
-\medskip
 
 More formally, let $\mathsf{w}(x)$  denote the Hamming weight of $x \in \{0,1\}^t$ , where $t$  is the input length.
 
@@ -70,56 +57,42 @@ More formally, let $\mathsf{w}(x)$  denote the Hamming weight of $x \in \{0,1\}^
 \]
 
 
-%More generally the \textit{a priori} good candidates for predicates are the $\mathsf{XOR-MAJ}$ and $\mathsf{XOR-THR}$ predicates, that is the $\mathsf{XOR}$ of a linear function that takes a number of bits and the majority function for independent bits (or respectively a threshold function, that outputs $0$ if and only if the number of bits equal. to $1$ is less than a given threshold).
-%\yr{Pas sûr que ce qui vient d'être dit va ici} \cb{Si, moi je trouve cela bien, mais il faut donner les formules pour ces fonctions, tout le monde ne les a pas en tête}.
+These predicates are the two most popular choices, as they offer both high algebraic immunity~\cite{C:Courtois03,EC:CouMei03} and a high resiliency order~\cite{DBLP:journals/tit/Siegenthaler84}. For the \textsf{XOR-MAJ} and \textsf{XOR-THR} functions in particular, these cryptographic criteria have been thoroughly analyzed in~\cite{DBLP:journals/ccds/Meaux21,DBLP:journals/dam/Meaux22}. Another interesting, though theoretical, question is whether there exists a predicate that simultaneously achieves optimal resiliency order and algebraic immunity for any given locality $d$~\cite{DBLP:journals/dcc/DupinMR23}.
+\yr{J'ai mis ça là, mais avant c'était après les cryptanalyses qui expliquent, ça peut se descendre.}
+ 
 
-%More formally, let $\mathsf{w}$ denote the Hamming weight, then the majority function on $t\in\mathbb{N}^*$ variables is defined as
-%$$
-%\begin{array}{ccccc}
-%\mathsf{MAJ} & : & \{0,1\}^t & \to & \{0,1\} \\
-% & & x & \mapsto & 0\text{ iff }\mathsf{w}(x) \leq \frac{t}{2}\,. \\
-%\end{array}
-%$$
-%A threshold function on $t$ variables with parameter $\mathsf{th}\leq t+1$ is defined as 
-%$$
-%\begin{array}{ccccc}
-%\mathsf{THR} & : & \{0,1\}^t & \to & \{0,1\} \\
-% & & x & \mapsto & 0\text{ iff }\mathsf{w}(x) < \mathsf{th}\,. \\
-%\end{array}
-%$$
-
-%\yr{En fait on peut définir que THreshold et dire que majorité c'est simplement le cas particulier $t/2$}
+\subsection{Cryptanalysis}
 
 
+\subsubsection{Generic Cryptanalysis}
 
-\subsubsection{Cryptanalysis}
+Before focusing on the properties of specific predicates, it is useful to recall that some forms of generic cryptanalysis apply regardless of the exact function used. 
+A generic cryptanalytic result—meaning it does not rely on specific properties of the predicate—was proposed by Bogdanov and Qiao~\cite{DBLP:conf/approx/BogdanovQ09} in the case of linear stretch, i.e., when $m = \lambda n$ for some constant $\lambda$. They show that an adversary can succeed by finding a string $x'$ that is close to the secret $x$ in Hamming distance. This work led to a subexponential-time attack~\cite{EPRINT:Applebaum15}, which runs in time $\mathsf{poly}(n) \cdot 2^{2\varepsilon n}$ if $m \in \Omega(n / \varepsilon^{2d})$.
 
-\paragraph{Generic cryptanalysis.}
-\cb{Il faut ajouter une phrase introductive a cette section.}
-\yr{Oui, je suis d'accord, en fait c'est à discuter de quelle quantité on veut mettre avant, il y a des trucs qui prouvent en partie, mais je pense qu'il ne faut pas trop s'étendre dessus, à discuter}
-An other but more generic cryptanalysis \cb{Il y a "Another" mais rien qui précède ..} (that is without taking into considerations the specificities of the predicate) has been made by Bogdanov and Qiao~\cite{DBLP:conf/approx/BogdanovQ09} for linear stretch (that is $m=\lambda n$), where they show that one cryptanalyst wins when it finds an $x'$ that is close with respect to the Hamming distance to the secret value $x$. The work then led to a subexponential attack~\cite{EPRINT:Applebaum15} in time $\mathsf{poly}(n)\cdot 2^{2\varepsilon n}$ if $m\in\Omega (n/ \varepsilon^{2d})$.
+Naturally, the choice of predicate plays a crucial role in resisting such attacks. At a minimum, the predicate should be non-degenerate: it must be unbiased and not linear. In the next section, we describe additional cryptographic criteria that a predicate should satisfy to ensure stronger resistance.
 
-
-
-Naturally, the choice of the predicate should be non-degenerate: it should at least be unbiased and not linear. In the next section we describe some other criteria that the predicate should satisfy. 
-
-More precisely, two classes of attacks arise when the predicate can be approximated by a linear function with fewer variables than $d(n)$ or when the degree or algebraic immunity of the predicate is small.
+In particular, two main classes of attacks become relevant when the predicate can either be approximated by a linear function with fewer than $d(n)$ variables, or when it has low degree or low algebraic immunity.
 
 
-\paragraph{Linearity tests and resiliency}
-\yr{Not sure we need the provable side against linear tests, or at least only 1-2 sentences. It is \cite{FOCS:MosShpTre03} first up to $n^{1.25-\varepsilon}$ and \cite{DBLP:conf/coco/ODonnellW14} up to $n^{1.5-\varepsilon}$}
-In 2014, O'Donnell and Witmer~\cite{DBLP:conf/coco/ODonnellW14} explained that if the predicate can be approximated with a function that takes $c<d$ variables as input, then the PRG can be broken as soon as $m\in\Omega(n^{c/2} + n\log n)$. This has been further analyzed in~\cite{EPRINT:Applebaum15}.
-
-Naturally, this attack is thus naturally efficient when the predicate has a low resiliency order~\cite{DBLP:journals/tit/Siegenthaler84} which defines exactly the criteria: a Boolean function is $t$-resilient if it cannot be approximated by any boolean function with $t$ variables (the predicate $P_5$ has a resiliency order of $t=2$, and in the attack described above in~\cite{DBLP:conf/coco/ODonnellW14} uses thus an approximation of the predicate with $c=t+1$ variables, leading to an attack when the output size exceeds $n^{1.5}$.
-
-\yr{En 2020 sur Arxiv, Garg, Kothari et Raz, montrent sécurité même avec un adversaire avec mémoire, ça me semble sortir du sujet. \url{https://arxiv.org/abs/2002.07235}}
+%An other but more generic cryptanalysis \cb{Il y a "Another" mais rien qui précède ..} (that is without taking into considerations the specificities of the predicate) has been made by Bogdanov and Qiao~\cite{DBLP:conf/approx/BogdanovQ09} for linear stretch (that is $m=\lambda n$), where they show that one cryptanalyst wins when it finds an $x'$ that is close with respect to the Hamming distance to the secret value $x$. The work then led to a subexponential attack~\cite{EPRINT:Applebaum15} in time $\mathsf{poly}(n)\cdot 2^{2\varepsilon n}$ if $m\in\Omega (n/ \varepsilon^{2d})$.
 
 
-\paragraph{Algebraic attacks}
+\subsubsection{Linearity Tests and Resiliency}
 
-Unsurprisingly, one of the most powerfull attack on Goldreich's PRG is the second type of attacks that is algebraic. Naturally, one can easily notice that a polynomial time algorithm inverts Goldreich's PRG when the output is in $\Omega(n^\delta)$ where $\delta$ is the algebraic degree of the predicate $P$. However, some other tricks can be done. 
+%\yr{Not sure we need the provable side against linear tests, or at least only 1-2 sentences. It is \cite{FOCS:MosShpTre03} first up to $n^{1.25-\varepsilon}$ and \cite{DBLP:conf/coco/ODonnellW14} up to $n^{1.5-\varepsilon}$}
 
-A first example is in~\cite{STOC:AppLov16} where one important criteria to resist linear tests is in fact the \textit{bit-fixing degree}, that is the degree achieved by restricting the predicate $P$ by fixing some bits. An other criteria is also needed and explained in the same work: the algebraic immunity~\cite{C:Courtois03,EC:CouMei03} of the predicate that captures equations of smaller degree that can be derived from an equation of higher degree.
+In 2014, O'Donnell and Witmer~\cite{DBLP:conf/coco/ODonnellW14} showed that if the predicate can be approximated by a function that depends on only $c < d$ variables, then the pseudorandom generator can be broken whenever $m \in \Omega(n^{c/2} + n \log n)$. This line of attack was further analyzed in~\cite{EPRINT:Applebaum15}.
+
+This type of attack is particularly efficient when the predicate has a low \emph{resiliency order}~\cite{DBLP:journals/tit/Siegenthaler84}, a property that quantifies its resistance to such approximations. A Boolean function is said to be $t$-resilient if  it cannot be approximated by a Boolean function on $t$ variables. For example, the predicate $P_5$ has resiliency order $t = 2$. In~\cite{DBLP:conf/coco/ODonnellW14}, the authors approximate $P_5$ using a function with $c = t + 1 = 3$ variables, which leads to an attack whenever the output length $m$ exceeds $n^{1.5}$.
+%\yr{En 2020 sur Arxiv, Garg, Kothari et Raz, montrent sécurité même avec un adversaire avec mémoire, ça me semble sortir du sujet. \url{https://arxiv.org/abs/2002.07235}}
+
+
+\subsubsection{Algebraic Attacks}
+
+Unsurprisingly, one of the most powerful classes of attacks on Goldreich's PRG is algebraic in nature. A straightforward observation is that the generator's output can be inverted in polynomial time whenever the output length satisfies $m \in \Omega(n^{\delta})$, where  $\delta$ is the algebraic degree of the predicate $P$. However, more refined algebraic attacks have been proposed.
+
+A first example appears in~\cite{STOC:AppLov16}, where the authors introduce the notion of \emph{bit-fixing degree} as an important criterion for resisting linear tests. This quantity refers to the highest degree that the predicate $P$ can attain when some of its input bits are fixed. Another important criterion discussed in the same work is the \emph{algebraic immunity} of the predicate~\cite{C:Courtois03,EC:CouMei03}, which measures the minimal degree of a nonzero Boolean function that annihilates $P$ or $P \oplus 1$. Low algebraic immunity implies that high-degree relations can be transformed into lower-degree equations, potentially leading more efficient attacks.
+
 
 The output of Goldreich's PRG is \textit{a priori} in $\{0,1\}$ that is the field with two elements, but it can naturally be defined other a bigger alphabet $\mathbb{Z}_q$. In 2023, Akin Ünal proposed three distinguishing attacks~\cite{EC:Unal23} that work with different regimes. More precisely, if $m = n^{1+e}$, then there is an attack with space and time complexity in $n^{\mathcal{O}(n^{1-\frac{e}{\delta-1}})}$ with good advantage. A second attack is proposed that works when the alphabet is of size $n^{1-\frac{e}{\delta-1}}$. Eventually a third attack is proposed when the locality is $d$ and the field size $q$ is constant of complexity $2^{\mathcal{O}(n^{1-\frac{e'}{(q-1)d-1}})}$, where $e'<e$ and changing accordingly the advantage of the distinguisher.
 
@@ -127,7 +100,7 @@ Eventually and building up on its work, Akin proposed a way to extend the output
 \yr{Ce papier est à sur eprint depuis deux ans: un peu de mal à le traiter comme si c'était tout ok... à décider si on laisse ce paragraphe ou pas.}
 
 
-\paragraph{On the analysis of specific predicates.}
+\subsubsection{On the Analysis of Specific Predicates}
 
 Eventually, this is exactly why $P_5$ or $\mathsf{XOR-MAJ}$ or $\mathsf{XOR-THR}$ functions are considered, as they provide both a good algebraic immunity and resiliency as explained in~\cite{DBLP:journals/ccds/Meaux21, DBLP:journals/dam/Meaux22}. An other interesting (but theoretic) question is whether a predicate can achieve best resiliency order and algebraic immunity for any possible locality $d$~\cite{DBLP:journals/dcc/DupinMR23}.
 
