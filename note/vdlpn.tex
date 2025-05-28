@@ -4,12 +4,12 @@
 \lp{clarifier la métrique de coût : de quel droit est-ce qu'on fait des produits de $t$ variables ?}
 
 
-\subsubsection{Original Reference}
+\subsection{Original Reference}
 
 The next shallow weak PRF we present was proposed by Boyle, Couteau, Gilboa, Ishai, Kohl, and Scholl in 2020~\cite{vdlpn}. The main candidate introduced in their work, that we will refer to as {\tt VDLPN}, is defined as follows:
 
 \begin{equation} \label{eq:vdlpn_orig}
-    F_k(x) = \bigoplus_{i=1}^D \bigoplus_{j=1}^w \bigwedge_{\ell=1}^i \left(x_{i,j,\ell} \oplus k_{i,j,\ell}\right),
+    F_k(x) = \bigoplus_{i=1}^D \bigoplus_{j=1}^w \prod_{\ell=1}^i \left(x_{i,j,\ell} \oplus k_{i,j,\ell}\right),
 \end{equation}
 where $\bigwedge$ corresponds to the AND operation and $D$ and $w$ are parameters that depend on the desired security level $\lambda$.
 
@@ -53,7 +53,7 @@ x_{3,2,3} \oplus k_{3,2,3}
 We focus however on an alternative low-complexity variant of the above function, that was equally presented in~\cite{vdlpn}, which we now describe in detail. Let $w$ and $D$ be two positive integers. Both the secret key $k \in \mathbb{Z}_2^{w \times D}$ and the input $x \in \mathbb{Z}_2^{w \times D}$ are viewed as binary matrices, represented as $(k_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$ and $(x_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$, respectively. The function $F_K(x)$ is then computed as:
 
 \begin{equation} \label{eq:vdlpn_agg}
-    F_k(x) := \bigoplus_{i=1}^D \bigoplus_{j=1}^w\bigwedge_{\ell=1}^i (x_{j,\ell} \oplus k_{j,\ell}).
+    F_k(x) := \bigoplus_{i=1}^D \bigoplus_{j=1}^w\prod_{\ell=1}^i (x_{j,\ell} \oplus k_{j,\ell}).
 \end{equation}
 
 We observe that Eq.~\eqref{eq:vdlpn_agg} can also be rewritten in a different form—not as a sum of classical triangular functions, but rather as a sum of \emph{somewhat triangular functions} \( T'(z) \), defined as follows for a sequence of variables \( z = (z_1, z_2, z_3, \dots) \):
@@ -68,8 +68,8 @@ where \( X_j \) is the vector \( (x_{j,\ell}) \) for \( 1 \leq \ell \leq D \), a
 
 \smallskip
 
-In other words, this can be seen as a variant of a triangular function in which variables are reused in higher-degree monomials.  This reuse introduces algebraic dependencies between the terms, which may complicate attempts to formally prove security.
-\yr{Je pense d'ailleurs que c'est cette dépendance qui fait que ce n'est pas prouvable ?}
+In other words, this can be seen as a variant of a triangular function in which variables are reused in higher-degree monomials.  This reuse introduces algebraic dependencies between the terms, which complicates attempts to formally prove security.
+
 
 \paragraph{Example (toy instance of the low-complexity variant with $w = 2$, $D = 3$).}
 In this case, 
@@ -79,14 +79,33 @@ F_k(x) = \bigoplus_{j = 1}^2 (x_{j,1} \oplus k_{j,1}) \oplus (x_{j,1}\oplus k_{j
 
 
 
-\subsubsection{Cryptanalysis and concrete parameters}
+\subsection{Cryptanalysis and concrete parameters}
 
 In the original paper~\cite{vdlpn}, the authors suggested the following parameters to instantiate {\tt VDLPN} for achieving $\lambda$ bits of security: $w = 1.5\lambda$, $D = w/4$, and a restriction on the number of queries allowed to an attacker, limited to $N = 2^D$. However, as noted in~\cite{PKC:CouDuc23}, these parameter choices were purely heuristic and not supported by concrete cryptanalysis.
 
-This initial proposal was later revisited and refined in subsequent works. In~\cite{PKC:CouDuc23}, the authors conducted a detailed security analysis, allowing them to correct several errors from the original paper and to propose concrete parameters for achieving 128-bit security : $w = 380$, $D = 80$, under the assumption that the adversary is limited to at most $2^D$ queries. No close formula was however provided. In the same work, the authors also explore more aggressive parameter choices. They notably propose $w = 120$ and $D = 30$, while maintaining the same upper bound on the number of allowed queries. They conjecture that these parameters likely still yield a secure instance for a security level of $\lambda = 80$ bits. A more comprehensive analysis can be found in~\cite{Ducros24}.
+This initial proposal was later revisited and refined in subsequent works. In~\cite{PKC:CouDuc23}, the authors conducted a detailed security analysis, allowing them to correct several errors from the original paper and to propose concrete parameters for achieving 128-bit security : $w = 380$, $D = 30$, under the assumption that the adversary is limited to at most $2^D$ queries. No close formula was however provided. Finally, Ducros proposed in this thesis a refined method that permitted to propose several good sets of parameters $(D,w)$. These parameters are given in Table~\ref{tab:vdlpn-param}. 
 
-\yr{Je crois que la variante agressive n'est pas non plus prouvée quand l'original l'est avec une réduction}
+%In the same work, the authors also explore more aggressive parameter choices. They notably propose $w = 120$ and $D = 30$, while maintaining the same upper bound on the number of allowed queries. They conjecture that these parameters likely still yield a secure instance for a security level of $\lambda = 80$ bits. A more comprehensive analysis can be found in~\cite{Ducros24}.
 
+%\yr{Je crois que la variante agressive n'est pas non plus prouvée quand l'original l'est avec une réduction}
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{ccc} 
+\toprule
+$D$ &  $w$ & $N = 2^D$\\
+\midrule
+ 20 & 293 & $2^{20}$\\
+ 25 & 336 & $2^{25}$\\
+ 30 & 380 & $2^{30}$\\
+ 35 & 421 & $2^{35}$\\
+ 40 & 461 & $2^{40}$\\
+\bottomrule
+\end{tabular}
+\caption{\label{tab:vdlpn-param}}
+\end{table}
+
+\subsection{Implementation}
 The algorithmic description of the low-complexity {\tt VDLPN} variant, that we consider to be the most relevant target for cryptanalysis, is provided in Algorithm~\ref{alg:vdlpn}.
 
 \begin{algorithm}[!ht]
