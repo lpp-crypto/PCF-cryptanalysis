@@ -1,3 +1,5 @@
+%!TEX root=main.tex
+
 \section{Alternating Moduli Constructions}
 \label{sec:bipsw}
 
@@ -20,7 +22,7 @@ In its original formulation, $F_k$ is defined as follows:
 
 As we can see, we first compute the inner product between the key $k$ and the input $x$. Then, this inner product is evaluated both modulo 2 and modulo 3, and the two results are finally added modulo 2 to produce the final result.  
 
-\paragraph{Remark} The above construction can be implemented by a depth-2 $\mathsf{ACC}^0$ circuit. The first layer of this circuit consists of an $\mathsf{MOD}_2$ gate, …. \cb{Geoffroy, si tu peux compléter ce serait cool !}
+\paragraph{Remark} The above construction can be implemented by a depth-2 $\mathsf{ACC}^0$ circuit: the first layer of this circuit consists of a $\mathsf{MOD}_2$ gate and a $\MOD_3$ gate, both connected to all inputs $x_i$ such that $k_i = 1$ (the $\MOD_3$ gate is additionally connected to a ``constant-2'': it checks whether $\sum_i k_ix_i+2$ is divisible by $3$), followed by a second layer with a single two-input $\MOD_2$-gate (by inspection, $F_k(x) = 0$ if and only if $\sum_i k_ix_i$ is 0 $\bmod 2$ and $1 \bmod 3$, or $\sum_i k_ix_i$ is 1 $\bmod 2$ and 0 or 2 $ \bmod 3$).
 
 However, as the designers point out, the above description can have the following alternative representation, that stems from the observation that $F_k(x) = 1$ if and only if the inner product $\langle k, x \rangle  \mod{6} = \sum_{i = 0}^{n-1} k_i x_i \mod{6} \in \{3,4,5\}$. For this, denote by $\lfloor \cdot \rceil_2 : \mathbb{Z}_6 \rightarrow \mathbb{Z}_2$ the rounding operator defined as:
 \begin{equation*}
@@ -55,7 +57,7 @@ The alternating moduli design paradigm quickly gained popularity as an approach 
 
 \subsubsection{A Generalized Construction~\cite{C:DGHIKS21}.}
 \label{sec:bipsw_alt1}
-In 2021, Dinur, Goldfeder, Halevi, Ishai, Kelkar, Sharma, and Zaverucha revisited the alternative mod-2/mod-3 constructions from~\cite{TCC:BIPSW18} and proposed a generalized version. Their focus was primarily on the alternative variant (the one presented in the previous subsection), as having an output over $\mathbb{Z}_2$ is more convenient in many applications. The proposed generalization extends the original design in two main directions. First, the secret key is no longer a vector in $\mathbb{Z}_2^n$, but a matrix $K \in \mathbb{Z}_2^{m \times n}$. Second, a public compression matrix $B \in \mathbb{Z}_2^{t \times m}$ is applied before producing the output. This generalized construction has the advantage of outputting multiple bits at once instead of a single bit, resulting in improved throughput. \cb{Je ne sais pas si le fait que la clé soit une matrice est une généralisation, car j'ai l'impression que le candidat original pourraît être vu de cette manière là aussi .. Geoffroy ?}
+In 2021, Dinur, Goldfeder, Halevi, Ishai, Kelkar, Sharma, and Zaverucha revisited the alternative mod-2/mod-3 constructions from~\cite{TCC:BIPSW18} and proposed a generalized version. Their focus was primarily on the alternative variant (the one presented in the previous subsection), as having an output over $\mathbb{Z}_2$ is more convenient in many applications. The proposed generalization extends the original design in two main directions. First, the secret key is no longer a vector in $\mathbb{Z}_2^n$, but a matrix $K \in \mathbb{Z}_2^{m \times n}$. Second, a public compression matrix $B \in \mathbb{Z}_2^{t \times m}$ is applied before producing the output. This generalized construction has the advantage of outputting multiple bits at once instead of a single bit, resulting in improved throughput. \cb{Je ne sais pas si le fait que la clé soit une matrice est une généralisation, car j'ai l'impression que le candidat original pourraît être vu de cette manière là aussi .. Geoffroy ?}\gc{Si tu prends le candidat originel et te contente d'utiliser $n$ clés différentes, toutes évaluées sur le même input, tu as en effet une matrice, mais rajouter $B$ permet d'éviter des attaques de type décodage (BKW), et donc d'avoir de bien meilleur paramètre (tu peux avoir une sécurité exponentielle au lieu de sous-exponentielle). En plus, tu peux aussi prendre une matrice $K$ structurée. C'est d'ailleurs ce qu'ils font en prenant une matrice circulante; dans ce cas, tu ne peux plus voir ça comme étant juste une répétition du candidat initial avec des clés différentes.}
 
 More precisely, the proposed construction is parameterized by positive integers $n$, $m$, and $t$, with the constraints $m \geq n$ and $m \geq t$. These parameters respectively represent the input vector size, the size of the intermediate vector(s), and the output vector size. As in the original design, they are functions of a security parameter $\lambda$.
 
@@ -136,7 +138,7 @@ Concerning the generalized construction given in~\cite{C:DGHIKS21}, its authors 
 
 Table~\ref{tab:parameters_bipsw} summarizes these parameters, where $N$ denotes the maximum number of queries allowed under a single key.
 
- \cb{Geoffroy, ça vient d'où le $N = 2^{44.5}$ que t'as donné dans ta présentation ?}
+ \cb{Geoffroy, ça vient d'où le $N = 2^{44.5}$ que t'as donné dans ta présentation ?}\gc{Bonne question...}
 
 
 \begin{table}[!ht]
