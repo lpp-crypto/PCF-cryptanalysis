@@ -42,7 +42,7 @@ x_{3,j,3} \oplus k_{3,j,3}
 \right).
 \]
 
-We focus however on an alternative low-complexity variant of the above function, that was equally presented in~\cite{vdlpn}, which we now describe in detail. Let $w$ and $D$ be two positive integers. Both the secret key $k \in \mathbb{Z}_2^{w \times D}$ and the input $x \in \mathbb{Z}_2^{w \times D}$ are viewed as binary matrices, represented as $(k_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$ and $(x_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$, respectively. The function $F_K(x)$ is then computed as:
+We provide also an alternative low-complexity variant of the above function, that was equally presented in~\cite{vdlpn}, which we now describe in detail. We will call this variant {\sf VDLPN}$^*$. Let $w$ and $D$ be two positive integers. Both the secret key $k \in \mathbb{Z}_2^{w \times D}$ and the input $x \in \mathbb{Z}_2^{w \times D}$ are viewed as binary matrices, represented as $(k_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$ and $(x_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$, respectively. The function $F_K(x)$ is then computed as:
 
 \begin{equation} \label{eq:vdlpn_agg}
     F_k(x) := \bigoplus_{i=1}^D \bigoplus_{j=1}^w\prod_{\ell=1}^i (x_{j,\ell} \oplus k_{j,\ell}).
@@ -73,9 +73,9 @@ F_k(x) = \bigoplus_{j = 1}^2 (x_{j,1} \oplus k_{j,1}) \oplus (x_{j,1}\oplus k_{j
 
 \subsection{Targets for Cryptanalysis}
 
-In the original paper~\cite{vdlpn}, the authors suggested the following parameters to instantiate both versions of {\tt VDLPN} for achieving $\lambda$ bits of security: $w = 1.5\lambda$, $D = w/4$, and a restriction on the number of queries allowed to an attacker, limited to $N = 2^D$. However, as noted in~\cite{PKC:CouDuc23}, these parameter choices were purely heuristic and not supported by concrete cryptanalysis.
+In the original paper~\cite{vdlpn}, the authors suggested the following parameters to instantiate both versions of {\sf VDLPN} for achieving $\lambda$ bits of security: $w = 1.5\lambda$, $D = w/4$, and a restriction on the number of queries allowed to an attacker, limited to $N = 2^D$. However, as noted in~\cite{PKC:CouDuc23}, these parameter choices were purely heuristic and not supported by concrete cryptanalysis.
 
-This initial proposal was later revisited and refined in subsequent works. In~\cite{PKC:CouDuc23}, the authors conducted a detailed security analysis, allowing them to correct several errors from the original paper and to propose concrete parameters for achieving 128-bit security : $w = 380$, $D = 30$, under the assumption that the adversary is limited to at most $2^D$ queries. No close formula was however provided. Finally, Ducros proposed in his thesis a refined method that permitted to propose several good sets of parameters $(D,w)$. These parameters are given in Table~\ref{tab:vdlpn-param} and we suggest the related instances as targets for cryptanalysis.
+This initial proposal was later revisited and refined in subsequent works. In~\cite{PKC:CouDuc23}, the authors conducted a detailed security analysis, allowing them to correct several errors from the original paper and to propose concrete parameters for achieving 128-bit security : $w = 380$, $D = 30$, under the assumption that the adversary is limited to at most $2^D$ queries. No close formula was however provided. Finally, Ducros proposed in his thesis a refined method that permitted to propose several good sets of parameters $(D,w)$. These parameters are given in Table~\ref{tab:vdlpn-param} and we suggest the related instances as targets for cryptanalysis for both {\sf VDLPN} and {\sf VDLPN}$^*$.
 
 %In the same work, the authors also explore more aggressive parameter choices. They notably propose $w = 120$ and $D = 30$, while maintaining the same upper bound on the number of allowed queries. They conjecture that these parameters likely still yield a secure instance for a security level of $\lambda = 80$ bits. A more comprehensive analysis can be found in~\cite{Ducros24}.
 
@@ -94,30 +94,57 @@ $D$ &  $w$ & $N = 2^D$\\
  40 & 461 & $2^{40}$\\
 \bottomrule
 \end{tabular}
-\caption{\label{tab:vdlpn-param}Parameter sets for the {\sf VDLPN} swallow wPRF, intended as targets for cryptanalysis.}
+\caption{\label{tab:vdlpn-param}Parameter sets for the {\sf VDLPN} and {\sf VDLPN}$^*$ swallow wPRFs, intended as targets for cryptanalysis.}
 \end{table}
 
 \subsection{Algorithmic Description}
-The algorithmic description of the low-complexity {\tt VDLPN} variant, that we consider to be the most relevant target for cryptanalysis, is provided in Algorithm~\ref{alg:vdlpn}.
+The algorithmic descriptions of the {\sf VDLPN} shallow wPRF and its low-complexity variant {\sf VDLPN}$^*$ are provided in Algorithm~\ref{alg:vdlpn} and Algorithm~\ref{alg:vdlpn_simple}, respectively.
 
-\begin{algorithm}[!ht]
-  \caption{\label{alg:vdlpn}The {\sf VDLPN} wPRF \\
-    Parameters: Integers $w, D$}
+
+\begin{figure}[ht]
+\centering
+\begin{minipage}[t]{0.47\textwidth}
+\begin{algorithm}[H]
+  \caption{\label{alg:vdlpn}The {\sf VDLPN} wPRF\\Parameters: Integers $w, D$}
   \begin{algorithmic}
-   \State \textbf{Input:} $x = (x_{j,\ell}) \in \mathbb{Z}_2^{w\times D}$,  $k = (k_{j,\ell}) \in \mathbb{Z}_2^{w\times D}$
+   \State \textbf{Input:} $x = (x_{i,j,\ell}) \in \mathbb{Z}_2^{D \times w \times D}$, $k = (k_{i,j,\ell}) \in \mathbb{Z}_2^{D \times w \times D}$
     \State $y \gets 0$
     \For{$i = 1$ to $D$}
-    \For{$j = 1$ to $w$}
+      \For{$j = 1$ to $w$}
         \State $t \gets 1$
         \For{$\ell = 1$ to $i$}
-            \State $t \gets t \cdot  (x_{j,\ell} \oplus k_{j,\ell})$
+          \State $t \gets t \cdot (x_{i,j,\ell} \oplus k_{i,j,\ell})$
         \EndFor
-        \State $F \gets F \oplus t$
+        \State $y \gets y \oplus t$
+      \EndFor
     \EndFor
-\EndFor \\
-\Return $y$
+    \State \Return $y$
   \end{algorithmic}
 \end{algorithm}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.47\textwidth}
+\begin{algorithm}[H]
+  \caption{\label{alg:vdlpn_simple}The {\sf VDLPN}$^*$ wPRF\\Parameters: Integers $w, D$}
+  \begin{algorithmic}
+    \State \textbf{Input:} $x = (x_{j,\ell}) \in \mathbb{Z}_2^{w\times D}$,  $k = (k_{j,\ell}) \in \mathbb{Z}_2^{w\times D}$
+    \State $y \gets 0$
+    \For{$i = 1$ to $D$}
+      \For{$j = 1$ to $w$}
+        \State $t \gets 1$
+        \For{$\ell = 1$ to $i$}
+          \State $t \gets t \cdot (x_{j,\ell} \oplus k_{j,\ell})$
+        \EndFor
+        \State $y \gets y \oplus t$
+      \EndFor
+    \EndFor
+    \State \Return $y$
+  \end{algorithmic}
+\end{algorithm}
+\end{minipage}
+\caption{Algorithmic description of the original {\sf VDLPN} swallow wPRF and its low-complexity variant {\sf VDLPN}$^*$.}
+\end{figure}
+
 
 
 
