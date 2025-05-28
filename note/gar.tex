@@ -144,17 +144,25 @@ Guess-and-decode & $\mathcal{O}(n^{\mathsf{s}} \cdot 2^{\frac{n^{2 - \mathsf{s}}
 \subsection{Targets for Cryptanalysis}
 The high versatility of Goldreich's PRG raises several important questions. In particular, it remains unclear how to choose an optimal predicate that achieves the best possible stretch $\mathsf{s}$ for the smallest possible locality $d(n)$.
 
-Arguably the simplest and most natural target is the instantiation using the $P_5$ predicate, for which concrete parameters are proposed in~\cite{DBLP:journals/tit/YangGJL22}. These parameters are summarized in Table~\ref{tab:paramgar}.
+Arguably the simplest and most natural target is the instantiation using the $P_5$ predicate, for which concrete parameters are proposed in~\cite{DBLP:journals/tit/YangGJL22}. and in~\cite{DBLP:conf/eurocrypt/AgarwalBBS25}.
+
+For an instantiation with \textsf{XOR-MAJ} predicates, some are proposed in~\cite{DBLP:conf/eurocrypt/AgarwalBBS25} and in~\cite{EC:BCMPR24} but some were broken by the bit-fixing correlation attack in~\cite{EPRINT:FLLL24} (for this ones we propose new ones) and others were proposed in~\cite{AC:CDDKS24}. All of these parameters are summarized in Table~\ref{tab:paramgar}.
+\yr{Les deux paragraphes du dessus ne sont peut-être pas utiles}
 
 \begin{table}[!ht]
 \centering
-\begin{tabular}{cc}
+\begin{tabular}{cccc}
 \toprule
-Seed size ($n$) & stretch ($\mathsf{s}$)\\
+Seed size ($n$) & Stretch ($\mathsf{s}$) & Predicate ($P$)& Reference\\
 \midrule
-1024 & 1.02  \\
-2048 & 1.10 \\
-4096 & 1.19 \\
+1024 & 1.02 & $P_5$ & \cite{DBLP:journals/tit/YangGJL22} \\
+2048 & 1.10 & $P_5$ & \cite{DBLP:journals/tit/YangGJL22} \\
+4096 & 1.19 & $P_5$ & \cite{DBLP:journals/tit/YangGJL22} \\
+8192 & 1.19 & $P_5$ & \cite{DBLP:conf/eurocrypt/AgarwalBBS25} \\
+1024 & 2 & $\mathsf{XOR}_4\textsf{-}\mathsf{MAJ}_7$ & \cite{DBLP:conf/eurocrypt/AgarwalBBS25} \\
+512 & 4.5 & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \cite{EC:BCMPR24, EPRINT:FLLL24} \\
+894 & 3.4 & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \cite{AC:CDDKS24} \\
+2048 & 3 & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \cite{AC:CDDKS24} \\
 \bottomrule
 \end{tabular}
 \caption{\label{tab:paramgar}Challenge parameter sets for Goldreich's PRG instantiated with the $P_5$ predicate, targeting a 128-bit security level.}
