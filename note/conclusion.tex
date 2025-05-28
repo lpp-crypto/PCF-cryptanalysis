@@ -5,3 +5,12 @@
 \item On a besoin de quantifier précisément la complexité des algorithmes d'attaque histoire de pouvoir dimensionner correctement et précisément les instances sensées offrir un niveau de sécurité donné
 \item en l'état, il n'y a pas de cryptanalyse dans le modèle ``weak nonce'' ou ``weak IV'' (demander à Anne ce qui existe), qu'on introduit
 \end{itemize}
+
+All constructions that we presented consist of a weakened security model than the standard one (PRF or PRP), as an attacker is not able to choose the public inputs. It is however somehow different than a known plaintext scenario, as the inputs here are taken uniformly at random.
+
+The fact that public inputs are taken uniformly at random, combined with the proposed size makes the differential cryptanalysis unpractical. What remains seem to be, up to now likewise linear cryptanalysis, by observing biases in (linear combination of) the output or algebraic-like attacks. \yr{C'est les seules types d'attaques partout non ?}
+
+Some combinatorial analysis is also missing to identify a success probability of an attack that is computable over the public inputs. Indeed, as Kerckhoff's principle states that the security should rely only on the secret of the key, this principle is not met in those constructions as it could appear than an attack could work when the public inputs lie in a specific subsets. The identification of ``bad'' public input set is thus a very interesting question that need to be answered.
+\yr{Faut-il réinsister plus ?}
+
+Eventually, we believe that this weak scenario drastically lacks of security analysis. Indeed, actual security relies on cryptanalysis. We believe this to not be fulfilled, specifically because when fixing parameters, the distinction between exponential/polynomial types of attacks do not make anymore sense. Nowadays, many of those proposals have a purpose to be used in practice in many advanced cryptographic protocols. Therefore a big gap is present and we think that the cryptographic community should collectively target those constructions, with careful analysis in order to gain confidence in advanced protocols before proposing them as being used and implemented.
