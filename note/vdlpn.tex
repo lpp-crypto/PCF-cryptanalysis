@@ -71,11 +71,11 @@ F_k(x) = \bigoplus_{j = 1}^2 (x_{j,1} \oplus k_{j,1}) \oplus (x_{j,1}\oplus k_{j
 
 
 
-\subsection{Cryptanalysis and concrete parameters}
+\subsection{Targets for Cryptanalysis}
 
-In the original paper~\cite{vdlpn}, the authors suggested the following parameters to instantiate {\tt VDLPN} for achieving $\lambda$ bits of security: $w = 1.5\lambda$, $D = w/4$, and a restriction on the number of queries allowed to an attacker, limited to $N = 2^D$. However, as noted in~\cite{PKC:CouDuc23}, these parameter choices were purely heuristic and not supported by concrete cryptanalysis.
+In the original paper~\cite{vdlpn}, the authors suggested the following parameters to instantiate both versions of {\tt VDLPN} for achieving $\lambda$ bits of security: $w = 1.5\lambda$, $D = w/4$, and a restriction on the number of queries allowed to an attacker, limited to $N = 2^D$. However, as noted in~\cite{PKC:CouDuc23}, these parameter choices were purely heuristic and not supported by concrete cryptanalysis.
 
-This initial proposal was later revisited and refined in subsequent works. In~\cite{PKC:CouDuc23}, the authors conducted a detailed security analysis, allowing them to correct several errors from the original paper and to propose concrete parameters for achieving 128-bit security : $w = 380$, $D = 30$, under the assumption that the adversary is limited to at most $2^D$ queries. No close formula was however provided. Finally, Ducros proposed in this thesis a refined method that permitted to propose several good sets of parameters $(D,w)$. These parameters are given in Table~\ref{tab:vdlpn-param}. 
+This initial proposal was later revisited and refined in subsequent works. In~\cite{PKC:CouDuc23}, the authors conducted a detailed security analysis, allowing them to correct several errors from the original paper and to propose concrete parameters for achieving 128-bit security : $w = 380$, $D = 30$, under the assumption that the adversary is limited to at most $2^D$ queries. No close formula was however provided. Finally, Ducros proposed in his thesis a refined method that permitted to propose several good sets of parameters $(D,w)$. These parameters are given in Table~\ref{tab:vdlpn-param} and we suggest the related instances as targets for cryptanalysis.
 
 %In the same work, the authors also explore more aggressive parameter choices. They notably propose $w = 120$ and $D = 30$, while maintaining the same upper bound on the number of allowed queries. They conjecture that these parameters likely still yield a secure instance for a security level of $\lambda = 80$ bits. A more comprehensive analysis can be found in~\cite{Ducros24}.
 
@@ -94,14 +94,14 @@ $D$ &  $w$ & $N = 2^D$\\
  40 & 461 & $2^{40}$\\
 \bottomrule
 \end{tabular}
-\caption{\label{tab:vdlpn-param}}
+\caption{\label{tab:vdlpn-param}Parameter sets for the {\sf VDLPN} swallow wPRF, intended as targets for cryptanalysis.}
 \end{table}
 
-\subsection{Implementation}
+\subsection{Algorithmic Description}
 The algorithmic description of the low-complexity {\tt VDLPN} variant, that we consider to be the most relevant target for cryptanalysis, is provided in Algorithm~\ref{alg:vdlpn}.
 
 \begin{algorithm}[!ht]
-  \caption{\label{alg:vdlpn}The {\tt VDLPN} PRF \\
+  \caption{\label{alg:vdlpn}The {\sf VDLPN} wPRF \\
     Parameters: Integers $w, D$}
   \begin{algorithmic}
    \State \textbf{Input:} $x = (x_{j,\ell}) \in \mathbb{Z}_2^{w\times D}$,  $k = (k_{j,\ell}) \in \mathbb{Z}_2^{w\times D}$
