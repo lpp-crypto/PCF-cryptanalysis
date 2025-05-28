@@ -2,14 +2,14 @@
 \label{sec:bipsw}
 
 
-In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu introduced a new design paradigm for constructing MPC-friendly weak pseudorandom functions (wPRFs), which was later described in the literature as the \emph{alternating moduli paradigm}~\cite{TCC:BIPSW18}. Constructions based on this paradigm benefit from a low nonlinear depth while exhibiting a high algebraic degree. They are mathematically simple, built by combining linear functions over different moduli.
+In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu introduced a new design paradigm for constructing MPC-friendly weak pseudorandom functions (wPRFs), which was later described in the literature as the \emph{alternating moduli paradigm}~\cite{TCC:BIPSW18}. Constructions based on this paradigm are low-depth but exhibit a high algebraic degree. They are mathematically simple, built by combining linear functions over different moduli.
 
 The original paper~\cite{TCC:BIPSW18} presented two such constructions: a primary one outputting elements in $\mathbb{Z}_3$, and an alternative design that ultimately attracted more attention from the community. This second construction, referred to as the \emph{alternative mod-2/mod-3 weak PRF} and labeled as Construction 6.3 in the original paper, is the only one from this work that we describe below. 
 
 
 \subsection{Original Construction (\cite{TCC:BIPSW18})}
-
-Let $n$ denote the key length and the block message length. 
+\label{sec:bipsw_original}
+Let $n$ denote the key length and the input length. 
 The alternative mod-2/mod-3 wPRF as defined in~\cite{TCC:BIPSW18} is a function $F : \mathbb{Z}_2^n \times \mathbb{Z}_2^n \to \mathbb{Z}_2$, where the key space is $\mathcal{K} = \mathbb{Z}_2^n$, the domain is $\mathcal{X} = \mathbb{Z}_2^n$, and the output space is $\mathcal{Y} = \mathbb{Z}_2$. For a key $k \in \mathbb{Z}_2^n$, we use the notation $F_k(x)$ to represent the function $F(k, x)$.
 
 In its original formulation, $F_k$ is defined as follows:
@@ -19,6 +19,8 @@ In its original formulation, $F_k$ is defined as follows:
 
 
 As we can see, we first compute the inner product between the key $k$ and the input $x$. Then, this inner product is evaluated both modulo 2 and modulo 3, and the two results are finally added modulo 2 to produce the final result.  
+
+\paragraph{Remark} The above construction can be implemented by a depth-2 $\mathsf{ACC}^0$ circuit. The first layer of this circuit consists of an $\mathsf{MOD}_2$ gate, …. \cb{Geoffroy, si tu peux compléter ce serait cool !}
 
 However, as the designers point out, the above description can have the following alternative representation, that stems from the observation that $F_k(x) = 1$ if and only if the inner product $\langle k, x \rangle  \mod{6} = \sum_{i = 0}^{n-1} k_i x_i \mod{6} \in \{3,4,5\}$. For this, denote by $\lfloor \cdot \rceil_2 : \mathbb{Z}_6 \rightarrow \mathbb{Z}_2$ the rounding operator defined as:
 \begin{equation*}
@@ -35,23 +37,11 @@ Then, following the above remark, $F_k$ can alternatively be defined as
 F_k(x) = \left\lfloor \sum_{i = 0}^{n-1} k_i x_i  \mod{6} \right\rceil_2.
 \end{equation}
 
-The algorithmic description of the alternative mod-2/mod-3 wPRF is provided in Algorithm~\ref{alg:bipsw}. \lp{l'algo est peut-être overkill? mais d'un autre côté, avoir un vrai bloc ``algorithm'' pour chaque prf peut-être pas mal...} \cb{Je serai pour les garder.}
- 
- \begin{algorithm}
-  \caption{\label{alg:bipsw}The mod-2/mod-3 wPRF} 
-  \begin{algorithmic} 
-  \State \textbf{Input:} $k,x \in \mathbb{Z}_2^n$
-    \State $u \leftarrow \sum_{i=0}^{n-1} k_i \cdot x_i \mod 6$ 
-    \If{$u \in \{0, 1, 2\}$} 
-    \State	\Return 0 
-    \Else
-    	\State { }\Return 1
-     \EndIf
-  \end{algorithmic}
-\end{algorithm}
 
 
-One of the security arguments put forward by the designers of the above construction is that it cannot be approximated by any low-degree polynomial. This is supported by the classical results of Razborov and Smolensky~\cite{Raz87,Smo87}, which show that for two distinct primes $p$ and $q$, the $\mod{p}$ function cannot be approximated by low-depth $\mod{q}$ circuits. \yr{Je suppose que c'est pour une taille d'espace assez grande par rapport à $p$ et $q$ sinon ça ne marche pas non ?} While the moduli $p$ and $q$ can, \textit{a priori}, be chosen arbitrarily (as long as they are distinct), the most natural and simplest choice is $p = 2$ and $q = 3$. Although the versatility of the construction allows for different choices tailored to specific applications (e.g., in~\cite{TCHES:DMMS21, C:HMMRSU23}, the authors choose $p = 2^{31} - 1$), the concrete security level may vary depending on the specific instantiation of $p$ and $q$. Therefore, dedicated cryptanalysis is required to evaluate the security of the construction under different choices of moduli.
+
+One of the security arguments put forward by the designers of the above construction is that it cannot be approximated by any low-degree polynomial. This is supported by the classical results of Razborov and Smolensky~\cite{Raz87,Smo87}, which show that for two distinct primes $p$ and $q$, the $\mod{p}$ function cannot be approximated by low-depth $\mod{q}$ circuits. %\yr{Je suppose que c'est pour une taille d'espace assez grande par rapport à $p$ et $q$ sinon ça ne marche pas non ?} 
+While the moduli $p$ and $q$ can, \textit{a priori}, be chosen arbitrarily (as long as they are distinct), the most natural and simplest choice is $p = 2$ and $q = 3$. Although the versatility of the construction allows for different choices tailored to specific applications (e.g., in~\cite{TCHES:DMMS21, C:HMMRSU23}, the authors choose $p = 2^{31} - 1$), the concrete security level may vary depending on the specific instantiation of $p$ and $q$. Therefore, dedicated cryptanalysis is required to evaluate the security of the construction under different choices of moduli.
  %In this construction, the moduli 2 and 3 were chosen not only because they are the simplest such primes, but also because they lead to the best efficiency in practice. Indeed, their use leads to more efficient modulus conversion protocols. \yr{Je comprends pas trop ces deux dernières phrases, et puis ça dépend du contexte d'utilisation ? Si je prends l'exemple de rekeying on a $p=2^{31}-1$ parce que c'est utilisé pour du masquage. Comme on est sur des trucs qui ne seront jamais utilisés seuls, je pense qu'il faut s'en tenir aux "premiers choix: les deux premiers premiers" ?} \cb{J'ai repris ce qui a été dit dans le papier d'origine et les généralisations qui ont suivi. On peut peut-être dire que que 2, 3 sont les choix les plus naturels, que à priori cela se généralise à n'importe quel p et q (ce qui est dit dans tous ces papiers) mais qu'une analyse de sécurité plus fine et dédiée est nécessaire et qu'il y a peut être des questions de complexité qui se posent. Reformulez comme vous le sentez !}
 
 %\subsubsection{Parameters}
@@ -60,14 +50,12 @@ One of the security arguments put forward by the designers of the above construc
 
 
 \subsection{Variants and Generalizations}
-\cb{Je ne sais pas quoi faire avec ces constructions. On les donne comme target à la cryptanalyse aussi ?}
-\yr{Oui, complètement}
 
-The alternating moduli design paradigm quickly gained popularity as an approach for constructing weak shallow PRFs. Several subsequent works proposed generalized or alternative versions of the construction presented in the previous section. In this part, we describe some of the most notable and interesting variants.
+The alternating moduli design paradigm quickly gained popularity as an approach for constructing weak shallow PRFs. Several subsequent works proposed generalized or alternative versions of the construction presented in the previous section. In this part, we describe two of the most notable and interesting variants.
 
 \subsubsection{A Generalized Construction~\cite{C:DGHIKS21}.}
-
-In 2021, Dinur, Goldfeder, Halevi, Ishai, Kelkar, Sharma, and Zaverucha revisited the alternative mod-2/mod-3 constructions from~\cite{TCC:BIPSW18} and proposed a generalized version. Their focus was primarily on the alternative variant (the one presented in the previous subsection), as having an output over $\mathbb{Z}_2$ is more convenient in many applications. The proposed generalization extends the original design in two main directions. First, the secret key is no longer a vector in $\mathbb{Z}_2^n$, but a matrix $K \in \mathbb{Z}_2^{m \times n}$. Second, a public compression matrix $B \in \mathbb{Z}_2^{t \times m}$ is applied before producing the output. This generalized construction has the advantage of outputting multiple bits at once instead of a single bit, resulting in improved throughput \cb{dans ce papier les auteurs disent que c'est de la latency mais je suis d'accord que ça ressemble plus à du throughput}.
+\label{sec:bipsw_alt1}
+In 2021, Dinur, Goldfeder, Halevi, Ishai, Kelkar, Sharma, and Zaverucha revisited the alternative mod-2/mod-3 constructions from~\cite{TCC:BIPSW18} and proposed a generalized version. Their focus was primarily on the alternative variant (the one presented in the previous subsection), as having an output over $\mathbb{Z}_2$ is more convenient in many applications. The proposed generalization extends the original design in two main directions. First, the secret key is no longer a vector in $\mathbb{Z}_2^n$, but a matrix $K \in \mathbb{Z}_2^{m \times n}$. Second, a public compression matrix $B \in \mathbb{Z}_2^{t \times m}$ is applied before producing the output. This generalized construction has the advantage of outputting multiple bits at once instead of a single bit, resulting in improved throughput. \cb{Je ne sais pas si le fait que la clé soit une matrice est une généralisation, car j'ai l'impression que le candidat original pourraît être vu de cette manière là aussi .. Geoffroy ?}
 
 More precisely, the proposed construction is parameterized by positive integers $n$, $m$, and $t$, with the constraints $m \geq n$ and $m \geq t$. These parameters respectively represent the input vector size, the size of the intermediate vector(s), and the output vector size. As in the original design, they are functions of a security parameter $\lambda$.
 
@@ -85,9 +73,9 @@ where $B \in \mathbb{Z}_2^{t \times m}$ is a public compression matrix, which ca
 
 It is straightforward to verify that this construction is a generalization of the alternative scheme proposed in~\cite{TCC:BIPSW18}. Specifically, the original candidate described in the previous section corresponds to a special case of the construction in~\cite{C:DGHIKS21}, obtained by setting $m = 1$, $t = 1$, and choosing $B = 1$.
 
-The authors of~\cite{C:DGHIKS21} also argue that the construction can be further generalized by replacing the moduli 2 and 3 with any distinct prime moduli $p$ and $q$.
+%The authors of~\cite{C:DGHIKS21} also argue that the construction can be further generalized by replacing the moduli 2 and 3 with any distinct prime moduli $p$ and $q$.
 
-The authors of~\cite{C:DGHIKS21} propose two parameter sets: one described as \emph{aggressive} and the other as more \emph{conservative}. For a target security level of $\lambda$ bits, the aggressive setting uses $n = m = 2\lambda$, while the conservative one sets $n = m = 2.5\lambda$. In both cases, the output size is chosen as $t = \lambda / \log_2(3)$. For the standard $128$-bit security level commonly used in symmetric cryptography, this corresponds to $n = m = 256$ in the aggressive case and $n = m = 320$ in the conservative one, with $t \approx 81$ in both settings. The authors further impose a concrete upper bound of $2^{40}$ on the number of samples available to an attacker under a single key.
+
 
 \subsubsection{A Further Generalization~\cite{C:APRR24}}
 
@@ -116,6 +104,7 @@ where $A \in \mathbb{Z}_3^{m \times n}$ and $B \in \mathbb{Z}_2^{t \times m}$.
 %parameters
 
 \subsection{Security Arguments and Cryptanalysis}
+\label{sec:bipsw_cryptanalysis}
 
 To date, two papers have analyzed the security of the original construction of~\cite{TCC:BIPSW18} that permit to better estimate the security level and guide the optimal choice of parameters.
 
@@ -137,24 +126,47 @@ For other types of applications, the generalized construction from~\cite{C:DGHIK
 More recently,~\cite{EC:ADDG24} introduced a novel application domain for this weak PRF by combining it with the TFHE scheme~\cite{JC:CGGI20}, a fully homomorphic encryption construction based on programmable bootstrapping to reduce noise. In this context, the authors target a security level of $\lambda = 128$ bits and set $n = 256$, interpreting the key as a square matrix of dimension $n$.
 
 \subsection{Concerete Targets for Cryptanalysis}
-In this section, we provide explicit parameter sets for the alternative mod-2/mod-3 construction~\cite{TCC:BIPSW18}, intended as targets for cryptanalysis. Table~\ref{tab:parameters_bipsw} summarizes these parameters, based on the proposals made in the original paper as well as in the related works discussed above.
+In this section, we provide explicit parameter sets for the alternative mod-2/mod-3 construction~\cite{TCC:BIPSW18} and for the generalization proposed in~\cite{C:DGHIKS21}, both of which we consider to be as good targets for cryptanalysis. All parameter sets aim for a 128-bit security level.
 
-\cb{Je ne sais pas trop quoi mettre dans cette table. Il faut aussi ajouter un parameter $N$ pour le nombre de requêtes max autorisés mais je ne sais pas où trouver ces nombres. Geoffroy dans sa presentation donne $N = 2^{44.5}$ dans sa présentation, mais je ne sais pas d'où ça vient. Est-ce qu'aussi on tente de donner des paramètres lorsque $\lambda = 80$ mais comment les choisir dans ce cas ?}
+For the first construction, the parameter $n = 384$ proposed in the original paper is now considered insecure, based on the cryptanalysis results summarized in Section~\ref{sec:bipsw_cryptanalysis}. The use of $n = 768$ was  proposed later in~\cite{AC:CDDKS24}. It is worth noting that an earlier article~\cite{EC:BCMPR24} suggested using $n = 770$. However, the choice of $n = 768$ is better suited for software implementations, as it is a multiple of 32.
+
+Concerning the generalized construction given in~\cite{C:DGHIKS21}, its authors propose two parameter sets: one described as \emph{aggressive} and the other as more \emph{conservative}. For a target security level of $\lambda$ bits, the aggressive setting uses $n = m = 2\lambda$, while the conservative one sets $n = m = 2.5\lambda$. In both cases, the output size is chosen as $t = \lambda / \log_2(3)$. For the standard $128$-bit security level, this corresponds to $n = m = 256$ in the aggressive case and $n = m = 320$ in the conservative one, with $t \approx 81$ in both settings. The authors further impose a concrete upper bound of $N = 2^{40}$ on the number of samples available to an attacker under a single key.
+
+
+Table~\ref{tab:parameters_bipsw} summarizes these parameters, where $N$ denotes the maximum number of queries allowed under a single key.
+
+ \cb{Geoffroy, ça vient d'où le $N = 2^{44.5}$ que t'as donné dans ta présentation ?}
+
 
 \begin{table}[!ht]
 \centering
-\begin{tabular}{ccc}
+\begin{tabular}{cccc}
 \toprule
-Security level & Parameters & Reference \\
+Variant & Parameters & $N$ & Reference \\
 \midrule
-$\lambda = 128$ &$n = 384$ & \cite{TCC:BIPSW18}\\
-$\lambda = 128$ &$n = 768$ & \cite{AC:CDDKS24}\\
-$\lambda = 128$ &$n = 770$ & \cite{EC:BCMPR24}\\
-
+Section~\ref{sec:bipsw_original} (\cite{TCC:BIPSW18}) &$n = 768$& $2^{44.5}$ & \cite{AC:CDDKS24}\\
+\midrule
+\multirow{2}{*}{Section~\ref{sec:bipsw_alt1} (\cite{C:DGHIKS21}}& $n = m = 256$, $t = 81$ & $2^{40}$ & \multirow{2}{*}{\cite{C:DGHIKS21}}\\
+& $n = m = 320$, $t = 81$  & $2^{40}$ & \\
 \bottomrule
 \end{tabular}
-\caption{\label{tab:parameters_bipsw}Parameters for the lternative mod-2/mod-3 construction~\cite{TCC:BIPSW18}, intended as targets for cryptanalysis. \lp{ok wtf?}}
+\caption{\label{tab:parameters_bipsw}Parameters for the alternative mod-2/mod-3 construction~\cite{TCC:BIPSW18} and the  \cite{C:DGHIKS21} generalization, intended as targets for cryptanalysis. }
 \end{table}
+
+\subsection{Implementation}
+The algorithmic description of the alternative mod-2/mod-3 wPRF is provided in Algorithm~\ref{alg:bipsw}.  
+ \begin{algorithm}
+  \caption{\label{alg:bipsw}The mod-2/mod-3 wPRF} 
+  \begin{algorithmic} 
+  \State \textbf{Input:} $k,x \in \mathbb{Z}_2^n$
+    \State $u \leftarrow \sum_{i=0}^{n-1} k_i \cdot x_i \mod 6$ 
+    \If{$u \in \{0, 1, 2\}$} 
+    \State	\Return 0 
+    \Else
+    	\State { }\Return 1
+     \EndIf
+  \end{algorithmic}
+\end{algorithm}
 %%% Local Variables:
 %%% mode: latex
 %%% ispell-local-dictionary: "english"

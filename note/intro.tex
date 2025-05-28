@@ -6,10 +6,10 @@ Symmetric cryptography has provided other areas of cryptography and information 
 These functions are symmetric in nature in the sense that they map a secret input to secure output using a procedure that depends only on a secret key, much like the ``usual'' pseudo-random functions. However, these primitives must also satisfy different properties.
 \begin{description}
 \item[Security Model.] They are \emph{weak} in the sense that the adversary is only allowed to perform random queries, and that the number of queries is severely limited. To put it differently, they are only intended to be secure in the known plaintext setting, and with a low number of queries.
-\item[Input/Output Sizes.] The input and key have lengths that are usually consist of many hundreds of bits, while the output can be as small as a single bit. This contrasts with PRFs that are usually expected to have an output of a similar size to the input.
-\item[Cost Model.] The main difference with classical construction lies in the \emph{shallow} requirement: these functions are not iterated. They consist essentially in a single round.
+\item[Input/Output Sizes.] The input and key of such functions typically consist of several hundred bits, while the output can be as small as a single bit. This stands in contrast to traditional PRFs, which are generally expected to produce outputs of similar size to their inputs.
+\item[Cost Model.] The main difference with classical constructions lies in the \emph{shallow} requirement: these functions are not iterated. They consist essentially in a single round.
 \end{description}
-It should then come as no surprise that such primitives look very different from what is usually considered in symmetric cryptography. For example, the BIPSW function introduced in~\cite{TCC:BIPSW18} is fully specified by the following equation:
+It should then come as no surprise that such primitives look very different from what is usually considered in symmetric cryptography. For example, the mod-2/mod-3 function introduced in~\cite{TCC:BIPSW18} is fully specified by the following equation:
 \begin{equation*}
   F_k(x) := \left(\sum_{i = 0}^{n-1} k_i x_i \mod 2 + \sum_{i = 0}^{n-1} k_i x_i \mod 3\right) \mod{2}, \quad \text{ for } x,k \in \{0,1\}^n~,
 \end{equation*}
@@ -66,7 +66,6 @@ Things we must introduce:
 \item circuit depth
 \end{itemize}
 
-The rest of the article is organized as follows. Section~\ref{sec:definition} introduces preliminary notions on shallow weak PRFs, discusses their intended applications, and outlines their cost and security models. Next, Section we present several families of shallow weak PRFs, providing both mathematical and algorithmic descriptions, known variants, and parameter sets that serve as targets for cryptanalysis. We cover four distinct families, which are detailed in Sections~\ref{sec:bipsw},\ref{sec:goldreich},\ref{sec:ealpn}, and~\ref{sec:vdlpn}, respectively.
+The rest of the article is organized as follows. Section~\ref{sec:definition} introduces preliminary notions on shallow weak PRFs, discusses their intended applications, and outlines their cost and security models. Next, we present several families of shallow weak PRFs, providing both mathematical and algorithmic descriptions, known variants, any known cryptanalysis results and parameter sets that serve as targets for cryptanalysis. We cover four distinct families, which are detailed in Sections~\ref{sec:bipsw},\ref{sec:goldreich},\ref{sec:ealpn}, and~\ref{sec:vdlpn}, respectively.
 
 
-\lp{changer la structure: la section 4 saute, chaque wsPRF devient sa propre section}
