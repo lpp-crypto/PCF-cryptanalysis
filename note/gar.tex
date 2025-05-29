@@ -36,28 +36,33 @@ One of the most compact instantiations of this proposal uses locality $d = 5$ an
 P_5(x_1, x_2, x_3, x_4, x_5) = x_1 + x_2 + x_3 + x_4 x_5.
 \]
 
+More generally, natural candidates for the predicate $P$ in Goldreich’s construction include the classes of \textsf{XOR-MAJ} and \textsf{XOR-THR} functions. These predicates operate on disjoint subsets of the input: the elements of the first subset are combined using XOR, while those of the second are processed by a nonlinear function, such as a majority or threshold function. The outputs of these two components are then XORed to produce the final result.
 
+\paragraph{Threshold function.} Let $\mathsf{w}(x)$ denote the Hamming weight of a vector $x \in \{0,1\}^t$. For a given threshold $\mathsf{th} \in [1, t+1]$, the threshold function $\mathsf{THR}_{\mathsf{th}} : \{0,1\}^t \to \{0,1\}$ is defined as:
 
-More generally, natural candidates for the predicate $P$  in Goldreich’s construction include the classes of \textsf{XOR-MAJ} and \textsf{XOR-THR} functions. These correspond to predicates defined as the XOR of the output of a linear function and either a majority or a threshold function applied to independent input bits. 
-
-More formally, let $\mathsf{w}(x)$  denote the Hamming weight of $x \in \{0,1\}^t$ , where $t$  is the input length.
-
-\paragraph{Threshold function.} For a given threshold $\mathsf{th} \in [1,t+1] $ , the \emph{threshold function} $\mathsf{THR}_{\mathsf{th}} : \{0,1\}^t \to \{0,1\}$  is defined as:
-\[
+$$
 \mathsf{THR}_{\mathsf{th}}(x) = 
 \begin{cases}
 0 & \text{if } \mathsf{w}(x) < \mathsf{th}, \\
 1 & \text{otherwise}.
 \end{cases}
-\]
+$$
 
-\paragraph{Majority function.} The \emph{majority function} $\mathsf{MAJ} : \{0,1\}^t \to \{0,1\}$  is the special case where the threshold is set to half the input length (rounded up):
-\[
-\mathsf{MAJ}(x) = \mathsf{THR}_{\lfloor t/2 \rfloor}(x)\,.
-\]
+\paragraph{Majority function.} The majority function $\mathsf{MAJ} : \{0,1\}^t \to \{0,1\}$ is the special case of the threshold function where the threshold is set to half the input length (rounded up):
+
+$$
+\mathsf{MAJ}(x) = \mathsf{THR}_{\lfloor t/2 \rfloor}(x).
+$$
 
 
-These predicates are the two most popular choices, as they offer both high algebraic immunity~\cite{C:Courtois03,EC:CouMei03} and a high resiliency order~\cite{DBLP:journals/tit/Siegenthaler84}. For the \textsf{XOR-MAJ} and \textsf{XOR-THR} functions in particular, these cryptographic criteria have been thoroughly analyzed in~\cite{DBLP:journals/ccds/Meaux21,DBLP:journals/dam/Meaux22}.  
+
+\paragraph{The $\mathsf{XOR}_{\ell_1}-\mathsf{MAJ}_{\ell_2}$ predicate.} Let $u = (u_1, \ldots, u_\ell) \in \{0,1\}^\ell$ be the input to the predicate, and let $\ell_1 + \ell_2 = \ell$ be a partition of the input. This predicate applies an XOR over the first $\ell_1$ input bits and a majority over the remaining $\ell_2$ bits, and XORs the two results:
+
+$$
+P(u) = \mathsf{XOR}_{\ell_1}-\mathsf{MAJ}_{\ell_2}(u) = \mathsf{XOR}(u_1, \ldots, u_{\ell_1}) \oplus \mathsf{MAJ}(u_{\ell_1+1}, \ldots, u_\ell).
+$$
+
+A similar can be given for the $\mathsf{XOR}_{\ell_1}-\mathsf{THR}_{\mathsf{th},\ell_2}$ predicate. These predicates are the two most popular choices, as they offer both high algebraic immunity~\cite{C:Courtois03,EC:CouMei03} and a high resiliency order~\cite{DBLP:journals/tit/Siegenthaler84}. Their cryptographic properties have been thoroughly analyzed in~\cite{DBLP:journals/ccds/Meaux21,DBLP:journals/dam/Meaux22}.  
 
 \subsection{Cryptanalysis}
 
@@ -144,10 +149,11 @@ Guess-and-decode & $\mathcal{O}(n^{\mathsf{s}} \cdot 2^{\frac{n^{2 - \mathsf{s}}
 \subsection{Targets for Cryptanalysis}
 The high versatility of Goldreich's PRG raises several important questions. In particular, it remains unclear how to choose an optimal predicate that achieves the best possible stretch $\mathsf{s}$ for the smallest possible locality $d(n)$.
 
-Arguably the simplest and most natural target is the instantiation using the $P_5$ predicate, for which concrete parameters are proposed in~\cite{DBLP:journals/tit/YangGJL22}. and in~\cite{DBLP:conf/eurocrypt/AgarwalBBS25}.
+Arguably the simplest and most natural instantiation is based on the $P_5$ predicate, for which concrete parameter sets are proposed in~\cite{DBLP:journals/tit/YangGJL22} and~\cite{DBLP:conf/eurocrypt/AgarwalBBS25}.
 
-For an instantiation with \textsf{XOR-MAJ} predicates, some are proposed in~\cite{DBLP:conf/eurocrypt/AgarwalBBS25} and in~\cite{EC:BCMPR24} but some were broken by the bit-fixing correlation attack in~\cite{EPRINT:FLLL24} (for this ones we propose new ones) and others were proposed in~\cite{AC:CDDKS24}. All of these parameters are summarized in Table~\ref{tab:paramgar}.
-\yr{Les deux paragraphes du dessus ne sont peut-être pas utiles}
+For constructions based on \textsf{XOR-MAJ} predicates, several parameter sets have been proposed in~\cite{DBLP:conf/eurocrypt/AgarwalBBS25} and~\cite{EC:BCMPR24}. However, some of these were later broken by the bit-fixing correlation attack introduced in~\cite{EPRINT:FLLL24}. For the affected instances, we propose new parameters. Additional instantiations have also been suggested in~\cite{AC:CDDKS24}.
+
+All these parameter sets are summarized in Table~\ref{tab:paramgar}.
 
 \begin{table}[!ht]
 \centering
@@ -165,10 +171,10 @@ Seed size ($n$) & Stretch ($\mathsf{s}$) & Predicate ($P$)& Reference\\
 2048 & 3 & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \cite{AC:CDDKS24} \\
 \bottomrule
 \end{tabular}
-\caption{\label{tab:paramgar}Challenge parameter sets for Goldreich's PRG instantiated with the $P_5$ predicate, targeting a 128-bit security level.}
+\caption{\label{tab:paramgar}Challenge parameter sets for Goldreich's PRG targeting a 128-bit security level.}
 \end{table}
 
-\subsection{Implementation}
+\subsection{Algorithmic Description}
 The PRG differs from the other shallow weak PRFs presented in this survey in that it does not rely on a secret key. Instead, the adversary is given the subsets $\sigma_i$, which are sampled uniformly at random from all subsets of size $d$. These subsets play a similar role to the inputs $x$ in the other constructions: they are public, but not adversarially chosen. The actual secret in this case is the seed, which was previously denoted by $x$. For clarity and consistency with Algorithm~\ref{alg:gar}, we now refer to the seed as $k$.
 
 \yr{Je veux bien qu'on appelle $k,x$ comme les autres j'essaie un truc mais je suis pas si convaincu. J'utiliserais au moins $\sigma$ ?}

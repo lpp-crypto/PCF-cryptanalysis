@@ -136,9 +136,8 @@ For the first construction, the parameter $n = 384$ proposed in the original pap
 Concerning the generalized construction given in~\cite{C:DGHIKS21}, its authors propose two parameter sets: one described as \emph{aggressive} and the other as more \emph{conservative}. For a target security level of $\lambda$ bits, the aggressive setting uses $n = m = 2\lambda$, while the conservative one sets $n = m = 2.5\lambda$. In both cases, the output size is chosen as $t = \lambda / \log_2(3)$. For the standard $128$-bit security level, this corresponds to $n = m = 256$ in the aggressive case and $n = m = 320$ in the conservative one, with $t \approx 81$ in both settings. The authors further impose a concrete upper bound of $N = 2^{40}$ on the number of samples available to an attacker under a single key.
 
 
-Table~\ref{tab:parameters_bipsw} summarizes these parameters, where $N$ denotes the maximum number of queries allowed under a single key.
+Table~\ref{tab:parameters_bipsw} summarizes the proposed parameter sets, where \( N \) denotes the maximum number of queries allowed under a single key. The upper bound \( N = 2^{44.5} \) corresponds to the data complexity of the attack presented in~\cite{JMN23}, and is also referenced in Nguyen’s thesis~\cite{nguyen2025} (p.~110). The parameters proposed in~\cite{AC:CDDKS24} and~\cite{EC:BCMPR24} are directly based on the results of~\cite{JMN23}.
 
- \cb{Geoffroy, ça vient d'où le $N = 2^{44.5}$ que t'as donné dans ta présentation ?}\gc{Bonne question...}
 
 
 \begin{table}[!ht]
@@ -147,7 +146,7 @@ Table~\ref{tab:parameters_bipsw} summarizes these parameters, where $N$ denotes 
 \toprule
 Variant & Parameters & $N$ & Reference \\
 \midrule
-Section~\ref{sec:bipsw_original} (\cite{TCC:BIPSW18}) &$n = 768$& $2^{44.5}$ & \cite{AC:CDDKS24}\\
+Section~\ref{sec:bipsw_original} (\cite{TCC:BIPSW18}) &$n = 768$& $2^{44.5}$ & \cite{AC:CDDKS24,JMN23,nguyen2025}\\
 \midrule
 \multirow{2}{*}{Section~\ref{sec:bipsw_alt1} (\cite{C:DGHIKS21})}& $n = m = 256$, $t = 81$ & $2^{40}$ & \multirow{2}{*}{\cite{C:DGHIKS21}}\\
 & $n = m = 320$, $t = 81$  & $2^{40}$ & \\
