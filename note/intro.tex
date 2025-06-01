@@ -1,22 +1,22 @@
 \section{Introduction}
 \label{sec:intro}
 
-Symmetric cryptography has provided other areas of cryptography and information security with a wide range of secure algorithms, from high-throughput stream ciphers to lightweight message authentication codes, and from low-latency block ciphers to zero-knowledge-friendly hash functions. Yet, another type of symmetric primitive has been becoming more prevalent: one that has mostly escaped the attention of the symmetric cryptography community, and which we shall refer to as \emph{weak shallow pseudo-random functions (wsPRFs)}.
+Symmetric cryptography has provided other areas of cryptography and information security with a wide range of secure algorithms, from high-throughput stream ciphers to lightweight message authentication codes, and from low-latency block ciphers to zero-knowledge-friendly hash functions. Meanwhile,  another class of symmetric primitives has been gaining ground: \emph{weak shallow pseudo-random functions (wsPRFs)}, which have so far mostly escaped the attention of the symmetric cryptography community. 
 
 
 %Symmetric cryptography has provided other areas of cryptography and information security with a wide variety of secure algorithms, from high throughput stream ciphers to lightweight message authentication codes, from low latency block ciphers to zero-knowledge friendly hash functions. Yet, another type of symmetric primitive is becoming more prevalent  has mostly escaped the attention of the symmetric community that we shall call \emph{weak shallow pseudo-random functions (wsPRF)}.
 
 These functions are symmetric in nature in the sense that they map a secret input to secure output using a procedure that depends only on a secret key, much like the ``usual'' pseudo-random functions. However, these primitives must also satisfy different properties.
 \begin{description}
-\item[Security Model.] They are \emph{weak} in the sense that the adversary is only allowed to perform random queries, and that the number of queries is severely limited. To put it differently, they are only intended to be secure in the known plaintext setting, and with a low number of queries.
-\item[Input/Output Sizes.] The input and key of such functions typically consist of several hundred bits, while the output can be as small as a single bit. This stands in contrast to traditional PRFs, which are generally expected to produce outputs of similar size to their inputs.
+\item[Security Model.] They are \emph{weak} in the sense that the adversary is only allowed to perform random queries, and that the number of queries is severely limited. To put it differently, they are only intended to be secure in the known-plaintext setting, and under a low number of queries.
+\item[Input/Output Sizes.] The input and key of such functions typically consist of several hundred bits, while the output can be as small as a single bit. This stands in contrast to traditional PRFs, which are generally expected to produce outputs of a size comparable to their inputs.
 \item[Cost Model.] The main difference with classical constructions lies in the \emph{shallow} requirement: these functions are not iterated. They consist essentially in a single round.
 \end{description}
 It should then come as no surprise that such primitives look very different from what is usually considered in symmetric cryptography. For example, the mod-2/mod-3 function introduced in~\cite{TCC:BIPSW18} is fully specified by the following equation:
 \begin{equation*}
   F_k(x) := \left(\sum_{i = 0}^{n-1} k_i x_i \mod 2 + \sum_{i = 0}^{n-1} k_i x_i \mod 3\right) \mod{2}, \quad \text{ for } x,k \in \Z_2^n~,
 \end{equation*}
-where $\Z_n$ denotes the set $\{0,...,n-1\}$. We provide more details about this specific function in Section~\ref{sec:bipsw}. As we can see, none of the usual building blocks are present: no round function, no S-box layer, no Feistel round... And yet the security goals are very reminiscent of what is usually expected in symmetric cryptography.
+where $\Z_n$ denotes the set $\{0,\dots,n-1\}$. We provide more details about this specific function in Section~\ref{sec:bipsw}. As we can see, none of the usual building blocks are present: no round function, no S-box layer, no Feistel round... And yet the security goals are very reminiscent of what is usually expected in symmetric cryptography.
 
 To better understand these functions, we must first introduce their formal definition. This reveals one of the main challenges of this work: the vocabulary and notions used in complexity theory and symmetric cryptography differ. We begin by describing the security notion that weak shallow PRFs (wsPRFs) are expected to satisfy, using both languages.
 
@@ -27,7 +27,7 @@ To better understand these functions, we must first introduce their formal defin
 The different definitions of PRFs intend to capture a similar concept that was already explicitly mentioned in the seminal work of Luby and Rackoff~\cite{LubRac88}. Consider a family of functions $h_k : \Z_2^{64} \to \Z_2^{64}$, where $k$ is a secret key. The intuitive notion to capture is, in their words, the following one.
 \begin{quote}
   Say that we have two black boxes, one of which computes a fixed randomly chosen
-function from [the set of functions of $\Z_2^{64}$ and the other computes $h_k$ for a fixed randomly chosen $k$.
+function from the set of functions of $\Z_2^{64}$ and the other computes $h_k$ for a fixed randomly chosen $k$.
 Then no algorithm which examines the boxes by feeding inputs to them and
 looking at the outputs can obtain, in a ``reasonable'' time, any ``significant'' idea
 about which box is which.
@@ -44,18 +44,19 @@ A pseudorandom function (\PRF), as originally introduced in~\cite{FOCS:GolGolMic
 \end{definition}
 Informally, the ``reasonable'' power of the adversary lies in the \emph{asymptotic} complexity of their attack: it has to \emph{scale} polynomially at most (and not exponentially).
 
-This definition is in essence based on the notion of \emph{computational indistinguishability}. Two families of sets $\{S_n\}_{n >0}$ and $\{S'_n\}_{n>0}$ are computationally indistinguishable if, for any probabilistic polynomial time algorithm, the advantage when figuring if $x$ is from $S_n$ or $S'_n$ is a negligible function in $n$. It is denoted $S_n \approx_c S'_n$.
+This definition is, in essence, based on the notion of \emph{computational indistinguishability}. Two families of sets $\{S_n\}_{n > 0}$ and $\{S'_n\}_{n > 0}$ are computationally indistinguishable if, for any probabilistic polynomial-time algorithm, the advantage in determining whether $x$ is from $S_n$ or $S'_n$ is a negligible function of $n$. This is denoted by $S_n \approx_c S'_n$.
 
 In this setting, it is easy to define a \emph{weak} pseudorandom function (\wPRF). Such a function offers a relaxed guarantee: it is only required to be indistinguishable from a truly random function when the adversary is restricted to querying the function on uniformly random inputs.
 \begin{definition}[(Weak) Pseudorandom Function (\wPRF, \PRF), \cite{FOCS:GolGolMic84,FOCS:NaoRei95}]
-	Let $\secpar\in\N$ be a security parameter. A (weak) pseudorandom function with domain $\setX = \{\setX_{\lambda}\}_{\lambda \in \N}$, key space $\setK= \{\setK_{\lambda}\}_{\lambda \in \N}$, and range $\setY = \{\setY_{\lambda}\}_{\lambda \in \N}$, \lp{c'est le même $\lambda$ qu'au-dessus?} consists of the following two polynomial-time algorithms: 
+	Let $\secpar\in\N$ be a security parameter. A (weak) pseudorandom function with domain $\setX = \{\setX_{\lambda}\}_{\lambda \in \N}$, key space $\setK= \{\setK_{\lambda}\}_{\lambda \in \N}$, and range $\setY = \{\setY_{\lambda}\}_{\lambda \in \N}$, %\lp{c'est le même $\lambda$ qu'au-dessus?} 
+	consists of the following two polynomial-time algorithms: 
 	\begin{itemize}
 		\item[$\bullet$]$\KeyGen(1^{\lambda}) \rightarrow \msk$, a probabilistic algorithm that takes as input the security parameter $\lambda$, and outputs a master secret key $\msk \in \mathcal{K}$, and
 		
 		\item[$\bullet$]$\Eval(\msk,x) \rightarrow y$, a deterministic algorithm that, given as input a  secret master key $\msk$ and a value $x \in \setX$, outputs a value $y \in \setY$.
 	\end{itemize}
 	
-	We say that the pair $(\KeyGen,\Eval)$ is a \textbf{weak pseudorandom function (\wPRF)} if for any Probabilistic Polynomial Time (PPT) adversary $\adva$ and any polynomially bounded number $Q \in \N$, representing the maximal number of authorised samples, it holds that %\Anote{Q is not defined}%\Mnote{Done}
+	We say that the pair $(\KeyGen,\Eval)$ is a \textbf{weak pseudorandom function (\wPRF)} if for any Probabilistic Polynomial Time (PPT) adversary $\adva$ and any polynomially bounded number $Q \in \N$, representing the maximal number of authorised samples, it holds that 
 		\begin{multline*}
 		\resizebox{.95\hsize}{!}{$\left\{ \left( \left(x_i,\Eval(\msk,x_i)\right)_{i \in [Q]} \right)\middle| \begin{array}{c} \msk \sample \KeyGen(1^{\lambda})\\ \forall i \in [Q]: x_i \sample \setX \end{array}\right\} \approx_c \left\{ \left(\left(x_i,y_i \right)_{i \in [Q]} \right) \middle| \begin{array}{c}
 		\forall i \in [Q]: \\
@@ -64,7 +65,7 @@ In this setting, it is easy to define a \emph{weak} pseudorandom function (\wPRF
 		\end{multline*}
 \end{definition}
 
-In this context, the main goal of the designers of such primitives is to identify the asymptotic behaviour of the best attack techniques in order to determine if a polynomial adversary can have an advantage.
+In this context, the main goal of the designers of such primitives is to identify the asymptotic behavior of the best attack techniques in order to determine whether a polynomial-time adversary can gain an advantage.
 
 
 \paragraph{Symmetric Cryptography View.}
