@@ -1,30 +1,29 @@
 %!TEX root=main.tex
 
-\section{Background, Notations and Definitions}
+\section{General Background}
 \label{sec:notations}
 
-\subsection{Core Concepts}
+\subsection{Definitions and Notations}
 
-Things we must introduce:
-\begin{itemize}
-\item algebraic degree
-\item algebraic circuit
-\item circuit depth
-\item calculatoirement indistinguable
-\item Notations $Z_n, [N]$
-\end{itemize}
+\paragraph{Mathematics.} As stated before, we denote $\Z_n$ the ring consisting of the integers in $\{0, ..., n-1\}$. We also denote $[N]$ the set $\{0,...,N\}$ \lp{c'est bien ça?}, and $[a,b]$ the interval $\{a, a+1, ..., b\}$.
+
+A function mapping $\Z_2^n$ to $\Z_2$ is a \emph{binary} or \emph{Boolean} function, and it has unique representation as a polynomial in variables $(x_0,...,x_{n-1})$ that is the sum of monomials of the form $\prod_{i=0}^{n-1}x_i^{u_i}$ with $u_i \in \Z_2$. The Hamming weight of a vector $(u_0, ..., u_{n-1}) \in \Z_2^n$ is the number of non-zero entries in it, and the algebraic degree of a Boolean function is the maximum number of terms appearing in its monomials with non-zero coefficients.
 
 
+\paragraph{Parameters.}
+In practice, the message length and key lengths of the function we study depend on a security parameter $\lambda$. To simplify notations, we will  explicitly omit indexing all relevant parameters by $\lambda$. For instance, we will write $n$ instead of $n(\lambda)$ and $\mathcal{K}$ instead of $\mathcal{K}_{\lambda}$ for the key space.
 
 
-\subsubsection{Circuit Depth and Shallow Functions}
+\subsection{Circuits}
 
+In order to formally define the notion of \emph{shallow} PRF, we need to introduce \emph{circuits}.
 
-Weak pseudorandom functions have a broad range of applications in cryptography and beyond. Of particular relevance to this work is the notion of \emph{shallow} \wPRF. Informally, a \wPRF is said to be \emph{shallow} if it can be computed by a function of low depth in an appropriate computational model. Slightly more formally:
+\paragraph{Circuits.} A circuit is a directed acyclic graph composed of two types of nodes: \emph{input nodes}, which have indegree 0, and \emph{gates}, which have indegree at least 1. The indegree corresponds to the number of edges ending in this node, and the outdegree to the number of edges leaving it.
 
-\paragraph{Circuits.} We are interested in \wPRF{}s that are computable by circuits within a given computational model. A circuit is a directed acyclic graph composed of two types of nodes: \emph{input nodes}, which have indegree 0, and \emph{gates}, which have indegree at least 1. Each gate with indegree~$\indeg$ and outdegree~$\outdeg$ is labeled by a function $g: \{0,1\}^\indeg \to \{0,1\}^\outdeg$.\lp{pointer que cette fois-ci on n'est pas dans $\F_p$} To evaluate a circuit~$C$ with $n$ input nodes on an input $x \in \{0,1\}^n$, we proceed as follows: each input node~$i$ is labeled with the corresponding bit~$x_i$. Then, for each gate whose $\indeg$ input wires have been assigned values $(z_1, \dots, z_\indeg)$, we compute the output $g(z_1, \dots, z_\indeg)$ and assign its $\outdeg$ bits to the outgoing wires of the gate. Gates with outdegree~0 are called \emph{output gates}, and the final output of the circuit is the bitstring composed of the values on these output wires. We define a \emph{circuit class} as a family $\mathcal{C} = \{\mathcal{C}_n\}_{n \in \mathbb{N}}$, where $\mathcal{C}_n$ denotes the set of allowed circuits with $n$ input nodes. A circuit class typically restricts the set of allowed gate types, and may impose additional structural constraints, such as bounds on indegree, outdegree, depth, size, or overall topology.
-\cb{Expliquer les notions de indegree et outdegree et peut être introduire clairement la notion de depth.}
-\lp{rajouter un dessin ; mettre en intro/prelimaries?}
+Each gate with indegree~$\indeg$ and outdegree~$\outdeg$ is labeled by a function $g: \{0,1\}^\indeg \to \{0,1\}^\outdeg$. To evaluate a circuit~$C$ with $n$ input nodes on an input $x \in \{0,1\}^n$, we proceed as follows: each input node~$i$ is labeled with the corresponding bit~$x_i$. Then, for each gate whose $\indeg$ input wires have been assigned values $(z_1, \dots, z_\indeg)$, we compute the output $g(z_1, \dots, z_\indeg)$ and assign its $\outdeg$ bits to the outgoing wires of the gate. Gates with outdegree~0 are called \emph{output gates}, and the final output of the circuit is the bitstring composed of the values on these output wires. We define a \emph{circuit class} as a family $\mathcal{C} = \{\mathcal{C}_n\}_{n \in \mathbb{N}}$, where $\mathcal{C}_n$ denotes the set of allowed circuits with $n$ input nodes. Figure~\ref{fig:circuit} presents a very simple example of circuit.
+
+A circuit class typically restricts the set of allowed gate types, and may impose additional structural constraints, such as bounds on indegree, outdegree, depth, size, or overall topology.
+
 
 \begin{figure}
 \centering
@@ -35,9 +34,6 @@ Weak pseudorandom functions have a broad range of applications in cryptography a
 
 \paragraph{Shallow wPRF.} Fix a circuit class $\class$ and a function $s:\N\to\N$. We say that a pair $(\KeyGen,\Eval)$ is an $s$-shallow wPRF over $\class$ if for every $\msk$ in the range of $\KeyGen$, the function $f:x\mapsto \Eval(\msk,x)$ is computable by a depth-$s(|x|)$ circuit in $\class$. The notion of shallow wPRFs captures wPRFs that can be computed in parallel-time complexity $s$ given a sufficiently large number of computation units in the computational model defined by $\class$. \cb{On peut peut-être définir cela plus simplement ? Sinon je ne comprends pas le rôle de $s$ et ce que depth-$s(|x|)$ veut dire.}\gc{``Shallow'' veut dire ``de faible profondeur'', mais ``faible'' n'est pas formel, donc je définis ``$s$-shallow'' comme étant ``de profondeur $s$'' (depth-$s$, en anglais). Formellement, un circuit est une famille infinie de circuits (un pour chaque taille d'input possible) puisqu'il faut bien un paramètre de sécurité qui puisse grossir quelque part pour définir la sécurité asymptotique (un circuit seul est un objet de taille fixée). Les paramètres de la famille de circuit sont donc des fonctions de la taille de l'entrée. Par exemple, ``un circuit de profondeur logarithmique'' serait $\log$-shallow, puisque sur une entrée $x$ de taille $n$, il sera de profondeur au plus $\log n$.}
 
-\bigskip
-\cb{A caser cette quelque part dans cette section ou dans une section "notations" :}. 
-In practice, the message length and key lengths depend on a security parameter $\lambda$. To simplify notations, we will  explicitly omit indexing all relevant parameters by $\lambda$. For instance, we will write $n$ instead of $n(\lambda)$ and $\mathcal{K}$ instead of $\mathcal{K}_{\lambda}$ for the key space.
 
 
 
