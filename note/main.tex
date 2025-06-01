@@ -1,4 +1,5 @@
-\documentclass[journal=tosc,submission,nohyperref]{iacrtrans} % Fix for the following error I had: Package hyperxmp Error: hyperref must be loaded before hyperxmp.
+%\documentclass[journal=tosc,submission,nohyperref]{iacrtrans} % Fix for the following error I had: Package hyperxmp Error: hyperref must be loaded before hyperxmp.
+\documentclass[journal=tosc,submission]{iacrtrans}
 \pagestyle{plain}
 
 
@@ -19,8 +20,11 @@
 \maketitle
 
 \keywords{shallow weak PRFs \and alternating moduli \and Goldreich's PRG \and VDLPN \and EA-LPN}
-
-
+\begin{abstract}
+A growing number of advanced cryptographic protocols and constructions rely on symmetric primitives known as weak pseudo-random functions (wPRFs). These functions differ fundamentally from traditional PRFs: they operate in constrained models where inputs are randomly sampled and cannot be chosen by the adversary. Many such functions are instantiated in practice as shallow, non-iterated constructions.
+This Systematization of Knowledge (SoK) aims to provide a unified view of shallow wPRFs by bringing together diverse constructions under a common framework. These primitives consist of a single round, and their structure differs significantly from that of classical symmetric designs. We identify and focus on four major families of such constructions: alternating moduli wPRFs, Goldreich’s pseudorandom generator family, the EA-LPN-based design, and the VDLPN construction. For each, we provide formal mathematical and algorithmic descriptions, known variants, existing cryptanalytic results, and proposed parameter sets.
+Our objective is to encourage the symmetric cryptography community—particularly cryptanalysts—to analyze and estimate the security level that these primitives offer in practice. To date, their security has mostly been examined from an asymptotic point of view, and concrete cryptanalysis of fixed instances is largely missing. Given their integration into high-level cryptographic protocols, these shallow wPRFs clearly need dedicated analysis: any discovered weakness could directly impact the security of the protocols that rely on them as underlying components.
+\end{abstract}
 
 \vfill
 %\tableofcontents
