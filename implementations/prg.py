@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #-*- Python -*-
-# Time-stamp: <2025-06-01 21:55:49>
+# Time-stamp: <2025-06-01 23:19:06>
 
 
 import hashlib
@@ -62,6 +62,8 @@ class ReproducibleRangePRG:
         """
         # setting up the computation
         normalized_upper_bound = upper_bound - lower_bound
+        if normalized_upper_bound == 0:
+            return lower_bound # deterministic case: no range
         needed_bytes = ceil(log(normalized_upper_bound, 256))
         mask = 1
         while mask < normalized_upper_bound:

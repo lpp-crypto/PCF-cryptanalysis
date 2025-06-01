@@ -1,6 +1,6 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-07-01 15:23:24 leo>
+# Time-stamp: <2025-06-01 23:19:46>
 
 from sage.all import *
 from utils import *
@@ -23,62 +23,79 @@ class EALPN:
     is all zero before a threshold, all 1 after
 
     l: the number of cells in the input, it has to be a divisor of t
-
-    # !TODO! Add reference 
     """    
-    def __init__(self,
-                 N = 2**45,
-                 t = 660,
-                 l = 11,
-                 seed = b"seed"):
+    def __init__(
+            self,
+            m, # main size (5N/t in slides)
+            l, # number of rows in the key
+            u, # length of each key row
+    ):
         # initializing the variables
-        self.N = N
-        self.t = l * ceil(t / l)
+        self.m = m
         self.l = l
-        self.t_over_l = Integer(self.t / self.l)
-        self.prg = ReproduciblePRG(seed)
-        self.word_size = ceil((5*self.N) / self.t)
-        self.k = [
-            self.prg(1, self.word_size)
-            for i in range(0, self.t)
-        ]
+        self.u = u
 
         
-    def __call__(self):
-        """Generates a random input and evaluates the function on it.
-        The input is a list of length l of tuples (x_i, j_i), where
+    def __call__(self, k, jx):
+        """Both the key `k` and the input `jx` are two-dimensional arrays:
 
-        - all x_i are integers in {1, ..., 5N/t}
-
-        - all j_i are integers in {1, ..., t/l}
-
+        - `k` must contain l rows, each with u elements in {1, ..., m}
+        - `jx` is contains l rows, each with two elements:
+            - `j` in {0, ..., u-1} (index in key row)
+            - `x` in {1, ..., m} (value to compare)
         """
-        # generating the random input
-        x = [self.prg(1, self.word_size) for i in range(0, self.l)]
-        j = [self.prg(0, self.t_over_l) for i in range(0, self.l)]
         # computing the function
         result = 0
         for i in range(0, self.l):
-            result += greater_than(x[i], self.k[j[i]])
+            j, x = jx[i]
+            assert j < self.u
+            assert x < self.m
+            result += greater_than(x, k[i][j])
         return result % 2
 
 
 
 # parameters
-# !TODO! double check parameters
-aggressive_ealpn = EALPN(N = 2**45,
-                         t = 660,
-                         l = 11)
+# m is equal to 5N/t, and u to t/l
+# -- sage, N=2**45, t=85, l=3ln(5N)=98.4
+safe_ealpn = EALPN(
+    2**41, # m
+    99,    # l
+    1      # u
+)
 
-safe_ealpn = EALPN(N = 2**45,
-                   t = 660,
-                   l = 11)
+# -- aggressive, N=2**45, t=660, l=11
+aggressive_ealpn = EALPN(
+    2**38, # m
+    11,    # l
+    60     # u
+)
+                   
 
-eval_time_optimized = EALPN(N = 2**45,
-                            t = 1000,
-                            l = 7)
 
 if __name__ == "__main__":
-    for pcf in [aggressive_ealpn, safe_ealpn, eval_time_optimized]:
-        print(pretty_sequence(get_sequence(pcf, 50)))
+    seed = b""
+    prng = ReproducibleRangePRG(seed)
+    sequence_length = 500
+    # 128-bit secure
+    instance = safe_ealpn
+    # generating the key
+    k = [
+        [prng(0, instance.m) for t in range(0, instance.u)]
+        for i in range(0, instance.l)
+    ]
+    # printing sequence
+    seq = []
+    for t in range(0, sequence_length):
+        # generating the random input
+        jx = [
+            (
+                prng(0, instance.u), # j
+                prng(0, instance.m), # x
+            )
+            for i in range(0, instance.l)
+        ]
+        seq.append(instance(k, jx))
+    print_sequence(seq)
 
+    
