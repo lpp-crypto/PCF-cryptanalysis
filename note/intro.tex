@@ -1,7 +1,10 @@
 \section{Introduction}
 \label{sec:intro}
 
-Symmetric cryptography has provided other areas of cryptography and information security with a wide variety of secure algorithms, from high throughput stream ciphers to lightweight message authentication codes, from low latency block ciphers to zero-knowledge friendly hash functions. Yet, another type of symmetric primitive is becoming more prevalent that has mostly escaped the attention of the symmetric community that we shall call \emph{weak shallow pseudo-random functions (wsPRF)}.
+Symmetric cryptography has provided other areas of cryptography and information security with a wide range of secure algorithms, from high-throughput stream ciphers to lightweight message authentication codes, and from low-latency block ciphers to zero-knowledge-friendly hash functions. Yet, another type of symmetric primitive has been becoming more prevalent: one that has mostly escaped the attention of the symmetric cryptography community, and which we shall refer to as \emph{weak shallow pseudo-random functions (wsPRFs)}.
+
+
+%Symmetric cryptography has provided other areas of cryptography and information security with a wide variety of secure algorithms, from high throughput stream ciphers to lightweight message authentication codes, from low latency block ciphers to zero-knowledge friendly hash functions. Yet, another type of symmetric primitive is becoming more prevalent  has mostly escaped the attention of the symmetric community that we shall call \emph{weak shallow pseudo-random functions (wsPRF)}.
 
 These functions are symmetric in nature in the sense that they map a secret input to secure output using a procedure that depends only on a secret key, much like the ``usual'' pseudo-random functions. However, these primitives must also satisfy different properties.
 \begin{description}
@@ -15,7 +18,8 @@ It should then come as no surprise that such primitives look very different from
 \end{equation*}
 where $\Z_n$ denotes the set $\{0,...,n-1\}$. We provide more details about this specific function in Section~\ref{sec:bipsw}. As we can see, none of the usual building blocks are present: no round function, no S-box layer, no Feistel round... And yet the security goals are very reminiscent of what is usually expected in symmetric cryptography.
 
-In order to better understand these functions, we must first introduce their formal definition. There lies one of the main obstacles in this work: the vocabulary and notions from complexity theory and symmetric differ. Let us first describe the security notion that wsPRFs must satisfy using both languages.
+To better understand these functions, we must first introduce their formal definition. This reveals one of the main challenges of this work: the vocabulary and notions used in complexity theory and symmetric cryptography differ. We begin by describing the security notion that weak shallow PRFs (wsPRFs) are expected to satisfy, using both languages.
+
 
 
 \subsection{Security Definitions}
@@ -30,7 +34,7 @@ about which box is which.
 \end{quote}
 We need to limit the power of the attackers using a definition of what ``reasonable'' means as an unbounded adversary could always just brute-force the key. Similarly, the output of the distinguishing algorithm has to be ``significant''. For example, systematically returning ``random function'' would be correct sometimes, but would not be interesting at all.
 
-Starting from this insight, two different definitions of ``reasonable'' have eventually solidified. The first was already present in~\cite{LubRac88}, and relies on complexity classes. The other, more common in modern symmetric, relies on precise upper bounds.
+Starting from this insight, two different definitions of ``reasonable'' have eventually solidified. The first was already present in~\cite{LubRac88}, and relies on complexity classes. The other, more common in modern symmetric cryptography, relies on precise upper bounds.
 
 \paragraph{Complexity Theory View.}
 
@@ -97,10 +101,10 @@ In these contexts, the ``symmetric'' definitions of (weak) PRF security take pre
 
 \subsection{Our Contributions}
 
-Our aim in this paper is to describe wsPRFs, i.e. what they are, and why they are relevant in practice. This involves both a detailed survey of the literature, and a translation of their security goals away from asymptotics. To this end, we also propose cryptanalysis challenges, together with \texttt{Python} reference implementations of the wsPRFs we describe: practical security can only be studied through cryptanalysis, and our goal is to simplify this analysis.
+Our aim in this Systematization of Knowledge (SoK) paper is to describe wsPRFs, i.e., what they are, and why they are relevant in practice. This involves both a detailed survey of the literature, and a translation of their security goals away from asymptotics. To this end, we also propose cryptanalysis challenges, together with \texttt{Python} reference implementations of the wsPRFs we describe: practical security can only be studied through cryptanalysis, and our goal is to simplify this analysis.
 
 
-\paragraph{Outline.} The rest of the article is organized as follows. Section~\ref{sec:notations} introduces preliminary notions on shallow weak PRFs, while Section~\ref{sec:applications} discusses their intended applications and outlines the associated cost and security models. We then present several families of shallow weak PRFs, providing both mathematical and algorithmic descriptions, known variants, any known cryptanalysis results and proposeed parameter sets that serve as targets for cryptanalysis. Specifically, we cover four distinct families, which are detailed in Sections~\ref{sec:bipsw},\ref{sec:goldreich},\ref{sec:ealpn}, and~\ref{sec:vdlpn}, respectively.
+\paragraph{Outline.} The rest of the article is organized as follows. Section~\ref{sec:notations} introduces preliminary notions on shallow weak PRFs, while Section~\ref{sec:applications} discusses their intended applications and outlines the associated cost and security models. We then present several families of shallow weak PRFs, providing both mathematical and algorithmic descriptions, known variants, any known cryptanalysis results and proposeed parameter sets that serve as targets for cryptanalysis. Specifically, we cover four distinct families, which are detailed in Sections~\ref{sec:bipsw},\ref{sec:goldreich},\ref{sec:vdlpn}, and~\ref{sec:ealpn}, respectively.
 
 
 % Possible outline:
