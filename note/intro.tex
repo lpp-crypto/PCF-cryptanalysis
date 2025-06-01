@@ -11,26 +11,96 @@ These functions are symmetric in nature in the sense that they map a secret inpu
 \end{description}
 It should then come as no surprise that such primitives look very different from what is usually considered in symmetric cryptography. For example, the mod-2/mod-3 function introduced in~\cite{TCC:BIPSW18} is fully specified by the following equation:
 \begin{equation*}
-  F_k(x) := \left(\sum_{i = 0}^{n-1} k_i x_i \mod 2 + \sum_{i = 0}^{n-1} k_i x_i \mod 3\right) \mod{2}, \quad \text{ for } x,k \in \{0,1\}^n~,
+  F_k(x) := \left(\sum_{i = 0}^{n-1} k_i x_i \mod 2 + \sum_{i = 0}^{n-1} k_i x_i \mod 3\right) \mod{2}, \quad \text{ for } x,k \in \Z_2^n~,
 \end{equation*}
-as detailed in Section~\ref{sec:bipsw}. As we can see, none of the usual building blocks are present: no round function, no S-box layer, no Feistel round... And yet the security goals are very reminiscent of what is usually expected in symmetric cryptography.
+where $\Z_n$ denotes the set $\{0,...,n-1\}$. We provide more details about this specific function in Section~\ref{sec:bipsw}. As we can see, none of the usual building blocks are present: no round function, no S-box layer, no Feistel round... And yet the security goals are very reminiscent of what is usually expected in symmetric cryptography.
+
+In order to better understand these functions, we must first introduce their formal definition. There lies one of the main obstacles in this work: the vocabulary and notions from complexity theory and symmetric differ. Let us first describe the security notion that wsPRFs must satisfy using both languages.
 
 
-\paragraph{From Complexity Theory...} The motivation for the first constructions of this type came from complexity theory. \lp{expand}
+\subsection{Security Definitions}
+
+The different definitions of PRFs intend to capture a similar concept that was already explicitly mentioned in the seminal work of Luby and Rackoff~\cite{LubRac88}. Consider a family of functions $h_k : \Z_2^{64} \to \Z_2^{64}$, where $k$ is a secret key. The intuitive notion to capture is, in their words, the following one.
+\begin{quote}
+  Say that we have two black boxes, one of which computes a fixed randomly chosen
+function from [the set of functions of $\Z_2^{64}$ and the other computes $h_k$ for a fixed randomly chosen $k$.
+Then no algorithm which examines the boxes by feeding inputs to them and
+looking at the outputs can obtain, in a ``reasonable'' time, any ``significant'' idea
+about which box is which.
+\end{quote}
+We need to limit the power of the attackers using a definition of what ``reasonable'' means as an unbounded adversary could always just brute-force the key. Similarly, the output of the distinguishing algorithm has to be ``significant''. For example, systematically returning ``random function'' would be correct sometimes, but would not be interesting at all.
+
+Starting from this insight, two different definitions of ``reasonable'' have eventually solidified. The first was already present in~\cite{LubRac88}, and relies on complexity classes. The other, more common in modern symmetric, relies on precise upper bounds.
+
+\paragraph{Complexity Theory View.}
+
+A pseudorandom function (\PRF), as originally introduced in~\cite{FOCS:GolGolMic84}, is defined as follows.
+\begin{definition}[PRF in complexity theory]
+  A PRF is a family of efficiently computable keyed functions such that no polynomial-time adversary can distinguish the input-output behavior of a randomly chosen function from the family from that of a uniformly random function with the same domain and range.  
+\end{definition}
+Informally, the ``reasonable'' power of the adversary lies in the \emph{asymptotic} complexity of their attack: it has to \emph{scale} polynomially at most (and not exponentially).
+
+This definition is in essence based on the notion of \emph{computational indistinguishability}. Two families of sets $\{S_n\}_{n >0}$ and $\{S'_n\}_{n>0}$ are computationally indistinguishable if, for any probabilistic polynomial time algorithm, the advantage when figuring if $x$ is from $S_n$ or $S'_n$ is a negligible function in $n$. It is denoted $S_n \approx_c S'_n$.
+
+In this setting, it is easy to define a \emph{weak} pseudorandom function (\wPRF). Such a function offers a relaxed guarantee: it is only required to be indistinguishable from a truly random function when the adversary is restricted to querying the function on uniformly random inputs.
+\begin{definition}[(Weak) Pseudorandom Function (\wPRF, \PRF), \cite{FOCS:GolGolMic84,FOCS:NaoRei95}]
+	Let $\secpar\in\N$ be a security parameter. A (weak) pseudorandom function with domain $\setX = \{\setX_{\lambda}\}_{\lambda \in \N}$, key space $\setK= \{\setK_{\lambda}\}_{\lambda \in \N}$, and range $\setY = \{\setY_{\lambda}\}_{\lambda \in \N}$, \lp{c'est le même $\lambda$ qu'au-dessus?} consists of the following two polynomial-time algorithms: 
+	\begin{itemize}
+		\item[$\bullet$]$\KeyGen(1^{\lambda}) \rightarrow \msk$, a probabilistic algorithm that takes as input the security parameter $\lambda$, and outputs a master secret key $\msk \in \mathcal{K}$, and
+		
+		\item[$\bullet$]$\Eval(\msk,x) \rightarrow y$, a deterministic algorithm that, given as input a  secret master key $\msk$ and a value $x \in \setX$, outputs a value $y \in \setY$.
+	\end{itemize}
+	
+	We say that the pair $(\KeyGen,\Eval)$ is a \textbf{weak pseudorandom function (\wPRF)} if for any Probabilistic Polynomial Time (PPT) adversary $\adva$ and any polynomially bounded number $Q \in \N$, representing the maximal number of authorised samples, it holds that %\Anote{Q is not defined}%\Mnote{Done}
+		\begin{multline*}
+		\resizebox{.95\hsize}{!}{$\left\{ \left( \left(x_i,\Eval(\msk,x_i)\right)_{i \in [Q]} \right)\middle| \begin{array}{c} \msk \sample \KeyGen(1^{\lambda})\\ \forall i \in [Q]: x_i \sample \setX \end{array}\right\} \approx_c \left\{ \left(\left(x_i,y_i \right)_{i \in [Q]} \right) \middle| \begin{array}{c}
+		\forall i \in [Q]: \\
+		x_i \sample \setX , \ y_i \sample \setY
+		\end{array} \right\}.$}
+		\end{multline*}
+\end{definition}
+
 In this context, the main goal of the designers of such primitives is to identify the asymptotic behaviour of the best attack techniques in order to determine if a polynomial adversary can have an advantage.
 
 
-\paragraph{... To Practical Protocols.}
+\paragraph{Symmetric Cryptography View.}
+
+In modern symmetric cryptography, PRFs are usually not intended to work for any block size $n$. Instead, the input and output size are fixed, and while the security definition also relies on a game, it differs in a crucial way: there is no asymptotic reasoning, we instead explicitly upper-bound the probability of success of a distinguishing algorithm $\distinguisher$ that is allowed at most $q$ queries to the function under scrutiny.
+\begin{definition}[PRF security]
+  Let $n$ and $k$ be positive integers. The family of functions $F_K : \Z_2^n \to \Z_2^n$ where $K \in \Z_2^k$ achieves \emph{PRF security} against a distinguisher $\distinguisher$ if... \lp{écrire propremement}
+\end{definition}
+Since the parameters of symmetric crypto-systems are fixed (e.g. the \aes{} operates on 128 bits), such definitions are better suited to their study.
+
+In this description, the attacker is allowed to do \emph{chosen plaintext} queries, meaning that the distinguishing algorithm $\distinguisher$ can choose on which $x$ to evaluate the black box. It is however possible to instead restrict the attacker to \emph{known plaintexts}, i.e., to enforce that the inputs $x$ for the black box are chosen uniformly using an external source of randomness. In this context, we can provide an alternative definition of a weak PRF that is not asymptotic.
+
+\begin{definition}[wPRF]
+  Let $n$ and $k$ be positive integers. A family $F_K : \Z_2^n\to\Z_2^n$ of functions indexed by a key $K \in \Z_2^k$ is a \emph{weak PRF} if the advantage of a distinguisher limited to a specific number $q \ll 2^n$ of known plaintext queries to the black box...\lp{écrire proprement}
+\end{definition}
+A difficulty remains in practice, for which we are not aware of any satisfactory answer: what is the actual runtime of the distinguisher? In practice, the dominating step in, say, a differential cryptanalysis is often a final brute-force stage, meaning that the total number of calls to an intantiation of the primitive attacked is a priori a sensible time complexity metric. In fact, security claims often explicitly consider adversaries perform $2^k$ calls to the primitive. However, this approach does not work well for other attack techniques, for instance based on the resolution of polynomial systems. In this case, the dominating step is not a brute-force phase, meaning that a comparison between the efficiency of an attack and a security claim can be difficult.
+
+Since the attack techniques against the weak PRFs we consider rarely involve any brute-force step, we consider  time complexity claims made in terms of number of basic operations to be more relevant.
+
+  
+\lp{prendre en compte la proba de succès ($2^k/p$, $p$ la proba de succès par ex). pointer que parfois ils visent 80 bits de sécurité mais c'est du rabotage de bas étage pour limiter la casse en terme de perf $\implies$ motivation du papier et d'une approche basée sur la cryptanalyse}
+\yr{Ici, on a la version poly/exponentielle. Est-e qu'ici on ne mettrait pas aussi et en parallèle que l'on veut en pratique qu'un adversaire n'ait pas de distingueur qui tourne en moins de $2^\lambda$ opérations strictement ? Opérations étant ici peut-être à déterminer en partie ? Cela permettrait de dire dès le début qu'aujourd'hui on cherche à fixer les paramètres concrets ?}
+
+
+\subsection{Practical Relevance}
+
 While figuring out the existence (or inexistence) of secure wPRFs in some complexity class could be seen as problem of  purely theoretic significance, it recently received renewed attention because of the very practical need for such functions in some protocols. \lp{expand}
 
-The change of setting, from complexity theory to computer security, implies several significant changes.
+In these contexts, the ``symmetric'' definitions of (weak) PRF security take precedence since the parameters are then fixed. This change of paradigme, from complexity theory to computer security, implies several significant changes.
 \begin{description}
-\item[Irrelevance of Asymptotic Reasoning.] While figuring out the asymptotic behaviour of an adversary is the correct way to investigate complexity classes, it is hardly relevant when moving to concrete computer security since the aim in this case is not to let a parameter go to infinity, it is instead to fix it to a specific value. Thus, the attacks that were relevant asymptotically might be of lesser interest, while new attack vectors that were previously cast aside because they are exponential may instead become a threat.
+\item[Irrelevance of Asymptotic Reasoning.] While figuring out the asymptotic behaviour of an adversary is the correct way to investigate complexity classes, it is hardly relevant when moving to concrete computer security since the aim in this case is not to let a parameter go to infinity, it is instead to fix it to a specific value. Thus, the attacks that were relevant asymptotically might be of lesser interest, while new attack vectors that were previously cast aside because they are exponential may instead become a threat. In a nutshell, an attack with a runtime equivalent to  $2^{n/3}$ basic operations is in practice far more threatening than one with a runtime of $n^{10}$ similar operations when $n=128$ where they are equal roughly to $2^{42.7}$ and $2^{70}$ respectively.
 \item[Performance Trade-Offs.] When a function is intended to be implemented, adding structure can become necessary, or at least welcome, to decrease the cost of its implementation. On the other hand, such structure could potentially open new attack directions. The investigation of such trade-offs becomes much more relevant when leaving the world of complexity theory.
 \end{description}
 
+\subsection{Our Contributions}
 
-The rest of the article is organized as follows. Section~\ref{sec:notations} introduces preliminary notions on shallow weak PRFs, while Section~\ref{sec:applications} discusses their intended applications and outlines the associated cost and security models. We then present several families of shallow weak PRFs, providing both mathematical and algorithmic descriptions, known variants, any known cryptanalysis results and proposeed parameter sets that serve as targets for cryptanalysis. Specifically, we cover four distinct families, which are detailed in Sections~\ref{sec:bipsw},\ref{sec:goldreich},\ref{sec:ealpn}, and~\ref{sec:vdlpn}, respectively.
+Our aim in this paper is to describe wsPRFs, i.e. what they are, and why they are relevant in practice. This involves both a detailed survey of the literature, and a translation of their security goals away from asymptotics. To this end, we also propose cryptanalysis challenges, together with \texttt{Python} reference implementations of the wsPRFs we describe: practical security can only be studied through cryptanalysis, and our goal is to simplify this analysis.
+
+
+\paragraph{Outline.} The rest of the article is organized as follows. Section~\ref{sec:notations} introduces preliminary notions on shallow weak PRFs, while Section~\ref{sec:applications} discusses their intended applications and outlines the associated cost and security models. We then present several families of shallow weak PRFs, providing both mathematical and algorithmic descriptions, known variants, any known cryptanalysis results and proposeed parameter sets that serve as targets for cryptanalysis. Specifically, we cover four distinct families, which are detailed in Sections~\ref{sec:bipsw},\ref{sec:goldreich},\ref{sec:ealpn}, and~\ref{sec:vdlpn}, respectively.
 
 
 % Possible outline:
