@@ -1,12 +1,14 @@
 \section{VDLPN}
 \label{sec:vdlpn}
 
-\lp{clarifier la métrique de coût : de quel droit est-ce qu'on fait des produits de $t$ variables ?}
+The candidates introduced in section and in the next section (Section~\ref{sec:ealpn}) have been designed to be used in constructions of pseudorandom correlation functions that follow the paradigm outlined in Section~\ref{subsubsec:fss}: they belong to the class $\setF_{t,N}(\F_{2^\secpar})$ of depth-$2$ circuits with indegree-$1$ ``interval membership'' gates on the bottom and a $t$-ary linear combination gate on top, for a target number of samples $N$ and a parameter $t$ that they seek to minimize. In fact, both candidates actually belong to $\setF_{t,N}(\F_{2})$: recall that Theorem~\ref{thm:pcf-ot} uses function secret sharing for the class of functions $x \mapsto c\cdot \Eval(\msk,x)$. In constructions based on VDLPN and EALPN, $\Eval(\msk,x)$ is over $\F_2$, and only the scalar $c$ belongs to the extension field $\F_{2^\secpar}$ (where the reader can think of $\secpar = 128$).
 
+In this section, we introduce the VDLPN design. We provide a direct description below (as a XOR of ANDs of XORs), but the latter slightly obscures the connection to the class $\setF_{t,N}(\F_{2})$. To see the connection, note that a point function (a function $f_a$ that outputs $0$ everywhere, except on $f_a(a) = 1$) is a special case of an interval function where the interval is reduced to a single point. In turn, testing for $f_a(x) = 1$ amounts to testing whether $x = a$, which can be written directly as $\prod_{i=1}^{|x|} (x_i \oplus \bar a_i)$
+ (where the $\bar a_i$ denote the bits of $a$ flipped). Hence, a ``XOR of products of XORs'' is nothing more than a linear combination (over $\F_2$) of point functions (which are a special case of interval functions).
 
 \subsection{Original Reference}
 
-The next shallow weak PRF we present was proposed by Boyle, Couteau, Gilboa, Ishai, Kohl, and Scholl in 2020~\cite{vdlpn}. The main candidate introduced in their work, that we will refer to as {\sf VDLPN}, is defined as follows:
+The next shallow weak PRF we present was proposed by Boyle, Couteau, Gilboa, Ishai, Kohl, and Scholl in 2020~\cite{vdlpn}. The main candidate introduced in their work, that we will refer to as {\sf VDLPN} (for \emph{variable-density learning parity with noise}), is defined as follows:
 
 \begin{equation} \label{eq:vdlpn_orig}
     F_k(x) = \bigoplus_{i=1}^D \bigoplus_{j=1}^w \prod_{\ell=1}^i \left(x_{i,j,\ell} \oplus k_{i,j,\ell}\right),
@@ -69,13 +71,31 @@ In this case,
 F_k(x) = \bigoplus_{j = 1}^2 (x_{j,1} \oplus k_{j,1}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2} \oplus k_{j,2}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2}\oplus k_{j,2})(x_{j,3}\oplus k_{j,3}).
 \]
 
+\subsection{The {\sf VDLPN}$^*$ variant}
 
+While~\cite{FOCS:BCGIKS20} provides a detailed preliminary security analysis of {\sf VDLPN}, it is purely asymptotic. Couteau and Ducros~\cite{PKC:CouDuc23} revisited the original analysis of~\cite{FOCS:BCGIKS20} to obtain more concrete bounds achieving provable security guarantees against certain classes of attacks. In the course of refining these bounds, they suggested a variant of the original design, dubbed {\sf VDLPN}$^*$, that enjoys the same applications but comes with much tighter security arguments. Intuitively, this is achieved by shaving the first few terms of the xor $\bigoplus_{i=1}^D$ and replacing them with a random inner product with the key; this circumvent corner cases of the security analysis that caused the bounds to become loose due to bad events that had significant probability of ocurring at the lower levels. Concretely, {\sf VDLPN}$^*$ is defined as follows:
+
+\begin{equation} \label{eq:vdlpn*}
+    F_k(x) = \bigoplus_{i=1}^{r} x_{0,i}\cdot k_{0,i} \oplus \bigoplus_{i=5}^D \bigoplus_{j=1}^w \prod_{\ell=1}^i \left(x_{i,j,\ell} \oplus k_{i,j,\ell}\right),
+\end{equation}
+where $D$ and $w$ are parameters that depend on the desired security level $\lambda$, and $r = h(15/2^D)\cdot 2^D + \secpar$ ($h(x) = -x\log x (1-x)\log(1-x)$ denotes the binary entropy function). 
+
+The candidate {\sf VDLPN}$^*$ also admits a similar low-complexity variant as {\sf VDLPN} where the triangular functions are replaced with ``shaved'' somewhat triangular functions. Denoting
+\[T'_5(z) = z_1z_2z_3z_4z_5 \oplus z_1z_2z_3z_4z_5z_6 \oplus \cdots,\]
+that is, the function $T'$ stripped of its four first terms, we have
+
+\begin{equation} \label{eq:vdlpn*_low}
+    F_k(x) = \bigoplus_{i=1}^{r} x_{0,i}\cdot k_{0,i} \oplus \bigoplus_{j=1}^w \prod_{\ell=1}^i T'_5(X_j \oplus K_j).
+\end{equation}
 
 \subsection{Targets for Cryptanalysis}
 
 In the original paper~\cite{vdlpn}, the authors suggested the following parameters to instantiate both versions of {\sf VDLPN} for achieving $\lambda$ bits of security: $w = 1.5\lambda$, $D = w/4$, and a restriction on the number of queries allowed to an attacker, limited to $N = 2^D$. However, as noted in~\cite{PKC:CouDuc23}, these parameter choices were purely heuristic and not supported by concrete cryptanalysis.
 
-This initial proposal was later revisited and refined in subsequent works. In~\cite{PKC:CouDuc23}, the authors conducted a detailed security analysis, allowing them to correct several errors from the original paper and to propose concrete parameters for achieving 128-bit security: $w = 380$, $D = 30$, under the assumption that the adversary is limited to at most $2^D$ queries. No close formula was however provided. Finally, Ducros proposed in his thesis\lp{réf. nécessaire} a refined method that permitted to propose several good sets of parameters $(D,w)$. These parameters are given in Table~\ref{tab:vdlpn-param} and we suggest the related instances as targets for cryptanalysis for both {\sf VDLPN} and {\sf VDLPN}$^*$.
+This initial proposal was later revisited and refined in subsequent works. In~\cite{PKC:CouDuc23}, the authors conducted a detailed security analysis, allowing them to correct several errors from the original paper and to propose concrete parameters for achieving 128-bit security~: $w = 380$, $D = 30$, under the assumption that the adversary is limited to at most $2^D$ queries. No close formula was however provided. Finally, Ducros proposed in his thesis\lp{réf. nécessaire} a refined method that permitted to propose several good sets of parameters $(D,w)$. These parameters are given in Table~\ref{tab:vdlpn-param} and we suggest the related instances as targets for cryptanalysis for both {\sf VDLPN} and {\sf VDLPN}$^*$.
+
+All variants are assumed to provide the same concrete security level: the differences between the variants amount to tradeoffs between efficiency (the low-complexity variant yields much better PCF constructions) and security arguments (the {\sf VDLPN}$^*$ variant enjoys much tighter security arguments), but the easiness (or hardness) of providing formal security arguments is not necessarily expected to translate to a concrete weakness (or strength) of the candidate: rather, it reflects limitations of the probability arguments used to rule out certain classes of attacks in settings where the random variable satisfy some complex dependencies.
+
 
 %In the same work, the authors also explore more aggressive parameter choices. They notably propose $w = 120$ and $D = 30$, while maintaining the same upper bound on the number of allowed queries. They conjecture that these parameters likely still yield a secure instance for a security level of $\lambda = 80$ bits. A more comprehensive analysis can be found in~\cite{Ducros24}.
 
@@ -83,18 +103,18 @@ This initial proposal was later revisited and refined in subsequent works. In~\c
 
 \begin{table}[!ht]
 \centering
-\begin{tabular}{ccc} 
+\begin{tabular}{cccc} 
 \toprule
-$D$ &  $w$ & $N = 2^D$\\
+$r$ & $D$ &  $w$ & $N = 2^D$\\
 \midrule
- 20 & 293 & $2^{20}$\\
- 25 & 336 & $2^{25}$\\
- 30 & 380 & $2^{30}$\\
- 35 & 421 & $2^{35}$\\
- 40 & 461 & $2^{40}$\\
+391 & 20 & 293 & $2^{20}$\\
+466 & 25 & 336 & $2^{25}$\\
+541 & 30 & 380 & $2^{30}$\\
+616 & 35 & 421 & $2^{35}$\\
+691 & 40 & 461 & $2^{40}$\\
 \bottomrule
 \end{tabular}
-\caption{\label{tab:vdlpn-param}Parameter sets for the {\sf VDLPN} and {\sf VDLPN}$^*$ shallow wPRFs, intended as targets for cryptanalysis.}
+\caption{\label{tab:vdlpn-param}Parameter sets for the {\sf VDLPN} and {\sf VDLPN}$^*$ shallow wPRFs, intended as targets for cryptanalysis at the $\secpar = 128$ security level. The parameter $r$ is used only for {\sf VDLPN}$^*$.}
 \end{table}
 
 \subsection{Algorithmic Description}
@@ -142,7 +162,7 @@ The algorithmic descriptions of the {\sf VDLPN} shallow wPRF and its low-complex
   \end{algorithmic}
 \end{algorithm}
 \end{minipage}
-\caption{Algorithmic description of the original {\sf VDLPN} swallow wPRF and its low-complexity variant {\sf VDLPN}$^*$.}
+\caption{Algorithmic description of the original {\sf VDLPN} shallow wPRF and its low-complexity variant {\sf VDLPN}$^*$.}
 \end{figure}
 
 
