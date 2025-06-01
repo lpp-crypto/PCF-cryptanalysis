@@ -1,11 +1,12 @@
-#!/usr/bin/python3
+#!/usr/bin/env sage
 #-*- Python -*-
-# Time-stamp: <2025-06-01 23:19:06>
+# Time-stamp: <2025-06-02 00:25:29>
 
 
+from sage.all import *
 import hashlib
 from collections import defaultdict
-from math import ceil, log
+
 
 
 class ReproducibleBytePRG:
@@ -101,7 +102,30 @@ class ReproducibleBitPRG:
         result = self.current_byte & 1
         self.current_byte = self.current_byte >> 1
         return result
-    
+
+
+
+
+class ReproducibleSubsetPRG:
+    """A PRNG that returns a subset of a given interval at each call.
+
+    It is essentially a wrapper for ReproducibleRangePRG.
+
+    """
+    def __init__(self, seed):
+        self.inner_prg = ReproducibleRangePRG(seed)
+
+
+    def __call__(self, lower_bound, upper_bound, size):
+        result = []
+        while len(result) < size:
+            tmp = self.inner_prg(lower_bound, upper_bound)
+            if tmp not in result:
+                result.append(tmp)
+        return result
+
+
+
 
 if __name__ == "__main__":
     print("Testing byte PRNG")
@@ -132,6 +156,17 @@ if __name__ == "__main__":
         counter = defaultdict(int)
         for i in range(1, 10000):
             counter[prg(2, 9)] += 1
+        for c in sorted(counter.keys()):
+            print(c, counter[c])
+            
+    print("\nTesting subset PRNG")
+    for seed in [b"a", b"b", b"c", b"d", b"e", b"f"]:
+        print("seed: {}".format(seed))
+        prg = ReproducibleSubsetPRG(seed)
+        counter = 0
+        counter = defaultdict(int)
+        for i in range(1, 100):
+            counter[tuple(prg(2, 9, 3))] += 1
         for c in sorted(counter.keys()):
             print(c, counter[c])
 
