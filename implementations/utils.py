@@ -1,20 +1,20 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-07-01 15:21:37 leo>
+# Time-stamp: <2025-06-01 22:15:53>
 
 from sage.all import *
-from prg import ReproduciblePRG
+from prg import *
 
+MAX_ROW_LENGTH = 80
 
-def get_sequence(oracle, N_queries):
-    return [oracle() for i in range(0, N_queries)]
-
-
-def pretty_sequence(binary_sequence):
-    result = ""
+def print_sequence(binary_sequence):
+    row = ""
     for x in binary_sequence:
-        result += "{:d} ".format(x)
-    return result[:-1]
+        row += "{:d},".format(x)
+        if len(row) == MAX_ROW_LENGTH:
+            print(row)
+            row = ""
+    print(row)
 
 
 

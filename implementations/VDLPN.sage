@@ -1,6 +1,6 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-07-01 15:22:31 leo>
+# Time-stamp: <2025-06-01 22:20:01>
 
 from sage.all import *
 from utils import *
@@ -20,33 +20,40 @@ def triangular(_x):
 
 
 class VDLPN:
-    """Parameters:
-    `d` is the degree of the boolean function
-    `w` is the number of binary variables that are simply added
-    `seed` is used to seed the PRG used to generate the key
-
-
-    # !TODO! Add reference 
-    """
-    def __init__(self,
-                 d = 40,
-                 w = 120,
-                 seed=b"seed"):
-        self.prg = ReproduciblePRG(seed)
+    def __init__(
+            self,
+            d, # the degree of the boolean function 
+            w, # the number of binary variables that are simply added
+            k  # the value of the key
+    ):
         self.d = d
         self.w = w
-        self.k = [self.prg(lower_bound=0,
-                           upper_bound=2**self.d)
-                  for i in range(0, self.w)]
-
-    def __call__(self):
-        x = [self.prg(lower_bound=0,
-                      upper_bound=2**self.d)
-             for i in range(0, self.w)]
+        self.k = k
+        
+        
+    def __call__(self, x):
+        assert self.k != None
+        assert len(x) == self.w
         xors = [x[i] ^^ self.k[i] for i in range(0, self.w)]
         return sum(triangular(xors[i]) for i in range(0, self.w)) % 2
 
 
 if __name__ == "__main__":
-    print(pretty_sequence(get_sequence(VDLPN(), 50)))
+    seed = b""
+    prng = ReproducibleRangePRG(seed)
+    sequence_length = 500
+    # 128-bit security
+    d = 40
+    w = 120
+    # keygen
+    k = [
+        prng(0, 2**d)        # the key is made of integers in [0,2^d-1]
+        for i in range(0, w) # namely, w of them
+    ]
+    vdlpn_instance = VDLPN(d, w, k)
+    print_sequence([
+        vdlpn_instance([prng(0, 2**d) for j in range(0, w)])
+        for i in range(0, sequence_length)
+    ])
+
     
