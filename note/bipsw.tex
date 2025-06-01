@@ -22,7 +22,8 @@ In its original formulation, $F_k$ is defined as follows:
 
 As we can see, we first compute the inner product between the key $k$ and the input $x$. Then, this inner product is evaluated both modulo 2 and modulo 3, and the two results are finally added modulo 2 to produce the final result.  
 
-\paragraph{Alternative representation.} The above construction can be implemented by a depth-2 $\mathsf{ACC}^0$ circuit:\lp{il faut qu'on définisse cette notion, ou alors qu'on vire ce commentaire} the first layer of this circuit consists of a $\mathsf{MOD}_2$ gate and a $\MOD_3$ gate, both connected to all inputs $x_i$ such that $k_i = 1$ (the $\MOD_3$ gate is additionally connected to a ``constant-2'': it checks whether $\sum_i k_ix_i+2$ is divisible by $3$), followed by a second layer with a single two-input $\MOD_2$-gate (by inspection, $F_k(x) = 0$ if and only if $\sum_i k_ix_i$ is $0 \bmod 2$ and $1 \bmod 3$, or $\sum_i k_ix_i$ is $1 \bmod 2$ and 0 or $2 \bmod 3$).
+\paragraph{Alternative representation.} The above construction can be implemented by a depth-2 circuit: %$\mathsf{ACC}^0$ circuit:\lp{il faut qu'on définisse cette notion, ou alors qu'on vire ce commentaire}
+the first layer of this circuit consists of a $\mathsf{MOD}_2$ gate and a $\MOD_3$ gate, both connected to all inputs $x_i$ such that $k_i = 1$ (the $\MOD_3$ gate is additionally connected to a ``constant-2'': it checks whether $\sum_i k_ix_i+2$ is divisible by $3$), followed by a second layer with a single two-input $\MOD_2$-gate (by inspection, $F_k(x) = 0$ if and only if $\sum_i k_ix_i$ is $0 \bmod 2$ and $1 \bmod 3$, or $\sum_i k_ix_i$ is $1 \bmod 2$ and 0 or $2 \bmod 3$).
 
 However, as the designers point out, the above description can have the following alternative representation, that stems from the observation that $F_k(x) = 1$ if and only if the inner product $\langle k, x \rangle  \mod{6} = \sum_{i = 0}^{n-1} k_i x_i \mod{6} \in \{3,4,5\}$. For this, denote by $\lfloor \cdot \rceil_2 : \mathbb{Z}_6 \rightarrow \mathbb{Z}_2$ the rounding operator defined as:
 \begin{equation*}
@@ -55,7 +56,8 @@ The alternating moduli design paradigm quickly gained popularity as an approach 
 \subsubsection{A Generalized Construction~\cite{C:DGHIKS21}}
 \label{sec:bipsw_alt1}
 
-In 2021, Dinur, Goldfeder, Halevi, Ishai, Kelkar, Sharma, and Zaverucha revisited the alternative mod-2/mod-3 constructions from~\cite{TCC:BIPSW18} and proposed a generalized version. Their focus was primarily on the alternative variant (the one presented in the previous subsection), as having an output over $\mathbb{Z}_2$ is more convenient in many applications. The proposed generalization extends the original design in two main directions. First, the secret key is no longer a vector in $\mathbb{Z}_2^n$, but a matrix $K \in \mathbb{Z}_2^{m \times n}$. Second, a public compression matrix $B \in \mathbb{Z}_2^{t \times m}$ is applied before producing the output. This generalized construction has the advantage of outputting multiple bits at once instead of a single bit, resulting in improved throughput. \cb{Je ne sais pas si le fait que la clé soit une matrice est une généralisation, car j'ai l'impression que le candidat original pourraît être vu de cette manière là aussi .. Geoffroy ?}\gc{Si tu prends le candidat originel et te contente d'utiliser $n$ clés différentes, toutes évaluées sur le même input, tu as en effet une matrice, mais rajouter $B$ permet d'éviter des attaques de type décodage (BKW), et donc d'avoir de bien meilleur paramètre (tu peux avoir une sécurité exponentielle au lieu de sous-exponentielle). En plus, tu peux aussi prendre une matrice $K$ structurée. C'est d'ailleurs ce qu'ils font en prenant une matrice circulante; dans ce cas, tu ne peux plus voir ça comme étant juste une répétition du candidat initial avec des clés différentes.}
+In 2021, Dinur, Goldfeder, Halevi, Ishai, Kelkar, Sharma, and Zaverucha revisited the alternative mod-2/mod-3 constructions from~\cite{TCC:BIPSW18} and proposed a generalized version. Their focus was primarily on the alternative variant (the one presented in the previous subsection), as having an output over $\mathbb{Z}_2$ is more convenient in many applications. The proposed generalization extends the original design in two main directions. First, the secret key is no longer a vector in $\mathbb{Z}_2^n$, but a matrix $K \in \mathbb{Z}_2^{m \times n}$. Second, a public compression matrix $B \in \mathbb{Z}_2^{t \times m}$ is applied before producing the output. This generalized construction has, among others, the advantage of outputting multiple bits at once instead of a single bit, resulting in improved throughput. 
+%\gc{Si tu prends le candidat originel et te contente d'utiliser $n$ clés différentes, toutes évaluées sur le même input, tu as en effet une matrice, mais rajouter $B$ permet d'éviter des attaques de type décodage (BKW), et donc d'avoir de bien meilleur paramètre (tu peux avoir une sécurité exponentielle au lieu de sous-exponentielle). En plus, tu peux aussi prendre une matrice $K$ structurée. C'est d'ailleurs ce qu'ils font en prenant une matrice circulante; dans ce cas, tu ne peux plus voir ça comme étant juste une répétition du candidat initial avec des clés différentes.}
 
 More precisely, the proposed construction is parameterized by positive integers $n$, $m$, and $t$, with the constraints $m \geq n$ and $m \geq t$. These parameters respectively represent the input vector size, the size of the intermediate vector(s), and the output vector size. As in the original design, they are functions of a security parameter $\lambda$.
 
@@ -69,7 +71,7 @@ The final output is then computed as
 \[
 F_K(x) = Bw \bmod 2 \in \mathbb{Z}_2^t~,
 \]
-where $B \in \mathbb{Z}_2^{t \times m}$ is a public compression matrix, which can be chosen either uniformly at random or  as a full-rank random circulant matrix. This matrix can also been seen as a generator matrix for a linear code that has high minimum distance. Its application permits to resolve correlation issues between the key and the output, that would for example exploit linear biases in the output.
+where $B \in \mathbb{Z}_2^{t \times m}$ is a public compression matrix, which can be chosen either uniformly at random or  as a full-rank random circulant matrix. This matrix can also be seen as a generator matrix for a linear code that has high minimum distance. Its application permits to resolve correlation issues between the key and the output, that would for example exploit linear biases in the output. Moreover, introducing the matrix $B$ helps prevent decoding-based attacks such as BKW, leading to significantly better parameter choices—for instance, achieving exponential rather than sub-exponential security. In addition, $K$ itself can be structured; this is precisely the approach taken in some instantiations where $K$ is chosen to be circulant.
 
 It is straightforward to verify that this construction is a generalization of the alternative scheme proposed in~\cite{TCC:BIPSW18}. Specifically, the original candidate described in the previous section corresponds to a special case of the construction in~\cite{C:DGHIKS21}, obtained by setting $m = 1$, $t = 1$, and choosing $B = 1$.
 
@@ -176,18 +178,28 @@ The algorithmic description of the alternative mod-2/mod-3 wPRF (Section~\ref{se
 \begin{minipage}[t]{0.47\textwidth}
 \begin{algorithm}[H]
   \caption{\label{alg:dgh_mod6}Mod-6 version of the \cite{C:DGHIKS21} construction}
-  \begin{algorithmic} 
+  \begin{algorithmic}
     \State \textbf{Input:} $K \in \mathbb{Z}_2^{m \times n}$, $x \in \mathbb{Z}_2^n$, $B \in \mathbb{Z}_2^{t \times m}$
-    \State $w \leftarrow Kx \mod 6$
-    \State $y \leftarrow B w \mod 2$
-    \State \Return $y$
+    \State \textbf{Output:} $y \in \mathbb{Z}_2^t$
+    
+    \State $u \gets Kx \mod 6 \in \mathbb{Z}_6^m$ 
+    
+    \For{$i = 1$ to $m$}
+      \If{$u_i \in \{3,4,5\}$}
+        \State $u_i \gets 1$
+      \Else
+        \State $u_i \gets 0$
+      \EndIf
+    \EndFor
+    \State $y \gets B u \mod 2 \in \mathbb{Z}_2^t$
+     \State \Return $y$
   \end{algorithmic}
 \end{algorithm}
 \end{minipage}
 \caption{\label{fig:bispw_alg} Algorithms of the two alternating moduli constructions proposed as targets for cryptanalysis}
 \end{figure}
 
-\cb{Le deuxième algo est faux pour le moment, je corrige ça plus tard}
+\cb{Si quelqu'un peut verifier le deuxième algo ce sera cool}
 
 
 %%% Local Variables:
