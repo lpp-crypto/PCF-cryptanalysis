@@ -37,7 +37,7 @@ Algorithm~\ref{alg:ealpn} provides an algorithmic description of the {\sf EA-LPN
   \caption{\label{alg:ealpn}The {\sf EA-LPN} PRF \\
     Parameters:  integers $N$, $t$, $\ell$,  $w = \lceil \frac{5N}{t} \rceil$}
   \begin{algorithmic}
-  \State \textbf{Input:}  $x = ((j_1,x_1), \dots, (j_\ell,x_\ell)) \in ( \mathbb{Z}_{\frac{t}{\ell}}\times \mathbb{Z}_{w})^\ell$; $k = (k_1, \dots, k_{\ell}) \in (\mathbb{Z}_{w}^{\frac{t}{\ell}})^{\ell}$
+  \State \textbf{Input:}  $x = ((j_1,x_1), \dots, (j_\ell,x_\ell)) \in ( \Z_{\frac{t}{\ell}}\times \Z_{w})^\ell$; $k = (k_1, \dots, k_{\ell}) \in (\Z_{w}^{\frac{t}{\ell}})^{\ell}$
     \State $r \gets 0$
 \For{$i = 1$ to $\ell$}
     \If{$x_i \geq k_{i,j_i}$}
