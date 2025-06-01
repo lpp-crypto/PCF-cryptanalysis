@@ -1,6 +1,6 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2025-06-01 22:20:20>
+# Time-stamp: <2025-06-01 22:59:33>
 
 from sage.all import *
 from utils import *
@@ -28,17 +28,17 @@ class BIPSW:
     def __init__(
             self,
             n,                  # input and key bit lengths
-            k                   # value of the key
     ):
         self.n = n
-        self.k = k
+
     
-    def __call__(self, x):
-        """Evaluates the BIPSW function on an input by considering it
-        to be a binary vector {0, ..., 2^n-1}.
+    def __call__(self, k, x):
+        """Evaluates the BIPSW function on input x and key k by
+        considering both to be binary vectors {0, ..., 2^n-1}.
 
         """
         assert x < 2**self.n
+        assert k < 2**self.n
         pseudo_rounding = {
             0: 0,
             1: 0,
@@ -47,7 +47,7 @@ class BIPSW:
             4: 1,
             5: 1
         }
-        return pseudo_rounding[scalar_product(x, self.k) % 6]
+        return pseudo_rounding[scalar_product(x, k) % 6]
 
 
 if __name__ == "__main__":
@@ -55,12 +55,10 @@ if __name__ == "__main__":
     sequence_length = 500
     # 128-bit security
     n = 770 
-    bipsw_instance = BIPSW(
-        n,                      # input length
-        prng(0, 2**n)           # key is picked randomly
-    )
+    bipsw_instance = BIPSW(n)
+    k = prng(0, 2**n)           # key is picked randomly
     print_sequence([
-        bipsw_instance(prng(0, 2**n)) # we pick plaintexts in [0,2**n-1]
+        bipsw_instance(k, prng(0, 2**n)) # we pick plaintexts in [0,2**n-1]
         for i in range(0, sequence_length)
     ])
 

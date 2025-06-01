@@ -1,6 +1,6 @@
-#!/usr/bin/sage
+#!/usr/bin/env sage
 #-*- Python -*-
-# Time-stamp: <2025-06-01 23:19:46>
+# Time-stamp: <2025-06-01 23:24:19>
 
 from sage.all import *
 from utils import *
