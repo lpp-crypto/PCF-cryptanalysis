@@ -94,17 +94,19 @@ In this description, the attacker is allowed to do \emph{chosen plaintext} queri
 
 \begin{definition}[wPRF security]
 Let $n$, $k$, and $q$ be positive integers. A family of functions $F_K : \Z_2^n \to \Z_2^n$, indexed by a key $K \in \Z_2^k$, is said to achieve $(q,\varepsilon)$-weak PRF security if, for every distinguisher $\distinguisher$ making at most $q$ queries on inputs $x_1, \dots, x_q \in \Z_2^n$ drawn independently and uniformly at random, we have:
-\[
-\left| 
-\Pr\left[ 
-\distinguisher(x_1, \dots, x_q, F_K(x_1), \dots, F_K(x_q)) = 1 
-\right]
--
-\Pr\left[ 
-\distinguisher(x_1, \dots, x_q, \mathcal{R}(x_1), \dots, \mathcal{R}(x_q)) = 1 
-\right]
-\right| \leq \varepsilon,
-\]
+\begin{equation*}
+  \begin{split}
+    \Big| 
+    \Pr\big[ 
+    \distinguisher\left(x_1, \dots, x_q, \right.&\left(F_K(x_1), \dots, F_K(x_q)\right) = 1 
+    \big]
+    - \\
+    \Pr\big[ 
+    &\distinguisher\left(x_1, \dots, x_q, \mathcal{R}(x_1), \dots, \mathcal{R}(x_q)\right) = 1 
+    \big]
+    \Big| \leq \varepsilon~, \\
+  \end{split}
+\end{equation*}
 where the key $K$ is sampled uniformly at random from $\Z_2^k$, and $\mathcal{R}$ is a uniformly random function from $\Z_2^n$ to $\Z_2^n$.
 \end{definition}
 
