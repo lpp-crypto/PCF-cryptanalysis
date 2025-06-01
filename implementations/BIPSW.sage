@@ -1,13 +1,13 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2024-07-01 15:21:17 leo>
+# Time-stamp: <2025-06-01 22:20:20>
 
 from sage.all import *
 from utils import *
 
 
 def scalar_product(x, y):
-    """Returns The scalar product in F_2^n of the binary
+    """Returns the scalar product in N of the binary
     representation of `x` and `y`.
 
     """
@@ -17,7 +17,7 @@ def scalar_product(x, y):
         if (t & 1) == 1:
             result += 1
         t = t >> 1
-    return result
+    return result 
 
 
 class BIPSW:
@@ -25,18 +25,20 @@ class BIPSW:
     `n` the block size (and security parameter)
     `seed` the seed used to seed the PRG generating the key.
     """
-    def __init__(self,
-                 n = 770,
-                 seed = b"seed"):
-        self.prg = ReproduciblePRG(seed)
+    def __init__(
+            self,
+            n,                  # input and key bit lengths
+            k                   # value of the key
+    ):
         self.n = n
-        self.k = self.prg(0, 2**self.n)
+        self.k = k
     
-    def __call__(self):
-        """Generate a random element of {0, ..., 2^n-1}, and evaluates
-        the function on it.
+    def __call__(self, x):
+        """Evaluates the BIPSW function on an input by considering it
+        to be a binary vector {0, ..., 2^n-1}.
 
         """
+        assert x < 2**self.n
         pseudo_rounding = {
             0: 0,
             1: 0,
@@ -45,10 +47,20 @@ class BIPSW:
             4: 1,
             5: 1
         }
-        x = self.prg(0, 2**self.n)
         return pseudo_rounding[scalar_product(x, self.k) % 6]
 
 
 if __name__ == "__main__":
-    print(pretty_sequence(get_sequence(BIPSW(), 50)))
+    prng = ReproducibleRangePRG(b"")
+    sequence_length = 500
+    # 128-bit security
+    n = 770 
+    bipsw_instance = BIPSW(
+        n,                      # input length
+        prng(0, 2**n)           # key is picked randomly
+    )
+    print_sequence([
+        bipsw_instance(prng(0, 2**n)) # we pick plaintexts in [0,2**n-1]
+        for i in range(0, sequence_length)
+    ])
 
