@@ -6,17 +6,17 @@
 
 In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu introduced a new design paradigm for constructing wPRFs, which was later described in the literature as the \emph{alternating moduli paradigm}~\cite{TCC:BIPSW18}. Constructions based on this paradigm are low-depth, but still exhibit a high algebraic degree. They are mathematically simple, built by combining linear functions over different moduli.
 
-The original paper~\cite{TCC:BIPSW18} presented two such constructions: a primary one outputting elements in $\mathbb{Z}_3$, and an alternative design that ultimately attracted more attention from the community. This second construction, referred to as the \emph{alternative mod-2/mod-3 weak PRF} and labeled as Construction 6.3 in the original paper, is the only one from this work that we describe below. 
+The original paper~\cite{TCC:BIPSW18} presented two such constructions: a primary one outputting elements in $\Z_3$, and an alternative design that ultimately attracted more attention from the community. This second construction, referred to as the \emph{alternative mod-2/mod-3 weak PRF} and labeled as Construction 6.3 in the original paper, is the only one from this work that we describe below. 
 
 
 \subsection{Original Construction (\cite{TCC:BIPSW18})}
 \label{sec:bipsw_original}
 Let $n$ denote the key length and the input length. 
-The alternative mod-2/mod-3 wPRF as defined in~\cite{TCC:BIPSW18} is a function $F : \mathbb{Z}_2^n \times \mathbb{Z}_2^n \to \mathbb{Z}_2$, where the key space is $\mathcal{K} = \mathbb{Z}_2^n$, the domain is $\mathcal{X} = \mathbb{Z}_2^n$, and the output space is $\mathcal{Y} = \mathbb{Z}_2$. For a key $k \in \mathbb{Z}_2^n$, we use the notation $F_k(x)$ to represent the function $F(k, x)$.
+The alternative mod-2/mod-3 wPRF as defined in~\cite{TCC:BIPSW18} is a function $F : \Z_2^n \times \Z_2^n \to \Z_2$, where the key space is $\mathcal{K} = \Z_2^n$, the domain is $\mathcal{X} = \Z_2^n$, and the output space is $\mathcal{Y} = \Z_2$. For a key $k \in \Z_2^n$, we use the notation $F_k(x)$ to represent the function $F(k, x)$.
 
 In its original formulation, $F_k$ is defined as follows:
     \begin{equation} \label{eq:bipsw_orig}
-    F_k(x) := \left(\sum_{i = 0}^{n-1} k_i x_i \mod 2 + \sum_{i = 0}^{n-1} k_i x_i \mod 3\right) \mod{2}, \quad \text{ for } x \in \mathbb{Z}_2^n.  
+    F_k(x) := \left(\sum_{i = 0}^{n-1} k_i x_i \mod 2 + \sum_{i = 0}^{n-1} k_i x_i \mod 3\right) \mod{2}, \quad \text{ for } x \in \Z_2^n.  
     \end{equation}
 
 
@@ -25,7 +25,7 @@ As we can see, we first compute the inner product between the key $k$ and the in
 \paragraph{Alternative representation.} The above construction can be implemented by a depth-2 circuit: %$\mathsf{ACC}^0$ circuit:\lp{il faut qu'on définisse cette notion, ou alors qu'on vire ce commentaire}
 the first layer of this circuit consists of a $\mathsf{MOD}_2$ gate and a $\MOD_3$ gate, both connected to all inputs $x_i$ such that $k_i = 1$ (the $\MOD_3$ gate is additionally connected to a ``constant-2'': it checks whether $\sum_i k_ix_i+2$ is divisible by $3$), followed by a second layer with a single two-input $\MOD_2$-gate (by inspection, $F_k(x) = 0$ if and only if $\sum_i k_ix_i$ is $0 \bmod 2$ and $1 \bmod 3$, or $\sum_i k_ix_i$ is $1 \bmod 2$ and 0 or $2 \bmod 3$).
 
-However, as the designers point out, the above description can have the following alternative representation, that stems from the observation that $F_k(x) = 1$ if and only if the inner product $\langle k, x \rangle  \mod{6} = \sum_{i = 0}^{n-1} k_i x_i \mod{6} \in \{3,4,5\}$. For this, denote by $\lfloor \cdot \rceil_2 : \mathbb{Z}_6 \rightarrow \mathbb{Z}_2$ the rounding operator defined as:
+However, as the designers point out, the above description can have the following alternative representation, that stems from the observation that $F_k(x) = 1$ if and only if the inner product $\langle k, x \rangle  \mod{6} = \sum_{i = 0}^{n-1} k_i x_i \mod{6} \in \{3,4,5\}$. For this, denote by $\lfloor \cdot \rceil_2 : \Z_6 \rightarrow \Z_2$ the rounding operator defined as:
 \begin{equation*}
 \lfloor u \rceil_2 = \left\{
 \begin{array}{rl}
@@ -56,12 +56,12 @@ The alternating moduli design paradigm quickly gained popularity as an approach 
 \subsubsection{A Generalized Construction~\cite{C:DGHIKS21}}
 \label{sec:bipsw_alt1}
 
-In 2021, Dinur, Goldfeder, Halevi, Ishai, Kelkar, Sharma, and Zaverucha revisited the alternative mod-2/mod-3 constructions from~\cite{TCC:BIPSW18} and proposed a generalized version. Their focus was primarily on the alternative variant (the one presented in the previous subsection), as having an output over $\mathbb{Z}_2$ is more convenient in many applications. The proposed generalization extends the original design in two main directions. First, the secret key is no longer a vector in $\mathbb{Z}_2^n$, but a matrix $K \in \mathbb{Z}_2^{m \times n}$. Second, a public compression matrix $B \in \mathbb{Z}_2^{t \times m}$ is applied before producing the output. This generalized construction has, among others, the advantage of outputting multiple bits at once instead of a single bit, resulting in improved throughput. 
+In 2021, Dinur, Goldfeder, Halevi, Ishai, Kelkar, Sharma, and Zaverucha revisited the alternative mod-2/mod-3 constructions from~\cite{TCC:BIPSW18} and proposed a generalized version. Their focus was primarily on the alternative variant (the one presented in the previous subsection), as having an output over $\Z_2$ is more convenient in many applications. The proposed generalization extends the original design in two main directions. First, the secret key is no longer a vector in $\Z_2^n$, but a matrix $K \in \Z_2^{m \times n}$. Second, a public compression matrix $B \in \Z_2^{t \times m}$ is applied before producing the output. This generalized construction has, among others, the advantage of outputting multiple bits at once instead of a single bit, resulting in improved throughput. 
 %\gc{Si tu prends le candidat originel et te contente d'utiliser $n$ clés différentes, toutes évaluées sur le même input, tu as en effet une matrice, mais rajouter $B$ permet d'éviter des attaques de type décodage (BKW), et donc d'avoir de bien meilleur paramètre (tu peux avoir une sécurité exponentielle au lieu de sous-exponentielle). En plus, tu peux aussi prendre une matrice $K$ structurée. C'est d'ailleurs ce qu'ils font en prenant une matrice circulante; dans ce cas, tu ne peux plus voir ça comme étant juste une répétition du candidat initial avec des clés différentes.}
 
 More precisely, the proposed construction is parameterized by positive integers $n$, $m$, and $t$, with the constraints $m \geq n$ and $m \geq t$. These parameters respectively represent the input vector size, the size of the intermediate vector(s), and the output vector size. As in the original design, they are functions of a security parameter $\lambda$.
 
-The variant described in~\cite{C:DGHIKS21} defines a function $F : \mathbb{Z}_2^{m \times n} \times \mathbb{Z}_2^{n} \to \mathbb{Z}_2^t$, where the key space is $\mathcal{K} = \mathbb{Z}_2^{m \times n}$, the input space is $\mathcal{X} = \mathbb{Z}_2^n$, and the output space is $\mathcal{Y} = \mathbb{Z}_2^t$. For a key $K \in \mathcal{K}$, we write $F_K(x)$ to denote $F(K, x)$.
+The variant described in~\cite{C:DGHIKS21} defines a function $F : \Z_2^{m \times n} \times \Z_2^{n} \to \Z_2^t$, where the key space is $\mathcal{K} = \Z_2^{m \times n}$, the input space is $\mathcal{X} = \Z_2^n$, and the output space is $\mathcal{Y} = \Z_2^t$. For a key $K \in \mathcal{K}$, we write $F_K(x)$ to denote $F(K, x)$.
 
 The first step of the construction is to compute an intermediate vector $w$ as follows:
 \[
@@ -69,9 +69,9 @@ w = \big( (Kx \bmod 2) + \left((Kx \bmod 3) \bmod 2\right) \big) \bmod 2~.
 \]
 The final output is then computed as
 \[
-F_K(x) = Bw \bmod 2 \in \mathbb{Z}_2^t~,
+F_K(x) = Bw \bmod 2 \in \Z_2^t~,
 \]
-where $B \in \mathbb{Z}_2^{t \times m}$ is a public compression matrix, which can be chosen either uniformly at random or  as a full-rank random circulant matrix. This matrix can also be seen as a generator matrix for a linear code that has high minimum distance. Its application permits to resolve correlation issues between the key and the output, that would for example exploit linear biases in the output. Moreover, introducing the matrix $B$ helps prevent decoding-based attacks such as BKW, leading to significantly better parameter choices—for instance, achieving exponential rather than sub-exponential security. In addition, $K$ itself can be structured; this is precisely the approach taken in some instantiations where $K$ is chosen to be circulant.
+where $B \in \Z_2^{t \times m}$ is a public compression matrix, which can be chosen either uniformly at random or  as a full-rank random circulant matrix. This matrix can also be seen as a generator matrix for a linear code that has high minimum distance. Its application permits to resolve correlation issues between the key and the output, that would for example exploit linear biases in the output. Moreover, introducing the matrix $B$ helps prevent decoding-based attacks such as BKW, leading to significantly better parameter choices—for instance, achieving exponential rather than sub-exponential security. In addition, $K$ itself can be structured; this is precisely the approach taken in some instantiations where $K$ is chosen to be circulant.
 
 It is straightforward to verify that this construction is a generalization of the alternative scheme proposed in~\cite{TCC:BIPSW18}. Specifically, the original candidate described in the previous section corresponds to a special case of the construction in~\cite{C:DGHIKS21}, obtained by setting $m = 1$, $t = 1$, and choosing $B = 1$.
 
@@ -81,26 +81,26 @@ It is straightforward to verify that this construction is a generalization of th
 
 \subsubsection{A Further Generalization~\cite{C:APRR24}}
 
-In 2024, Alamati, Policharla, Raghuraman, and Rindal proposed a further generalization of the constructions in~\cite{TCC:BIPSW18} and~\cite{C:DGHIKS21}. Let $n$, $m$, and $t$ be non-negative integers. Both the input $x$ and the secret key $k$ are elements of $\mathbb{Z}_2^n$. Let $A \in \mathbb{Z}_2^{m \times n}$ and $B \in \mathbb{Z}_3^{t \times m}$ be public, random matrices.
+In 2024, Alamati, Policharla, Raghuraman, and Rindal proposed a further generalization of the constructions in~\cite{TCC:BIPSW18} and~\cite{C:DGHIKS21}. Let $n$, $m$, and $t$ be non-negative integers. Both the input $x$ and the secret key $k$ are elements of $\Z_2^n$. Let $A \in \Z_2^{m \times n}$ and $B \in \Z_3^{t \times m}$ be public, random matrices.
 
 The construction, named the $(\mathbb{F}_2, \mathbb{F}_3)$-wPRF, proceeds in two steps. First, compute
 \[
-z = k \odot  x:= (k_0 x_0, k_1 x_1, \dots, k_{n-1} x_{n-1}) \in \mathbb{Z}_2^n~.
+z = k \odot  x:= (k_0 x_0, k_1 x_1, \dots, k_{n-1} x_{n-1}) \in \Z_2^n~.
 \]
 Then, compute the output as
 \[
-F_k(x) = B(Az \bmod 2) \bmod 3 \in \mathbb{Z}_3^t~,
+F_k(x) = B(Az \bmod 2) \bmod 3 \in \Z_3^t~,
 \]
-where, as before, we write $F_k(x)$ for a key $k \in \mathbb{Z}_2^n$ to denote $F(k, x)$.
+where, as before, we write $F_k(x)$ for a key $k \in \Z_2^n$ to denote $F(k, x)$.
 As with the previous variants, the authors claim that the moduli 2 and 3 can be replaced with any distinct prime numbers $p$ and $q$.
 
 The core idea behind this generalization is to allow for a better mixing of the terms $k_i x_i$. In the previous alternating moduli constructions, these terms were combined in a highly structured manner. For example, in the construction from~\cite{C:DGHIKS21}, the matrix-vector product $Kx$ mixes  the key and input variables in a very regular  way. In contrast, the use of a random matrix $A$ in this construction results in random linear combinations over the variables composing the shared input vector $k \odot x$. As a result, each product term $k_i x_i$ is reused multiple times throughout the computation,  leading to a higher diffusion. On the other hand, as we briefly discuss in the next subsection, combining the key and input variables using an AND operation introduces a strong bias in the output, which can significantly weaken the security of the construction.
 
-The authors also propose a variant, named the \emph{reversed-moduli} or $(\mathbb{F}_3, \mathbb{F}_2)$ variant,  that produces binary output. For this variant, the key would be an element of $\mathbb{Z}_3^n$, but in practice it is seen an element of $\mathbb{Z}_2^n$. In this version, the vector $z$ is first interpreted as an element of $\mathbb{Z}_3^n$. The function output is then computed as:
+The authors also propose a variant, named the \emph{reversed-moduli} or $(\mathbb{F}_3, \mathbb{F}_2)$ variant,  that produces binary output. For this variant, the key would be an element of $\Z_3^n$, but in practice it is seen an element of $\Z_2^n$. In this version, the vector $z$ is first interpreted as an element of $\Z_3^n$. The function output is then computed as:
 \[
-F_k(x) = B(Az \bmod 3) \bmod 2 \in \mathbb{Z}_2^t~,
+F_k(x) = B(Az \bmod 3) \bmod 2 \in \Z_2^t~,
 \]
-where $A \in \mathbb{Z}_3^{m \times n}$ and $B \in \mathbb{Z}_2^{t \times m}$.
+where $A \in \Z_3^{m \times n}$ and $B \in \Z_2^{t \times m}$.
 
 
 %parameters
@@ -110,7 +110,7 @@ where $A \in \mathbb{Z}_3^{m \times n}$ and $B \in \mathbb{Z}_2^{t \times m}$.
 
 To date, two papers have analyzed the security of the original construction of~\cite{TCC:BIPSW18} that permit to better estimate the security level and guide the  choice of parameters.
 
-First, in~\cite{PKC:CCKK21}, Cheon, Cho, Kim, and Kim proposed a distinguishing attack with a complexity of $\mathcal{O}(2^{0.21n})$, where $n$ is the input length, by exploiting a statistical weakness of the construction. The authors used the observation that the function $F_k$ can be interpreted as operating over the space $\mathbb{Z}_6$. However, due to the binary nature of both the key $k$ and the input $x$, the function does not uniformly cover the entire space $\mathbb{Z}_6$. This distinguisher requires however a large number of samples to succeed and performs better when the Hamming weight of the key is low. To mitigate this issue, the authors suggested using keys with high Hamming weights as a patch. For instance, they recommended using keys with a Hamming weight of 310 when $n = 384$.
+First, in~\cite{PKC:CCKK21}, Cheon, Cho, Kim, and Kim proposed a distinguishing attack with a complexity of $\mathcal{O}(2^{0.21n})$, where $n$ is the input length, by exploiting a statistical weakness of the construction. The authors used the observation that the function $F_k$ can be interpreted as operating over the space $\Z_6$. However, due to the binary nature of both the key $k$ and the input $x$, the function does not uniformly cover the entire space $\Z_6$. This distinguisher requires however a large number of samples to succeed and performs better when the Hamming weight of the key is low. To mitigate this issue, the authors suggested using keys with high Hamming weights as a patch. For instance, they recommended using keys with a Hamming weight of 310 when $n = 384$.
 
 Later, in~\cite{JMN23}, Johansson, Meier, and Nguyen introduced a different distinguishing attack against the original alternating modulo construction of~\cite{TCC:BIPSW18}. This attack has a better computational complexity than that of~\cite{PKC:CCKK21}, achieving $\mathcal{O}(2^{0.166n})$, where $n$ is the input length. Interestingly, unlike the attack in~\cite{PKC:CCKK21}, this approach, which can be interpreted as a differential attack, performs better when the Hamming weight of the key is high. This attack also suggests that $n = 384$ does not potentially offer a sufficient security margin.
 
@@ -164,7 +164,7 @@ The algorithmic description of the alternative mod-2/mod-3 wPRF (Section~\ref{se
 \begin{algorithm}[H]
   \caption{\label{alg:bipsw}The mod-2/mod-3 wPRF} 
   \begin{algorithmic} 
-    \State \textbf{Input:} $k,x \in \mathbb{Z}_2^n$
+    \State \textbf{Input:} $k,x \in \Z_2^n$
     \State $u \leftarrow \sum_{i=0}^{n-1} k_i \cdot x_i \mod 6$ 
     \If{$u \in \{0, 1, 2\}$} 
       \State \Return 0 
@@ -179,10 +179,10 @@ The algorithmic description of the alternative mod-2/mod-3 wPRF (Section~\ref{se
 \begin{algorithm}[H]
   \caption{\label{alg:dgh_mod6}Mod-6 version of the \cite{C:DGHIKS21} construction}
   \begin{algorithmic}
-    \State \textbf{Input:} $K \in \mathbb{Z}_2^{m \times n}$, $x \in \mathbb{Z}_2^n$, $B \in \mathbb{Z}_2^{t \times m}$
-    \State \textbf{Output:} $y \in \mathbb{Z}_2^t$
+    \State \textbf{Input:} $K \in \Z_2^{m \times n}$, $x \in \Z_2^n$, $B \in \Z_2^{t \times m}$
+    \State \textbf{Output:} $y \in \Z_2^t$
     
-    \State $u \gets Kx \mod 6 \in \mathbb{Z}_6^m$ 
+    \State $u \gets Kx \mod 6 \in \Z_6^m$ 
     
     \For{$i = 1$ to $m$}
       \If{$u_i \in \{3,4,5\}$}
@@ -191,7 +191,7 @@ The algorithmic description of the alternative mod-2/mod-3 wPRF (Section~\ref{se
         \State $u_i \gets 0$
       \EndIf
     \EndFor
-    \State $y \gets B u \mod 2 \in \mathbb{Z}_2^t$
+    \State $y \gets B u \mod 2 \in \Z_2^t$
      \State \Return $y$
   \end{algorithmic}
 \end{algorithm}

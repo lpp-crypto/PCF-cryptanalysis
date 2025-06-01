@@ -42,7 +42,7 @@ x_{3,j,3} \oplus k_{3,j,3}
 \right).
 \]
 
-We provide also an alternative low-complexity variant of the above function, that was equally presented in~\cite{vdlpn}, which we now describe in detail. We will call this variant {\sf VDLPN}$^*$. Let $w$ and $D$ be two positive integers. Both the secret key $k \in \mathbb{Z}_2^{w \times D}$ and the input $x \in \mathbb{Z}_2^{w \times D}$ are viewed as binary matrices, represented as $(k_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$ and $(x_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$, respectively. The function $F_K(x)$ is then computed as:
+We provide also an alternative low-complexity variant of the above function, that was equally presented in~\cite{vdlpn}, which we now describe in detail. We will call this variant {\sf VDLPN}$^*$. Let $w$ and $D$ be two positive integers. Both the secret key $k \in \Z_2^{w \times D}$ and the input $x \in \Z_2^{w \times D}$ are viewed as binary matrices, represented as $(k_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$ and $(x_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$, respectively. The function $F_K(x)$ is then computed as:
 
 \begin{equation} \label{eq:vdlpn_agg}
     F_k(x) := \bigoplus_{i=1}^D \bigoplus_{j=1}^w\prod_{\ell=1}^i (x_{j,\ell} \oplus k_{j,\ell}).
@@ -107,7 +107,7 @@ The algorithmic descriptions of the {\sf VDLPN} shallow wPRF and its low-complex
 \begin{algorithm}[H]
   \caption{\label{alg:vdlpn}The {\sf VDLPN} wPRF\\Parameters: Integers $w, D$}
   \begin{algorithmic}
-   \State \textbf{Input:} $x = (x_{i,j,\ell}) \in \mathbb{Z}_2^{D \times w \times D}$, $k = (k_{i,j,\ell}) \in \mathbb{Z}_2^{D \times w \times D}$
+   \State \textbf{Input:} $x = (x_{i,j,\ell}) \in \Z_2^{D \times w \times D}$, $k = (k_{i,j,\ell}) \in \Z_2^{D \times w \times D}$
     \State $y \gets 0$
     \For{$i = 1$ to $D$}
       \For{$j = 1$ to $w$}
@@ -127,7 +127,7 @@ The algorithmic descriptions of the {\sf VDLPN} shallow wPRF and its low-complex
 \begin{algorithm}[H]
   \caption{\label{alg:vdlpn_simple}The {\sf VDLPN}$^*$ wPRF\\Parameters: Integers $w, D$}
   \begin{algorithmic}
-    \State \textbf{Input:} $x = (x_{j,\ell}) \in \mathbb{Z}_2^{w\times D}$,  $k = (k_{j,\ell}) \in \mathbb{Z}_2^{w\times D}$
+    \State \textbf{Input:} $x = (x_{j,\ell}) \in \Z_2^{w\times D}$,  $k = (k_{j,\ell}) \in \Z_2^{w\times D}$
     \State $y \gets 0$
     \For{$i = 1$ to $D$}
       \For{$j = 1$ to $w$}
