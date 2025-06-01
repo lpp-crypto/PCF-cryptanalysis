@@ -126,9 +126,9 @@ For other types of applications, the generalized construction from~\cite{C:DGHIK
 % \yr{page 424, toute fin de la section 5 de~\cite{C:HMMRSU23} dans CRYPTO 2023, pas forcément besoin de détailler, mais globalement, même paramètres, mais restriction du nombre de sample physiques d'un attaquant}
 
 
-More recently,~\cite{EC:ADDG24} introduced a novel application domain for this swallow weak PRF by combining it with the TFHE scheme~\cite{JC:CGGI20}, a fully homomorphic encryption construction based on programmable bootstrapping to reduce noise. In this context, the authors target a security level of $\lambda = 128$ bits and set $n = 256$, interpreting the key as a square matrix of dimension $n$.
+More recently,~\cite{EC:ADDG24} introduced a novel application domain for this shallow weak PRF by combining it with the TFHE scheme~\cite{JC:CGGI20}, a fully homomorphic encryption construction based on programmable bootstrapping to reduce noise. In this context, the authors target a security level of $\lambda = 128$ bits and set $n = 256$, interpreting the key as a square matrix of dimension $n$.
 
-\subsection{Concerete Targets for Cryptanalysis}
+\subsection{Concrete Targets for Cryptanalysis}
 In this section, we provide explicit parameter sets for the alternative mod-2/mod-3 construction~\cite{TCC:BIPSW18} and for the generalization proposed in~\cite{C:DGHIKS21}, both of which we consider to be as good targets for cryptanalysis. All parameter sets aim for a 128-bit security level.
 
 For the first construction, the parameter $n = 384$ proposed in the original paper is now considered insecure, based on the cryptanalysis results summarized in Section~\ref{sec:bipsw_cryptanalysis}. As discussed in Section~\ref{sec:bipsw_app}, the use of $n = 768$ was later proposed in~\cite{AC:CDDKS24} as an alternative. However, this parameter may offer more than 128 bits of security, and a dedicated cryptanalysis is required to accurately estimate its concrete security level.
