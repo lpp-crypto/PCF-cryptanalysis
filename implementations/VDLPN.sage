@@ -1,6 +1,6 @@
 #!/usr/bin/sage
 #-*- Python -*-
-# Time-stamp: <2025-06-01 23:00:36>
+# Time-stamp: <2025-06-02 01:29:34>
 
 from sage.all import *
 from utils import *
@@ -35,6 +35,13 @@ class VDLPN:
         xors = [x[i] ^^ k[i] for i in range(0, self.w)]
         return sum(triangular(xors[i]) for i in range(0, self.w)) % 2
 
+    
+# 128-bit secure variants
+inst_1 = VDLPN(20, 293)
+inst_2 = VDLPN(25, 336)
+inst_3 = VDLPN(30, 380)
+inst_4 = VDLPN(35, 421)
+inst_5 = VDLPN(40, 461)
 
 if __name__ == "__main__":
     seed = b""
