@@ -4,7 +4,7 @@
 \label{sec:bipsw}
 
 
-In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu introduced a new design paradigm for constructing MPC-friendly weak pseudorandom functions (wPRFs), which was later described in the literature as the \emph{alternating moduli paradigm}~\cite{TCC:BIPSW18}. Constructions based on this paradigm are low-depth but exhibit a high algebraic degree. They are mathematically simple, built by combining linear functions over different moduli.
+In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu introduced a new design paradigm for constructing wPRFs, which was later described in the literature as the \emph{alternating moduli paradigm}~\cite{TCC:BIPSW18}. Constructions based on this paradigm are low-depth, but still exhibit a high algebraic degree. They are mathematically simple, built by combining linear functions over different moduli.
 
 The original paper~\cite{TCC:BIPSW18} presented two such constructions: a primary one outputting elements in $\mathbb{Z}_3$, and an alternative design that ultimately attracted more attention from the community. This second construction, referred to as the \emph{alternative mod-2/mod-3 weak PRF} and labeled as Construction 6.3 in the original paper, is the only one from this work that we describe below. 
 
@@ -22,7 +22,7 @@ In its original formulation, $F_k$ is defined as follows:
 
 As we can see, we first compute the inner product between the key $k$ and the input $x$. Then, this inner product is evaluated both modulo 2 and modulo 3, and the two results are finally added modulo 2 to produce the final result.  
 
-\paragraph{Remark} The above construction can be implemented by a depth-2 $\mathsf{ACC}^0$ circuit: the first layer of this circuit consists of a $\mathsf{MOD}_2$ gate and a $\MOD_3$ gate, both connected to all inputs $x_i$ such that $k_i = 1$ (the $\MOD_3$ gate is additionally connected to a ``constant-2'': it checks whether $\sum_i k_ix_i+2$ is divisible by $3$), followed by a second layer with a single two-input $\MOD_2$-gate (by inspection, $F_k(x) = 0$ if and only if $\sum_i k_ix_i$ is 0 $\bmod 2$ and $1 \bmod 3$, or $\sum_i k_ix_i$ is 1 $\bmod 2$ and 0 or 2 $ \bmod 3$).
+\paragraph{Alternative representation.} The above construction can be implemented by a depth-2 $\mathsf{ACC}^0$ circuit:\lp{il faut qu'on définisse cette notion, ou alors qu'on vire ce commentaire} the first layer of this circuit consists of a $\mathsf{MOD}_2$ gate and a $\MOD_3$ gate, both connected to all inputs $x_i$ such that $k_i = 1$ (the $\MOD_3$ gate is additionally connected to a ``constant-2'': it checks whether $\sum_i k_ix_i+2$ is divisible by $3$), followed by a second layer with a single two-input $\MOD_2$-gate (by inspection, $F_k(x) = 0$ if and only if $\sum_i k_ix_i$ is $0 \bmod 2$ and $1 \bmod 3$, or $\sum_i k_ix_i$ is $1 \bmod 2$ and 0 or $2 \bmod 3$).
 
 However, as the designers point out, the above description can have the following alternative representation, that stems from the observation that $F_k(x) = 1$ if and only if the inner product $\langle k, x \rangle  \mod{6} = \sum_{i = 0}^{n-1} k_i x_i \mod{6} \in \{3,4,5\}$. For this, denote by $\lfloor \cdot \rceil_2 : \mathbb{Z}_6 \rightarrow \mathbb{Z}_2$ the rounding operator defined as:
 \begin{equation*}
@@ -33,13 +33,10 @@ However, as the designers point out, the above description can have the followin
 \end{array}
 \right.
 \end{equation*}
-
 Then, following the above remark, $F_k$ can alternatively be defined as
  \begin{equation} \label{eq:bipsw}
-F_k(x) = \left\lfloor \sum_{i = 0}^{n-1} k_i x_i  \mod{6} \right\rceil_2.
+F_k(x) = \left\lfloor \sum_{i = 0}^{n-1} k_i x_i  \mod{6} \right\rceil_2~.
 \end{equation}
-
-
 
 
 One of the security arguments put forward by the designers of the above construction is that it cannot be approximated by any low-degree polynomial. This is supported by the classical results of Razborov and Smolensky~\cite{Raz87,Smo87}, which show that for two distinct primes $p$ and $q$, the $\mod{p}$ function cannot be approximated by low-depth $\mod{q}$ circuits. %\yr{Je suppose que c'est pour une taille d'espace assez grande par rapport à $p$ et $q$ sinon ça ne marche pas non ?} 
@@ -55,8 +52,9 @@ While the moduli $p$ and $q$ can, \textit{a priori}, be chosen arbitrarily (as l
 
 The alternating moduli design paradigm quickly gained popularity as an approach for constructing weak shallow PRFs. Several subsequent works proposed generalized or alternative versions of the construction presented in the previous section. In this part, we describe two of the most notable and interesting variants.
 
-\subsubsection{A Generalized Construction~\cite{C:DGHIKS21}.}
+\subsubsection{A Generalized Construction~\cite{C:DGHIKS21}}
 \label{sec:bipsw_alt1}
+
 In 2021, Dinur, Goldfeder, Halevi, Ishai, Kelkar, Sharma, and Zaverucha revisited the alternative mod-2/mod-3 constructions from~\cite{TCC:BIPSW18} and proposed a generalized version. Their focus was primarily on the alternative variant (the one presented in the previous subsection), as having an output over $\mathbb{Z}_2$ is more convenient in many applications. The proposed generalization extends the original design in two main directions. First, the secret key is no longer a vector in $\mathbb{Z}_2^n$, but a matrix $K \in \mathbb{Z}_2^{m \times n}$. Second, a public compression matrix $B \in \mathbb{Z}_2^{t \times m}$ is applied before producing the output. This generalized construction has the advantage of outputting multiple bits at once instead of a single bit, resulting in improved throughput. \cb{Je ne sais pas si le fait que la clé soit une matrice est une généralisation, car j'ai l'impression que le candidat original pourraît être vu de cette manière là aussi .. Geoffroy ?}\gc{Si tu prends le candidat originel et te contente d'utiliser $n$ clés différentes, toutes évaluées sur le même input, tu as en effet une matrice, mais rajouter $B$ permet d'éviter des attaques de type décodage (BKW), et donc d'avoir de bien meilleur paramètre (tu peux avoir une sécurité exponentielle au lieu de sous-exponentielle). En plus, tu peux aussi prendre une matrice $K$ structurée. C'est d'ailleurs ce qu'ils font en prenant une matrice circulante; dans ce cas, tu ne peux plus voir ça comme étant juste une répétition du candidat initial avec des clés différentes.}
 
 More precisely, the proposed construction is parameterized by positive integers $n$, $m$, and $t$, with the constraints $m \geq n$ and $m \geq t$. These parameters respectively represent the input vector size, the size of the intermediate vector(s), and the output vector size. As in the original design, they are functions of a security parameter $\lambda$.
