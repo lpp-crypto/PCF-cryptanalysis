@@ -155,7 +155,7 @@ for all of the $\ell$ nonzero entries of the row of $H$. Hence, sampling a rando
 $\bigoplus_{i=1}^\ell \GT(x_i, k_{x'_i})$,
 which matches the description given in Section~\ref{subsec:original-reference-ealpn}.
 
-\paragraph{Security arguments} Equipped with the above equivalence, we briefly overview the security argument of~\cite{C:BCGIKR22}. The argument investigates attacks in the \emph{linear test framework} against syndrome decoding problem. An attack against {\sf EALPN} in this framework operates as follows:
+\paragraph{Security arguments} Equipped with the above equivalence, we briefly overview the security argument of~\cite{C:BCGIKR22}. The argument investigates attacks in the \emph{linear test framework} against the syndrome decoding problem. An attack against {\sf EALPN} in this framework operates as follows:
 \begin{itemize}
 	\item The attacker is given $M = H\cdot \Delta_{5N}$ (the parity-check matrix of the code) and produces a nonzero \emph{test vector} $v$. This step can run in unbounded time.
 	\item The noise vector $e$ is sampled. The attacker's advantage is defined as the \emph{bias} of the distribution induced by $v^\intercal\cdot M\cdot e$ (the bias is the distance to $1/2$ of the probability that $v^\intercal\cdot M\cdot e = 0$).
