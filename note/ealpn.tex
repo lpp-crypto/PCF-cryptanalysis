@@ -172,17 +172,17 @@ Two sets of parameters are provided for a security level of $\lambda = 128$, one
 &660 & $11$ & $2^{45}$ \\ 
 \bottomrule
 \end{tabular}
-\caption{\label{tab:parameters_ealpn}Suggested parameters for the {\sc EA-LPN} wPRF as targets for cryptanalysis.}
+\caption{\label{tab:parameters_ealpn}Suggested parameters for the {\sf EALPN} wPRF as targets for cryptanalysis.}
 \end{table}
 
 
 \subsection{Algorithmic Description}
 %!TODO! write about the implementation 
 
-Algorithm~\ref{alg:ealpn} provides an algorithmic description of the {\sf EA-LPN} wPRF.
+Algorithm~\ref{alg:ealpn} provides an algorithmic description of the {\sf EALPN} wPRF.
 
 \begin{algorithm}
-  \caption{\label{alg:ealpn}The {\sf EA-LPN} wPRF \\
+  \caption{\label{alg:ealpn}The {\sf EALPN} wPRF \\
     Parameters:  integers $N$, $t$, $\ell$,  $w = \lceil \frac{5N}{t} \rceil$}
   \begin{algorithmic}
   \State \textbf{Input:}  $x = ((x_1,x'_1), \dots, (x_\ell,x'_\ell)) \in ( \Z^*_{w}\times \Z^*_{t})^\ell$; $k = (k_1, \dots, k_{\ell}) \in (\Z_{w})^{\ell}$
