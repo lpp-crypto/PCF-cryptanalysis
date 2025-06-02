@@ -11,7 +11,7 @@ This shallow weak PRF was proposed by Boyle, Couteau, Gilboa, Ishai, Kohl, Resch
 \begin{equation}\label{eq:ealpn}
 F_k(x) = \bigoplus_{i=1}^\ell \GT(x_i, k_{x'_i}),
 \end{equation}
-where $\ell$ and $t$ are parameters that depend on the desired security level $\secpar$, and $x = (x_i,x'_i)_{i \leq \ell}$ is sampled from $([1,5N/t]\times [1,t])^\ell$. We assume that $N, w, \ell$ are chosen such that $t$ divides $5N$ and $\ell$ divides $t$. We let $w = 5N/t$.
+where $\ell$ and $t$ are parameters that depend on the desired security level $\secpar$, and $x = (x_i,x'_i)_{i \leq \ell}$ is sampled from $([1,5N/t]\times [1,t])^\ell$. We assume that $N$ and $\ell$ are chosen such that $t$ divides $5N$ and $\ell$ divides $t$. We let $w = 5N/t$.
 
 \subsection{Security Arguments and Cryptanalysis}
 %!TODO! Write about security arguments and cryptanalysis
