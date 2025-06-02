@@ -1,14 +1,143 @@
 \section{EALPN}
 \label{sec:ealpn}
 
+This shallow wPRF was intended as a successor of the {\sf VDLPN} wPRF: while it does not subsume it (as {\sf VDLPN} enjoys other applications), it provides a candidate in the class $\setF_{t,N}(\F_2)$ that does not limits itself to point functions, and instead fully leverages the fact that the class allows for general interval function to provide a much more efficient candidate (where efficiency refers to the efficiency of the target high-level MPC application).
 
 \subsection{Original Reference}
-Boyle, Couteau, Gilboa, Ishai, Kohl, Resch, Scholl 
-\cite{C:BCGIKR22} \cite{C:RagRinTan23}
+\label{subsec:original-reference-ealpn}
+
+This shallow weak PRF was proposed by Boyle, Couteau, Gilboa, Ishai, Kohl, Resch, Scholl in 2022~\cite{C:BCGIKR22}. It was subsequently analyzed in~\cite{C:RagRinTan23}. Fix a target number of samples $N$. Define $\GT$ to be the greater-than predicate: $\GT(a,b) = 1$ iff $a > b$. Then,
+
+\begin{equation}\label{eq:ealpn}
+F_k(x) = \bigoplus_{i=1}^\ell \GT(x_i, k_{x'_i}),
+\end{equation}
+where $\ell$ and $w$ are parameters that depend on the desired security level $\secpar$, and $x = (x_i,x'_i)_{i \leq \ell}$ is sampled from $([1,5N/w]\times [1,w])^\ell$. We assume that $N, w, \ell$ are chosen such that $w$ divides $5N$ and $\ell$ divides $w$.
 
 \subsection{Security Arguments and Cryptanalysis}
 %!TODO! Write about security arguments and cryptanalysis
 
+The presentation of {\sf EALPN} in this section differs significantly from the description provided in~\cite{C:BCGIKR22}. Before we overview the security arguments for {\sf EALPN}, we explain the discrepancy (the alternative view taken in~\cite{C:BCGIKR22} is useful to understand the security rationale). The original description of {\sf EALPN} is as follows:
+\begin{itemize}
+	\item Pick a random \emph{$\ell$-sparse} matrix $H \in \F_2^{N\times 5N}$ (\emph{i.e.}, each row of $H$ is a random weight-$\ell$ vector\footnote{To simplify some security arguments, rows are actually sampled from a Bernoulli distribution with probability $p=\ell/5N$ for each entry to be $1$ instead of being random fixed-weight vectors. However,~\cite[Section~3.4]{C:BCGIKR22} explicitly conjectures both variants to provide identical guarantees, and the exact-weight variant is the most convenient in the target application discussed in Section~\ref{subsubsec:fss}.}).
+	\item Sample a weight-$w$ \emph{regular noise vector} $e$ as a concatenation of $w$ length-$5N/w$ random unit vectors.
+	\item Define $\Delta_{5N}$ to be the $5N$-by-$5N$ matrix filled with ones on and below the main diagonal.
+	\item The {\sf EALPN} assumption states that no efficient adversary can distinguish $(H, H\cdot \Delta_{5N} \cdot e)$ from $(H, y)$ where $y \sample \F_2^{N}$.
+\end{itemize}
+
+With this alternative view, {\sf EALPN} becomes the problem of decoding the \emph{syndrome of a code} whose parity-check matrix is $H\cdot \Delta_{5N}$ and where the codeword is pertubated with a regular weight-$w$ noise $e$. We first explain why this formulation is equivalent to the formula given in Section~\ref{subsec:original-reference-ealpn}. First, observe that the left-product by $\Delta_{5N}$ is the \emph{accumulation} function, that maps $(x_1, \cdots, x_{5N})$ to $(x_1, x_1\oplus x_2, x_1\oplus x_2 \oplus x_3, \cdots)$. As $e$ is a weight-$w$ regular vector (\emph{i.e.}, a concatenation of $w$ unit vectors), $\Delta_{5N}\cdot e$ is an alternation of \emph{bands of zeroes} and \emph{bands of ones}. We can therefore rewrite the matrix equations as below: (red dots represent ones, white areas represent zeroes, light-red areas represent areas filled with ones):
+
+\begin{minipage}{.53\textwidth}
+\begin{tikzpicture}[x=1cm, y=1cm]
+
+  % Sparse matrix rectangle
+  \draw[thick] (0,0) rectangle (3,2);
+  \draw[thick] (0,0.8) -- (3,0.8);
+  \draw[thick] (0,1.2) -- (3,1.2);
+
+  % Five red dots, horizontally spread, vertically centered
+  \foreach \x in {0.2, 1.0, 1.4, 1.6, 2.7} {
+    \fill[red] (\x,1.0) circle (1.2pt);
+  }
+
+  % First multiplication dot (reduced space)
+  \node at (3.2,1) {\Large$\cdot$};
+
+  % Diagonal square matrix
+  \draw[thick] (3.4,0) rectangle (6.4,3);
+  \draw[thick] (3.4,3) -- (6.4,0);
+  % Fill the top-right triangle (above the diagonal)
+\fill[red, opacity=0.2] (3.4,3) -- (3.4,0) -- (6.4,0) -- cycle;
+
+  \node at (4.9,0.75) {\Huge 1};
+  \node at (4.9,2.25) {\Huge 0};
+
+  % Second multiplication dot (reduced space)
+  \node at (6.6,1.5) {\Large$\cdot$};
+
+  % Vector: 5 stacked thin rectangles aligned to bottom of square
+  \foreach \i/\offset in {0/0.65, 1/0.4, 2/0.7, 3/0.2, 4/0.85} {
+    \pgfmathsetmacro{\ymin}{0 + \i*0.6}
+    \pgfmathsetmacro{\ymax}{0.6 + \i*0.6}
+    \draw[thick] (6.8,\ymin) rectangle (7.1,\ymax);
+    \pgfmathsetmacro{\ydot}{\ymin + (\ymax - \ymin)*\offset}
+    \fill[red] (6.95,\ydot) circle (1.2pt);
+  }
+
+\end{tikzpicture}
+\end{minipage}
+\raisebox{-.48cm}{$=$}
+\begin{minipage}{.45\textwidth}
+\begin{tikzpicture}[x=1cm, y=1cm]
+
+% Sparse matrix rectangle (shifted by 3.4)
+\draw[thick] (3.4,0) rectangle (6.4,2);
+\draw[thick] (3.4,0.8) -- (6.4,0.8);
+\draw[thick] (3.4,1.2) -- (6.4,1.2);
+
+% Five red dots, horizontally spread, vertically centered
+\foreach \x in {3.6, 4.4, 4.8, 5.0, 6.1} {
+  \fill[red] (\x,1.0) circle (1.2pt);
+}
+
+% First multiplication dot (reduced space)
+\node at (6.6,1) {\Large$\cdot$};
+
+  % Vector: 5 stacked thin rectangles aligned to bottom of square
+  \foreach \i/\offset in {0/0.65, 1/0.4, 2/0.7, 3/0.2, 4/0.85} {
+    \pgfmathsetmacro{\ymin}{0 + \i*0.6}
+    \pgfmathsetmacro{\ymax}{0.6 + \i*0.6}
+    \draw[thick] (6.8,\ymin) rectangle (7.1,\ymax);
+    \pgfmathsetmacro{\ydot}{\ymin + (\ymax - \ymin)*\offset}
+    \draw[red, thick] (6.8,\ydot) -- (7.1, \ydot);
+  }
+
+\filldraw[red,opacity=0.15] (6.8, 2.9) rectangle (7.1, 1.91);
+\filldraw[red,opacity=0.15] (6.8, 1.63) rectangle (7.1, 0.85);
+\filldraw[red,opacity=0.15] (6.8, 0.39) rectangle (7.1, 0);
+
+\end{tikzpicture}
+\end{minipage}
+~\\
+
+The next observation is that if we take the odd-numbered blocks of $f = \Delta_{5N}\cdot e$ and \emph{turn them by 180°}, the assumption remains formally identical: indeed, we can divide each row of $H$ in a length-$5N/w$ block and flip identically the odd-numbered blocks (rewriting them right-to-left). Denoting $\tilde f$ and $\tilde H$ the resulting vector and matrix respectively, we have $H\cdot f = \tilde H \cdot \tilde f$. But since the rows of $H$ are random weight-$\ell$ vectors, the distribution induced on $\tilde H$ is identical to the original distribution of $H$. Therefore, the assumption can be equivalently stated as: $(H, H\cdot \tilde f)$ should be indistinguishable from $(H,y\sample \F_2^N)$. Now, representing this last version visually:
+
+\begin{center}
+\begin{tikzpicture}[x=1cm, y=1cm]
+
+% Sparse matrix rectangle (shifted by 3.4)
+\draw[thick] (3.4,0) rectangle (6.4,2);
+\draw[thick] (3.4,0.8) -- (6.4,0.8);
+\draw[thick] (3.4,1.2) -- (6.4,1.2);
+
+% Five red dots, horizontally spread, vertically centered
+\foreach \x in {3.6, 4.4, 4.8, 5.0, 6.1} {
+  \fill[red] (\x,1.0) circle (1.2pt);
+}
+
+% First multiplication dot (reduced space)
+\node at (6.6,1) {\Large$\cdot$};
+
+  % Vector: 5 stacked thin rectangles aligned to bottom of square
+  \foreach \i/\offset in {0/0.65, 1/0.4, 2/0.7, 3/0.2, 4/0.85} {
+    \pgfmathsetmacro{\ymin}{0 + \i*0.6}
+    \pgfmathsetmacro{\ymax}{0.6 + \i*0.6}
+    \draw[thick] (6.8,\ymin) rectangle (7.1,\ymax);
+    \pgfmathsetmacro{\ydot}{\ymin + (\ymax - \ymin)*\offset}
+    \draw[red, thick] (6.8,\ydot) -- (7.1, \ydot);
+  }
+
+\filldraw[red,opacity=0.15] (6.8, 2.9) rectangle (7.1,2.4);
+\filldraw[red,opacity=0.15] (7.1, 1.91) rectangle (6.8,1.8);
+\filldraw[red,opacity=0.15] (6.8, 1.63) rectangle (7.1, 1.2);
+\filldraw[red,opacity=0.15]  (7.1, 0.85) rectangle (6.8, 0.6);
+\filldraw[red,opacity=0.15] (6.8, 0.39) rectangle (7.1, 0);
+
+\end{tikzpicture}
+\end{center}
+
+We can rewrite this matrix-vector product as follows: for each red dot in the matrix row, we look at the corresponding block of $\tilde f$ and check whether the red dot is before or after the red bar. That is, if the $i$-th red dot lands at position $x_i$ in the $x'_i$-th block, and if we denote $k_{x'_i}$ the position of the red bar in this block, we compute
+\[\GT(x_i, k_{x'_i})\]
+for all of the $\ell$ nonzero entries of the row of $H$. Hence, sampling a random row $h$ of $H$ amounts to sampling $\ell$ pairs $(x_i, x'_i) \sample [1,5N/w]\times [1,w]$
 
 \subsection{Parameters}
 
@@ -40,7 +169,7 @@ Algorithm~\ref{alg:ealpn} provides an algorithmic description of the {\sf EA-LPN
   \State \textbf{Input:}  $x = ((j_1,x_1), \dots, (j_\ell,x_\ell)) \in ( \Z_{\frac{t}{\ell}}\times \Z_{w})^\ell$; $k = (k_1, \dots, k_{\ell}) \in (\Z_{w}^{\frac{t}{\ell}})^{\ell}$
     \State $r \gets 0$
 \For{$i = 1$ to $\ell$}
-    \If{$x_i \geq k_{i,j_i}$}
+    \If{$x_i \geq k_{j_i}$}
         \State $r \gets r + 1$
     \EndIf
 \EndFor\\
