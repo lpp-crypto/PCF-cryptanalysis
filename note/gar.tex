@@ -171,9 +171,9 @@ Seed size ($n$) & Stretch ($\mathsf{s}$) & Predicate ($P$)& Reference\\
 \end{table}
 
 \subsection{Algorithmic Description}
-The PRG differs from the other shallow weak PRFs presented in this survey in that it does not rely on a secret key. Instead, the adversary is given the subsets $\sigma_i$, which are sampled uniformly at random from all subsets of size $d$. These subsets play a similar role to the inputs $x$ in the other constructions: they are public, but not adversarially chosen. The actual secret in this case is the seed, which was previously denoted by $x$. For clarity and consistency with Algorithm~\ref{alg:gar}, we now refer to the seed as $k$.
+The PRG differs from the other shallow weak PRFs presented in this survey in that it does not rely on a secret key. Instead, the adversary is given the subsets $\sigma_i$, which are sampled uniformly at random from all subsets of size $d$. We denote $A_d^n$ the set of all ordered subsets of $\Z_n$ of size $d$. These subsets play a similar role to the inputs $x$ in the other constructions: they are public, but not adversarially chosen. The actual secret in this case is the seed, which was previously denoted by $x$. For clarity and consistency with the description of the other wsPRFs, we now refer to the seed as $k$, and the subsets as $x$.
 
-\yr{Je veux bien qu'on appelle $k,x$ comme les autres j'essaie un truc mais je suis pas si convaincu. J'utiliserais au moins $\sigma$ ?}
+\yr{Je veux bien qu'on appelle $k,x$ comme les autres j'essaie un truc mais je suis pas si convaincu. J'utiliserais au moins $\sigma$ ?}\lp{moi ça me va, j'ai rajouté 2-3 trucs dans la description}
 
 \begin{algorithm}
   \caption{\label{alg:gar}The Goldreich's PRF/PRG \\
@@ -182,7 +182,7 @@ The PRG differs from the other shallow weak PRFs presented in this survey in tha
   \State \textbf{Input:} $k\in\{0,1\}^n$, $x\in [1,\ldots,A^n_d]^{m}$
     \State $y \gets \varepsilon$ 
     \For{$i = 1$ to $m$}
-    	\State $y \gets y||P(k[x_i])$
+    	\State $y \gets y~||~P(k[x_i])$
 	\EndFor  \\
     \Return $y$
   \end{algorithmic}
