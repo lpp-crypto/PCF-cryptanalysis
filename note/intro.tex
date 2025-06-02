@@ -75,7 +75,7 @@ In this context, the main goal of the designers of such primitives is to identif
 In modern symmetric cryptography, PRFs are usually not intended to work for any block size $n$. Instead, the input and output size are fixed, and while the security definition also relies on a game, it differs in a crucial way: there is no asymptotic reasoning, we instead explicitly upper-bound the probability of success of a distinguishing algorithm $\distinguisher$ that is allowed at most $q$ queries to the function under scrutiny.
 
 \begin{definition}[PRF security]
-Let $n$ and $k$ be positive integers. Let $\{F_K\}_{K \in \Z_2^k}$ be a keyed function family with $F_K : \Z_2^n \to \Z_2^n$. We say that $F$ achieves $(q,\varepsilon)$-PRF security if for any distinguisher $\distinguisher$ making at most $q$ queries, the distinguishing advantage is at most $\varepsilon$, i.e.,
+Let $n$ and $k$ be positive integers. Let $\{F_K\}_{K \in \Z_2^k}$ be a keyed function family with $F_K : \Z_2^n \to \Z_2^n$. We say that $F$ achieves $(q,T,\varepsilon)$-PRF security if for any distinguisher $\distinguisher$ running in time at most $T$ and making at most $q$ queries, the distinguishing advantage is at most $\varepsilon$, i.e.,
 \[
 \left| \Pr\left[\distinguisher^{F_K} = 1 \right] - \Pr\left[\distinguisher^{\mathcal{R}} = 1 \right] \right| \leq \varepsilon,
 \]
@@ -93,7 +93,7 @@ In this description, the attacker is allowed to do \emph{chosen plaintext} queri
 
 
 \begin{definition}[wPRF security]
-Let $n$, $k$, and $q$ be positive integers. A family of functions $F_K : \Z_2^n \to \Z_2^n$, indexed by a key $K \in \Z_2^k$, is said to achieve $(q,\varepsilon)$-weak PRF security if, for every distinguisher $\distinguisher$ making at most $q$ queries on inputs $x_1, \dots, x_q \in \Z_2^n$ drawn independently and uniformly at random, we have:
+Let $n$, $k$, and $q$ be positive integers. A family of functions $F_K : \Z_2^n \to \Z_2^n$, indexed by a key $K \in \Z_2^k$, is said to achieve $(q,T,\varepsilon)$-weak PRF security if, for every distinguisher $\distinguisher$ running in time at most $T$ and making at most $q$ queries on inputs $x_1, \dots, x_q \in \Z_2^n$ drawn independently and uniformly at random, we have:
 \begin{equation*}
   \begin{split}
     \Big| 
@@ -122,7 +122,7 @@ However, this reasoning breaks down for attack techniques based on algebraic met
 
 Because most of the attacks applicable to the weak PRFs we consider do not rely on exhaustive search, we argue that it is more relevant to express the time complexity in terms of the number of elementary operations, rather than just oracle calls. That is, we adopt the view that security should be measured in terms of the total cost (time or operations) required to distinguish the function from a random oracle.
 
-In the rest of this paper, we aim to move beyond asymptotic reasoning and instead adopt a concrete perspective: for a given target security level $\lambda$, we consider a weak PRF secure if no adversary can distinguish it from a random function with success probability greater than $1/2 + \varepsilon$ in less than $2^\lambda$ operations. This includes both oracle queries and any algebraic or pre-processing steps the adversary may perform. The set of operations considered can depend on the context, but one must be clear and exact on what is being counted.
+In the rest of this paper, we aim to move beyond asymptotic reasoning and instead adopt a concrete perspective: for a given target security level $\lambda$, we consider a weak PRF secure if no adversary can distinguish it from a random function with success probability greater than $\varepsilon = T/2^\lambda$ in less than $T$ operations\footnote{This is the traditional way to measure concrete security of symmetric primitives~\cite{C:DodSte09}. However, it was recently challenged by Micciancio and Walter~\cite{EC:MicWal18} who showed that $\varepsilon = \sqrt{T/2^\secpar}$ is more accurate for decision primitives, such as wPRFs. Nevertheless, we are typically interested in the setting where $\varepsilon$ is close to $1$, in which case both measures coincide.}. This includes both oracle queries and any algebraic or pre-processing steps the adversary may perform; however, a separate bound $q$ on the total number of oracle queries allowed to the adversary is also typically assumed (in real-world contexts, the number of queries is a number of samples observed by the adversary: it is not directly under its control and realistically often much lower than $2^\lambda$). The set of operations considered can depend on the context, but one must be clear and exact on what is being counted.
 
 We note that in several existing proposals, the chosen parameters are justified post hoc to avoid trivial breakage, and the resulting security level is sometimes arbitrarily bounded (e.g., ``80 bits'') to compensate for performance issues. This practical “patching” approach highlights the need for a more rigorous study based on concrete cryptanalysis, something we actively advocate for by writing this survey.
 
