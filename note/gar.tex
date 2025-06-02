@@ -1,7 +1,7 @@
 \section{Goldreich's PRG}
 \label{sec:goldreich}
 
-Twenty-five years ago, Goldreich posed the question of whether it is possible to securely construct a very simple function that is hard to invert~\cite{DBLP:journals/eccc/ECCC-TR00-090}. By \emph{very simple}, we mean a function whose description is transparent and can be expressed using a concise, closed-form formula. This question led to the design of a minimalistic and elegant one-way function. Despite its simplicity, this function is conjectured to offer strong cryptographic guarantees, and has, over the years, become a central object of study in the theory of cryptography and complexity.  %While the function's structure is very simple, its security also relies on access to a large collection of public, uniformly random values. \cb{Il faut dire deux mots de plus sur ce que cette dernière phrase implique.}\yr{C'est bizarre de l'expliquer ici et surtout avant de décrire la fonction ? Je parle juste de ce qu'on s'est dit lundi: weak nonce et uniformly subsets, qui si on les a pas, la construction ne marche plus.}
+Twenty-five years ago, Goldreich asked the question of whether it is possible to securely construct a very simple function that is hard to invert~\cite{DBLP:journals/eccc/ECCC-TR00-090}. By \emph{very simple}, we mean a function whose description is transparent and can be expressed using a concise, closed-form formula. This question led to the design of a minimalistic and elegant one-way function. Despite its simplicity, this function is conjectured to offer strong cryptographic guarantees, and has, over the years, become a central object of study in the theory of cryptography and complexity.  %While the function's structure is very simple, its security also relies on access to a large collection of public, uniformly random values. \cb{Il faut dire deux mots de plus sur ce que cette dernière phrase implique.}\yr{C'est bizarre de l'expliquer ici et surtout avant de décrire la fonction ? Je parle juste de ce qu'on s'est dit lundi: weak nonce et uniformly subsets, qui si on les a pas, la construction ne marche plus.}
 
 
 
@@ -28,18 +28,16 @@ Goldreich's one-way function is specified by a fixed predicate and a public coll
 
 Regarding security, Goldreich's construction is usually used as a pseudorandom generator (PRG). That is, for a uniformly random seed $x \in \{0,1\}^n$, the output sequence $y = F(x) \in \{0,1\}^m$ should be computationally indistinguishable from a uniformly random string of the same length.
 
-While this construction may initially seem purely theoretical, its structure and constraints provide valuable insights for practical cryptographic applications. In particular, the \emph{locality} parameter $d(n)$ serves as a measure of the circuit's arithmetic depth or of the complexity of the circuit implementing the functions, and plays an important role in balancing efficiency and security.
-
+While this construction may initially seem purely theoretical, its structure and constraints provide valuable insights for practical cryptographic applications. In particular, the \emph{locality} parameter $d(n)$ serves as a measure of the circuit's arithmetic depth or of the complexity of the circuit implementing the functions, and plays an important role in balancing efficiency and security. 
 
 One of the most compact instantiations of this proposal uses locality $d = 5$ and the predicate
 \[
-P_5(x_1, x_2, x_3, x_4, x_5) = x_1 + x_2 + x_3 + x_4 x_5.
+P_5(x_1, x_2, x_3, x_4, x_5) = x_1 + x_2 + x_3 + x_4 x_5~.
 \]
 
 More generally, natural candidates for the predicate $P$ in Goldreich’s construction include the classes of \textsf{XOR-MAJ} and \textsf{XOR-THR} functions. These predicates operate on disjoint subsets of the input: the elements of the first subset are combined using XOR, while those of the second are processed by a nonlinear function, such as a majority or threshold function. The outputs of these two components are then XORed to produce the final result.
 
 \paragraph{Threshold function.} Let $\mathsf{w}(x)$ denote the Hamming weight of a vector $x \in \{0,1\}^t$. For a given threshold $\mathsf{th} \in [1, t+1]$, the threshold function $\mathsf{THR}_{\mathsf{th}} : \{0,1\}^t \to \{0,1\}$ is defined as:
-
 $$
 \mathsf{THR}_{\mathsf{th}}(x) = 
 \begin{cases}
@@ -49,20 +47,18 @@ $$
 $$
 
 \paragraph{Majority function.} The majority function $\mathsf{MAJ} : \{0,1\}^t \to \{0,1\}$ is the special case of the threshold function where the threshold is set to half the input length (rounded up):
-
 $$
-\mathsf{MAJ}(x) = \mathsf{THR}_{\lfloor t/2 \rfloor}(x).
+\mathsf{MAJ}(x) = \mathsf{THR}_{\lfloor t/2 \rfloor}(x)~.
 $$
 
 
 
 \paragraph{The $\mathsf{XOR}_{\ell_1}-\mathsf{MAJ}_{\ell_2}$ predicate.} Let $u = (u_1, \ldots, u_\ell) \in \{0,1\}^\ell$ be the input to the predicate, and let $\ell_1 + \ell_2 = \ell$ be a partition of the input. This predicate applies an XOR over the first $\ell_1$ input bits and a majority over the remaining $\ell_2$ bits, and XORs the two results:
-
 $$
-P(u) = \mathsf{XOR}_{\ell_1}-\mathsf{MAJ}_{\ell_2}(u) = \mathsf{XOR}(u_1, \ldots, u_{\ell_1}) \oplus \mathsf{MAJ}(u_{\ell_1+1}, \ldots, u_\ell).
+P(u) = \mathsf{XOR}_{\ell_1}-\mathsf{MAJ}_{\ell_2}(u) = \mathsf{XOR}(u_1, \ldots, u_{\ell_1}) \oplus \mathsf{MAJ}(u_{\ell_1+1}, \ldots, u_\ell)~.
 $$
 
-A similar can be given for the $\mathsf{XOR}_{\ell_1}-\mathsf{THR}_{\mathsf{th},\ell_2}$ predicate. These predicates are the two most popular choices, as they offer both high algebraic immunity~\cite{C:Courtois03,EC:CouMei03} and a high resiliency order~\cite{DBLP:journals/tit/Siegenthaler84}. Their cryptographic properties have been thoroughly analyzed in~\cite{DBLP:journals/ccds/Meaux21,DBLP:journals/dam/Meaux22}.  
+A similar definition can be given for the $\mathsf{XOR}_{\ell_1}-\mathsf{THR}_{\mathsf{th},\ell_2}$ predicate. These predicates are the two most popular choices, as they offer both high algebraic immunity~\cite{C:Courtois03,EC:CouMei03} and a high resiliency order~\cite{DBLP:journals/tit/Siegenthaler84}. Their cryptographic properties have been thoroughly analyzed in~\cite{DBLP:journals/ccds/Meaux21,DBLP:journals/dam/Meaux22}.  
 
 \subsection{Cryptanalysis}
 
