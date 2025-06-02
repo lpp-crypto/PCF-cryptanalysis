@@ -75,7 +75,7 @@ In this context, the main goal of the designers of such primitives is to identif
 In modern symmetric cryptography, PRFs are usually not intended to work for any block size $n$. Instead, the input and output size are fixed, and while the security definition also relies on a game, it differs in a crucial way: there is no asymptotic reasoning, we instead explicitly upper-bound the probability of success of a distinguishing algorithm $\distinguisher$ that is allowed at most $q$ queries to the function under scrutiny.
 
 \begin{definition}[PRF security]
-Let $n$ and $k$ be positive integers. Let $\{F_K\}_{K \in \Z_2^k}$ be a keyed function family with $F_K : \Z_2^n \to \Z_2^n$. We say that $F$ achieves $(q,\varepsilon)$-PRF security if for any distinguisher $\distinguisher$ making at most $q$ queries, the distinguishing advantage is at most $\varepsilon$, i.e.,
+Let $n$ and $k$ be positive integers. Let $\{F_K\}_{K \in \Z_2^k}$ be a keyed function family with $F_K : \Z_2^n \to \Z_2^n$. We say that $F$ achieves $(q,T,\varepsilon)$-PRF security if for any distinguisher $\distinguisher$ running in time at most $T$ and making at most $q$ queries, the distinguishing advantage is at most $\varepsilon$, i.e.,
 \[
 \left| \Pr\left[\distinguisher^{F_K} = 1 \right] - \Pr\left[\distinguisher^{\mathcal{R}} = 1 \right] \right| \leq \varepsilon,
 \]
@@ -93,7 +93,7 @@ In this description, the attacker is allowed to do \emph{chosen plaintext} queri
 
 
 \begin{definition}[wPRF security]
-Let $n$, $k$, and $q$ be positive integers. A family of functions $F_K : \Z_2^n \to \Z_2^n$, indexed by a key $K \in \Z_2^k$, is said to achieve $(q,\varepsilon)$-weak PRF security if, for every distinguisher $\distinguisher$ making at most $q$ queries on inputs $x_1, \dots, x_q \in \Z_2^n$ drawn independently and uniformly at random, we have:
+Let $n$, $k$, and $q$ be positive integers. A family of functions $F_K : \Z_2^n \to \Z_2^n$, indexed by a key $K \in \Z_2^k$, is said to achieve $(q,T,\varepsilon)$-weak PRF security if, for every distinguisher $\distinguisher$ running in time at most $T$ and making at most $q$ queries on inputs $x_1, \dots, x_q \in \Z_2^n$ drawn independently and uniformly at random, we have:
 \begin{equation*}
   \begin{split}
     \Big| 
