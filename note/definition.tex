@@ -5,11 +5,9 @@
 
 \subsection{Definitions and Notations}
 
- \paragraph{Mathematics.} As stated before, we denote by $\Z_n$ the ring consisting of the integers in ${0, \dots, n-1}$. We also denote $[N]$ the set $\{1, \dots, N\}$, and $[a,b]$ the interval $\{a, a+1, \dots, b\}$.
+ \paragraph{Mathematics.} As stated before, we denote by $\Z_n$ the ring consisting of the integers in $\{0, \dots, n-1\}$. We also denote by $[N]$ the set $\{1, \dots, N\}$, and $[a,b]$ the interval $\{a, a+1, \dots, b\}$.
 
-
-A function mapping $\Z_2^n$ to $\Z_2$ is a \emph{binary} or \emph{Boolean} function, and it has unique representation as a polynomial in variables $(x_0,...,x_{n-1})$ that is the sum of monomials of the form $\prod_{i=0}^{n-1}x_i^{u_i}$ with $u_i \in \Z_2$. The \emph{Hamming weight} of a vector $(u_0, ..., u_{n-1}) \in \Z_2^n$ is the number of non-zero entries in it, and the \emph{algebraic degree} of a Boolean function is the maximum number of terms appearing in its monomials with non-zero coefficients.
-
+A function mapping $\Z_2^n$ to $\Z_2$ is a \emph{binary} or \emph{Boolean} function. Every such function has a unique representation as a multivariate polynomial over $\Z_2$ in the variables $(x_0, \dots, x_{n-1})$, expressed as a sum of monomials of the form $\prod_{i=0}^{n-1} x_i^{u_i}$ with $u_i \in \Z_2$. The \emph{Hamming weight} of a vector $(u_0, \dots, u_{n-1}) \in \Z_2^n$ is the number of non-zero entries in the vector. The \emph{algebraic degree} of a Boolean function is the maximum number of variables appearing in any monomial with a non-zero coefficient in its polynomial representation.
 
 \paragraph{Parameters.}
 In practice, the message length and key lengths of the function we study depend on a security parameter $\lambda$. To simplify notations, we will  explicitly omit indexing all relevant parameters by $\lambda$. For instance, we will write $n$ instead of $n(\lambda)$ and $\mathcal{K}$ instead of $\mathcal{K}_{\lambda}$ for the key space.
