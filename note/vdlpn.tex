@@ -115,7 +115,7 @@ $r$ & $D$ &  $w$ & $N = 2^D$\\
 
 \subsection{Algorithmic Description}
 
-The algorithmic descriptions of the {\sf VDLPN} shallow wPRF and its low-complexity variant {\sf VDLPN}$^*$ are provided in Algorithm~\ref{alg:vdlpn} and Algorithm~\ref{alg:vdlpn_simple}, respectively.
+The algorithmic descriptions of the {\sf VDLPN} shallow wPRF and its low-complexity variant {\sf VDLPN}$^*$ are provided in Algorithm~\ref{alg:vdlpn} and Algorithm~\ref{alg:vdlpn_simple}, respectively. The algorithmic descriptions of the {\sf VDLPN}$'$ shallow wPRF and its low-complexity variant {{\sf VDLPN}$'$}$^*$ are provided in Algorithm~\ref{alg:vdlpn_variant} and Algorithm~\ref{alg:vdlpn_simple_variant}, respectively.
 
 
 \begin{figure}[ht]
@@ -160,6 +160,56 @@ The algorithmic descriptions of the {\sf VDLPN} shallow wPRF and its low-complex
 \end{algorithm}
 \end{minipage}
 \caption{Algorithmic description of the original {\sf VDLPN} shallow wPRF and its low-complexity variant {\sf VDLPN}$^*$.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\begin{minipage}[t]{0.47\textwidth}
+\begin{algorithm}[H]
+  \caption{\label{alg:vdlpn_variant}The {\sf VDLPN}$'$ wPRF\\Parameters: Integers $r, w, D$}
+  \begin{algorithmic}
+   \State \textbf{Input:} $x = (x_{0,i}, x_{i,j,\ell}) \in \Z_2^{s}$, $k = (k_{0,i},k_{i,j,\ell}) \in \Z_2^{s}$ with $s=r+(D-5) w D$
+    \State $y \gets 0$
+    \For{$i = 1$ to $r$}
+      \State $y \gets y \oplus x_{0,i}\cdot k_{0,i}$
+    \EndFor
+    \For{$i = 5$ to $D$}
+      \For{$j = 1$ to $w$}
+        \State $t \gets 1$
+        \For{$\ell = 1$ to $i$}
+          \State $t \gets t \cdot (x_{i,j,\ell} \oplus k_{i,j,\ell})$
+        \EndFor
+        \State $y \gets y \oplus t$
+      \EndFor
+    \EndFor
+    \State \Return $y$
+  \end{algorithmic}
+\end{algorithm}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.47\textwidth}
+\begin{algorithm}[H]
+  \caption{\label{alg:vdlpn_simple_variant}The {{\sf VDLPN}$'$}$^*$ wPRF\\Parameters: Integers $r,w, D$}
+  \begin{algorithmic}
+    \State \textbf{Input:} $x = (x_{0,i}, x_{j,\ell}) \in \Z_2^{r+w\times D}$,  $k = (k_{0,i}, k_{j,\ell}) \in \Z_2^{r+w\times D}$
+    \State $y \gets 0$
+    \For{$i = 1$ to $r$}
+      \State $y \gets y \oplus x_{0,i}\cdot k_{0,i}$
+    \EndFor
+    \For{$i = 5$ to $D$}
+      \For{$j = 1$ to $w$}
+        \State $t \gets 1$
+        \For{$\ell = 1$ to $i$}
+          \State $t \gets t \cdot (x_{j,\ell} \oplus k_{j,\ell})$
+        \EndFor
+        \State $y \gets y \oplus t$
+      \EndFor
+    \EndFor
+    \State \Return $y$
+  \end{algorithmic}
+\end{algorithm}
+\end{minipage}
+\caption{Algorithmic description of the {\sf VDLPN}$'$ shallow wPRF and its low-complexity variant {{\sf VDLPN}$'$}$^*$.}
 \end{figure}
 
 
