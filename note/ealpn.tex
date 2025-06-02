@@ -11,20 +11,22 @@ This shallow weak PRF was proposed by Boyle, Couteau, Gilboa, Ishai, Kohl, Resch
 \begin{equation}\label{eq:ealpn}
 F_k(x) = \bigoplus_{i=1}^\ell \GT(x_i, k_{x'_i}),
 \end{equation}
-where $\ell$ and $w$ are parameters that depend on the desired security level $\secpar$, and $x = (x_i,x'_i)_{i \leq \ell}$ is sampled from $([1,5N/w]\times [1,w])^\ell$. We assume that $N, w, \ell$ are chosen such that $w$ divides $5N$ and $\ell$ divides $w$.
+where $\ell$ and $t$ are parameters that depend on the desired security level $\secpar$, and $x = (x_i,x'_i)_{i \leq \ell}$ is sampled from $([1,5N/t]\times [1,t])^\ell$. We assume that $N, w, \ell$ are chosen such that $t$ divides $5N$ and $\ell$ divides $t$. We let $w = 5N/t$.
 
 \subsection{Security Arguments and Cryptanalysis}
 %!TODO! Write about security arguments and cryptanalysis
 
-The presentation of {\sf EALPN} in this section differs significantly from the description provided in~\cite{C:BCGIKR22}. Before we overview the security arguments for {\sf EALPN}, we explain the discrepancy (the alternative view taken in~\cite{C:BCGIKR22} is useful to understand the security rationale). The original description of {\sf EALPN} is as follows:
+The presentation of {\sf EALPN} in this section differs significantly from the description provided in~\cite{C:BCGIKR22}. Before we overview the security arguments for {\sf EALPN}, we explain the discrepancy (the alternative view taken in~\cite{C:BCGIKR22} is useful to understand the security rationale).
+
+\paragraph{Equivalence with the original presentation.} The original description of {\sf EALPN} is as follows:
 \begin{itemize}
 	\item Pick a random \emph{$\ell$-sparse} matrix $H \in \F_2^{N\times 5N}$ (\emph{i.e.}, each row of $H$ is a random weight-$\ell$ vector\footnote{To simplify some security arguments, rows are actually sampled from a Bernoulli distribution with probability $p=\ell/5N$ for each entry to be $1$ instead of being random fixed-weight vectors. However,~\cite[Section~3.4]{C:BCGIKR22} explicitly conjectures both variants to provide identical guarantees, and the exact-weight variant is the most convenient in the target application discussed in Section~\ref{subsubsec:fss}.}).
-	\item Sample a weight-$w$ \emph{regular noise vector} $e$ as a concatenation of $w$ length-$5N/w$ random unit vectors.
+	\item Sample a weight-$t$ \emph{regular noise vector} $e$ as a concatenation of $t$ length-$w$ random unit vectors.
 	\item Define $\Delta_{5N}$ to be the $5N$-by-$5N$ matrix filled with ones on and below the main diagonal.
 	\item The {\sf EALPN} assumption states that no efficient adversary can distinguish $(H, H\cdot \Delta_{5N} \cdot e)$ from $(H, y)$ where $y \sample \F_2^{N}$.
 \end{itemize}
 
-With this alternative view, {\sf EALPN} becomes the problem of decoding the \emph{syndrome of a code} whose parity-check matrix is $H\cdot \Delta_{5N}$ and where the codeword is pertubated with a regular weight-$w$ noise $e$. We first explain why this formulation is equivalent to the formula given in Section~\ref{subsec:original-reference-ealpn}. First, observe that the left-product by $\Delta_{5N}$ is the \emph{accumulation} function, that maps $(x_1, \cdots, x_{5N})$ to $(x_1, x_1\oplus x_2, x_1\oplus x_2 \oplus x_3, \cdots)$. As $e$ is a weight-$w$ regular vector (\emph{i.e.}, a concatenation of $w$ unit vectors), $\Delta_{5N}\cdot e$ is an alternation of \emph{bands of zeroes} and \emph{bands of ones}. We can therefore rewrite the matrix equations as below: (red dots represent ones, white areas represent zeroes, light-red areas represent areas filled with ones):
+With this alternative view, {\sf EALPN} becomes the problem of decoding the \emph{syndrome of a code} whose parity-check matrix is $H\cdot \Delta_{5N}$ and where the codeword is pertubated with a regular weight-$w$ noise $e$. We first explain why this formulation is equivalent to the formula given in Section~\ref{subsec:original-reference-ealpn}. First, observe that the left-product by $\Delta_{5N}$ is the \emph{accumulation} function, that maps $(x_1, \cdots, x_{5N})$ to $(x_1, x_1\oplus x_2, x_1\oplus x_2 \oplus x_3, \cdots)$. As $e$ is a weight-$t$ regular vector (\emph{i.e.}, a concatenation of $t$ unit vectors), $\Delta_{5N}\cdot e$ is an alternation of \emph{bands of zeroes} and \emph{bands of ones}. We can therefore rewrite the matrix equations as below: (red dots represent ones, white areas represent zeroes, light-red areas represent areas filled with ones):
 
 \begin{minipage}{.53\textwidth}
 \begin{tikzpicture}[x=1cm, y=1cm]
@@ -137,7 +139,24 @@ The next observation is that if we take the odd-numbered blocks of $f = \Delta_{
 
 We can rewrite this matrix-vector product as follows: for each red dot in the matrix row, we look at the corresponding block of $\tilde f$ and check whether the red dot is before or after the red bar. That is, if the $i$-th red dot lands at position $x_i$ in the $x'_i$-th block, and if we denote $k_{x'_i}$ the position of the red bar in this block, we compute
 \[\GT(x_i, k_{x'_i})\]
-for all of the $\ell$ nonzero entries of the row of $H$. Hence, sampling a random row $h$ of $H$ amounts to sampling $\ell$ pairs $(x_i, x'_i) \sample [1,5N/w]\times [1,w]$
+for all of the $\ell$ nonzero entries of the row of $H$. Hence, sampling a random row $h$ of $H$ amounts to sampling $\ell$ pairs $(x_i, x'_i) \sample [1,w]\times [1,t]$ and returning
+$\bigoplus_{i=1}^\ell \GT(x_i, k_{x'_i})$,
+which matches the description given in Section~\ref{subsec:original-reference-ealpn}.
+
+\paragraph{Security arguments} Equipped with the above equivalence, we briefly overview the security argument of~\cite{C:BCGIKR22}. The argument investigates attacks in the \emph{linear test framework} against syndrome decoding problem. An attack against {\sf EALPN} in this framework operates as follows:
+\begin{itemize}
+	\item The attacker is given $M = H\cdot \Delta_{5N}$ (the parity-check matrix of the code) and produces a nonzero \emph{test vector} $v$. This step can run in unbounded time.
+	\item The noise vector $e$ is sampled. The attacker's advantage is defined as the \emph{bias} of the distribution induced by $v^\intercal\cdot M\cdot e$ (the bias is the distance to $1/2$ of the probability that $v^\intercal\cdot M\cdot e = 0$).
+\end{itemize}
+For $\secpar$ bits of security, we aim for an advantage of $2^{-\secpar}$ in the above experiment. This abstract game captures the fact that most known attacks on code-based assumptions (such as information set decoding~\cite{Prange62}, generalized birthday attacks~\cite{C:Wagner02,EPRINT:Kirchner11}, the BKW algorithm~\cite{STOC:BluKalWas00,AR:L05}, and many more) amount to (are formally equivalent to) computing a linear function of the syndrome (with coefficients computed solely from the code matrix) and trying to detect a bias in the output.
+
+Then, if $M^\intercal$ generates a code with a large minimum distance (that is, the map $v \to M^\intercal v$ sends all nonzero vectors to vectors with a ``large'' Hamming weight, typically $\delta \cdot N$ for some constant $\delta$), it is easy to see that no such attack can possibly succeed: if $v^\intercal\cdot M$ has Hamming weight $\delta N$, then $(v^\intercal\cdot M)\cdot e$ has bias approximately $\delta^t$. Setting $t= \secpar/ \log(\delta)$ suffices to get $\secpar$ bits of security. Given this observation, proving resistance against most standard attacks on code-based assumptions amounts to proving a bound on the minimum distance of the code generated by $M^\intercal$, which~\cite{C:BCGIKR22} does:
+
+\begin{lemma}
+Fix a parameter $\ell = \omega(\log N)$. The code generated by the rows of  $M = H \cdot \Delta_{5N}$ has minimum distance at least $\Omega(N)$, with probability at least $1 - N^{-\omega(1)}$ over the choice of $H$.
+\end{lemma}
+
+A more precisely quantified version of this lemma is given in~\cite[Theorem 3.10]{C:BCGIKR22}. From there, the authors suggest conservative parameters, chosen to match the parameters for which the theorem guarantees 128 bits of security against linear tests, and aggressive parameters, based on the (empirically observed) assumption that the code generated by $M$ has much better minimum distance than guaranteed by the (somewhat loose) analysis. However, the minimum distances heuristically assumed to hold have been invalidated in a follow-up work~\cite{C:RagRinTan23}. Recent works have relied on an updated version of the agressive parameter set, where $\ell=7$ is replaced with $\ell=11$; we report this choice in the challenge parameter sets.
 
 \subsection{Parameters}
 
@@ -157,7 +176,7 @@ Two sets of parameters are provided for a security level of $\lambda = 128$, one
 \end{table}
 
 
-\subsection{Algorithmic Decription}
+\subsection{Algorithmic Description}
 %!TODO! write about the implementation 
 
 Algorithm~\ref{alg:ealpn} provides an algorithmic description of the {\sf EA-LPN}.
@@ -166,10 +185,10 @@ Algorithm~\ref{alg:ealpn} provides an algorithmic description of the {\sf EA-LPN
   \caption{\label{alg:ealpn}The {\sf EA-LPN} PRF \\
     Parameters:  integers $N$, $t$, $\ell$,  $w = \lceil \frac{5N}{t} \rceil$}
   \begin{algorithmic}
-  \State \textbf{Input:}  $x = ((j_1,x_1), \dots, (j_\ell,x_\ell)) \in ( \Z_{\frac{t}{\ell}}\times \Z_{w})^\ell$; $k = (k_1, \dots, k_{\ell}) \in (\Z_{w}^{\frac{t}{\ell}})^{\ell}$
+  \State \textbf{Input:}  $x = ((x_1,x'_1), \dots, (x_\ell,x'_\ell)) \in ( \Z^*_{w}\times \Z^*_{t})^\ell$; $k = (k_1, \dots, k_{\ell}) \in (\Z_{w})^{\ell}$
     \State $r \gets 0$
 \For{$i = 1$ to $\ell$}
-    \If{$x_i \geq k_{j_i}$}
+    \If{$x_i \geq k_{x'_i}$}
         \State $r \gets r + 1$
     \EndIf
 \EndFor\\
