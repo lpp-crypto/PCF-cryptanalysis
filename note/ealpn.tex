@@ -29,6 +29,8 @@ The presentation of {\sf EALPN} in this work differs significantly from the orig
 
 With this alternative view, {\sf EALPN} becomes the problem of decoding the \emph{syndrome of a code} whose parity-check matrix is $H\cdot \Delta_{5N}$ and where the codeword is pertubated with a regular weight-$w$ noise $e$. We first explain why this formulation is equivalent to the formula given in Section~\ref{subsec:original-reference-ealpn}. First, observe that the left-product by $\Delta_{5N}$ is the \emph{accumulation} function, that maps $(x_1, \cdots, x_{5N})$ to $(x_1, x_1\oplus x_2, x_1\oplus x_2 \oplus x_3, \cdots)$. As $e$ is a weight-$t$ regular vector (i.e., a concatenation of $t$ unit vectors), $\Delta_{5N}\cdot e$ is an alternation of \emph{bands of zeroes} and \emph{bands of ones}. We can therefore rewrite the matrix equations as below: (red dots represent ones, white areas represent zeroes, light-red areas represent areas filled with ones):
 
+
+
 \begin{minipage}{.53\textwidth}
 \begin{tikzpicture}[x=1cm, y=1cm]
 
@@ -36,6 +38,15 @@ With this alternative view, {\sf EALPN} becomes the problem of decoding the \emp
   \draw[thick] (0,0) rectangle (3,2);
   \draw[thick] (0,0.8) -- (3,0.8);
   \draw[thick] (0,1.2) -- (3,1.2);
+
+  % Dimensions for sparse matrix
+  \draw[dashed, <->] (0,-0.2) -- (3,-0.2) node[midway, below] {\small{$5N$}};
+  \draw[dashed, <->] (-0.2,0) -- (-0.2,2) node[midway, left] {\small{$N$}};
+  
+  % Matrix names
+  \node at (1.5,2.5) {\large \color{blue}{$H$}};
+   \node at (5,3.5) {\large \color{blue}{$\Delta_{5N}$}};
+     \node at (7,3.5) {\large \color{blue}{$e$}};
 
   % Five red dots, horizontally spread, vertically centered
   \foreach \x in {0.2, 1.0, 1.4, 1.6, 2.7} {
@@ -48,16 +59,19 @@ With this alternative view, {\sf EALPN} becomes the problem of decoding the \emp
   % Diagonal square matrix
   \draw[thick] (3.4,0) rectangle (6.4,3);
   \draw[thick] (3.4,3) -- (6.4,0);
-  % Fill the top-right triangle (above the diagonal)
-\fill[red, opacity=0.2] (3.4,3) -- (3.4,0) -- (6.4,0) -- cycle;
+  \fill[red, opacity=0.2] (3.4,3) -- (3.4,0) -- (6.4,0) -- cycle;
 
-  \node at (4.9,0.75) {\Huge 1};
-  \node at (4.9,2.25) {\Huge 0};
+  \node at (4.9,0.75) {\huge 1};
+  \node at (4.9,2.25) {\huge 0};
 
-  % Second multiplication dot (reduced space)
+  % Dimensions for diagonal matrix
+  \draw[dashed, <->] (3.4,-0.2) -- (6.4,-0.2) node[midway, below] {\small{$5N$}};
+  %\draw[<->] (6.8,0) -- (6.8,3) node[midway, right] {$m$};
+
+  % Second multiplication dot
   \node at (6.6,1.5) {\Large$\cdot$};
 
-  % Vector: 5 stacked thin rectangles aligned to bottom of square
+  % Vector: 5 stacked thin rectangles
   \foreach \i/\offset in {0/0.65, 1/0.4, 2/0.7, 3/0.2, 4/0.85} {
     \pgfmathsetmacro{\ymin}{0 + \i*0.6}
     \pgfmathsetmacro{\ymax}{0.6 + \i*0.6}
@@ -66,41 +80,38 @@ With this alternative view, {\sf EALPN} becomes the problem of decoding the \emp
     \fill[red] (6.95,\ydot) circle (1.2pt);
   }
 
-\end{tikzpicture}
-\end{minipage}
-\raisebox{-.48cm}{$=$}
-\begin{minipage}{.45\textwidth}
-\begin{tikzpicture}[x=1cm, y=1cm]
+  % Dimension for vector
+  \draw[dashed,<->] (7.3,0) -- (7.3,3) node[midway, right] {\small{$5N$}};
+  \node at (8,1) {$=$};
+  
+  % Sparse matrix rectangle (shifted by 5)
+\draw[thick] (3.4+5,0) rectangle (6.4+5,2);
+\draw[thick] (3.4+5,0.8) -- (6.4+5,0.8);
+\draw[thick] (3.4+5,1.2) -- (6.4+5,1.2);
 
-% Sparse matrix rectangle (shifted by 3.4)
-\draw[thick] (3.4,0) rectangle (6.4,2);
-\draw[thick] (3.4,0.8) -- (6.4,0.8);
-\draw[thick] (3.4,1.2) -- (6.4,1.2);
-
-% Five red dots, horizontally spread, vertically centered
-\foreach \x in {3.6, 4.4, 4.8, 5.0, 6.1} {
+  % Five red dots, horizontally spread, vertically centered
+\foreach \x in {3.6+5, 4.4+5, 4.8+5, 5.0+5, 6.1+5} {
   \fill[red] (\x,1.0) circle (1.2pt);
 }
-
 % First multiplication dot (reduced space)
-\node at (6.6,1) {\Large$\cdot$};
+\node at (6.6+5,1) {\Large$\cdot$};
 
   % Vector: 5 stacked thin rectangles aligned to bottom of square
   \foreach \i/\offset in {0/0.65, 1/0.4, 2/0.7, 3/0.2, 4/0.85} {
     \pgfmathsetmacro{\ymin}{0 + \i*0.6}
     \pgfmathsetmacro{\ymax}{0.6 + \i*0.6}
-    \draw[thick] (6.8,\ymin) rectangle (7.1,\ymax);
+    \draw[thick] (6.8+5,\ymin) rectangle (7.1+5,\ymax);
     \pgfmathsetmacro{\ydot}{\ymin + (\ymax - \ymin)*\offset}
-    \draw[red, thick] (6.8,\ydot) -- (7.1, \ydot);
+    \draw[red, thick] (6.8+5,\ydot) -- (7.1+5, \ydot);
   }
-
-\filldraw[red,opacity=0.15] (6.8, 2.9) rectangle (7.1, 1.91);
-\filldraw[red,opacity=0.15] (6.8, 1.63) rectangle (7.1, 0.85);
-\filldraw[red,opacity=0.15] (6.8, 0.39) rectangle (7.1, 0);
+\filldraw[red,opacity=0.15] (6.8+5, 2.9) rectangle (7.1+5, 1.91);
+\filldraw[red,opacity=0.15] (6.8+5, 1.63) rectangle (7.1+5, 0.85);
+\filldraw[red,opacity=0.15] (6.8+5, 0.39) rectangle (7.1+5, 0);
 
 \end{tikzpicture}
 \end{minipage}
 ~\\
+
 
 The next observation is that if we take the odd-numbered blocks of $f = \Delta_{5N}\cdot e$ and \emph{turn them by 180°}, the assumption remains formally identical: indeed, we can divide each row of $H$ in a length-$5N/w$ block and flip identically the odd-numbered blocks (rewriting them right-to-left). Denoting $\tilde f$ and $\tilde H$ the resulting vector and matrix respectively, we have $H\cdot f = \tilde H \cdot \tilde f$. But since the rows of $H$ are random weight-$\ell$ vectors, the distribution induced on $\tilde H$ is identical to the original distribution of $H$. Therefore, the assumption can be equivalently stated as: $(H, H\cdot \tilde f)$ should be indistinguishable from $(H,y\sample \F_2^N)$. Now, representing this last version visually:
 
