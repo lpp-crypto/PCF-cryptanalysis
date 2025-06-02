@@ -3,7 +3,7 @@
 \section{Introduction}
 \label{sec:intro}
 
-Symmetric cryptography has provided other areas of cryptography and information security with a wide range of secure algorithms, from high-throughput stream ciphers to lightweight message authentication codes, and from low-latency block ciphers to zero-knowledge-friendly hash functions. Meanwhile,  another class of symmetric primitives has been gaining ground: \emph{weak shallow pseudo-random functions (wsPRFs)}, which have so far mostly escaped the attention of the symmetric cryptography community. 
+Symmetric cryptography has provided other areas of cryptography and information security with a wide range of secure algorithms, from high-throughput stream ciphers to lightweight message authentication codes, and from low-latency block ciphers to zero-knowledge-friendly hash functions. Meanwhile,  another class of symmetric primitives has been gaining ground: \emph{shallow weak pseudo-random functions (swPRFs)}, which have so far mostly escaped the attention of the symmetric cryptography community. 
 
 
 %Symmetric cryptography has provided other areas of cryptography and information security with a wide variety of secure algorithms, from high throughput stream ciphers to lightweight message authentication codes, from low latency block ciphers to zero-knowledge friendly hash functions. Yet, another type of symmetric primitive is becoming more prevalent  has mostly escaped the attention of the symmetric community that we shall call \emph{weak shallow pseudo-random functions (wsPRF)}.
@@ -20,7 +20,7 @@ It should then come as no surprise that such primitives look very different from
 \end{equation*}
 where $\Z_n$ denotes the set $\{0,\dots,n-1\}$. We provide more details about this specific function in Section~\ref{sec:bipsw}. As we can see, none of the usual building blocks are present: no round function, no S-box layer, no Feistel round... And yet the security goals are very reminiscent of what is usually expected in symmetric cryptography.
 
-To better understand these functions, we must first introduce their formal definition. This reveals one of the main challenges of this work: the vocabulary and notions used in complexity theory and symmetric cryptography differ. We begin by describing the security notion that weak shallow PRFs (wsPRFs) are expected to satisfy, using both languages.
+To better understand these functions, we must first introduce their formal definition. This reveals one of the main challenges of this work: the vocabulary and notions used in complexity theory and symmetric cryptography differ. We begin by describing the security notion that shallow weak PRFs (swPRFs) are expected to satisfy, using both languages.
 
 
 
