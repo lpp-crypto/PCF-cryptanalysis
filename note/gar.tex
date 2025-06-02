@@ -179,10 +179,11 @@ The PRG differs from the other shallow weak PRFs presented in this survey in tha
   \caption{\label{alg:gar}The Goldreich's PRF/PRG \\
     Parameters: $n$ (seed size), $m$ (output size), $d$ (locality) and $P:\{0,1\}^d \to \{0,1\}$ (predicate).}
   \begin{algorithmic}
-  \State \textbf{Input:} $k\in\{0,1\}^n$, $x\in [1,\ldots,A^n_d]^{m}$
+  \State \textbf{Input:} $k\in\{0,1\}^n$, $x\in (A^n_d)^{m}$
     \State $y \gets \varepsilon$ 
     \For{$i = 1$ to $m$}
-    	\State $y \gets y~||~P(k[x_i])$
+        \State $z_i \gets \{k_{x_{i,j}}\}_{j \in \{1, ..., d\}}$
+    	\State $y \gets y~||~P(z_i)$
 	\EndFor  \\
     \Return $y$
   \end{algorithmic}
