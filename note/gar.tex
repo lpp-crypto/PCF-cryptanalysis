@@ -89,7 +89,7 @@ In particular, two main classes of attacks become relevant when the predicate ca
 
 %\yr{Not sure we need the provable side against linear tests, or at least only 1-2 sentences. It is \cite{FOCS:MosShpTre03} first up to $n^{1.25-\varepsilon}$ and \cite{DBLP:conf/coco/ODonnellW14} up to $n^{1.5-\varepsilon}$}
 
-In 2014, O'Donnell and Witmer~\cite{DBLP:conf/coco/ODonnellW14} showed that if the predicate can be approximated by a function that depends on only $c < d$ variables, then the pseudorandom generator can be broken whenever $m \in \Omega(n^{c/2} + n \log n)$. This line of attack was further analyzed in~\cite{EPRINT:Applebaum15}.
+In 2014, O'Donnell and Witmer~\cite{DBLP:conf/coco/ODonnellW14} showed that if the predicate can be approximated by a function that depends on only $c < d(n)$ variables, then the pseudorandom generator can be broken whenever $m \in \Omega(n^{c/2} + n \log n)$. This line of attack was further analyzed in~\cite{EPRINT:Applebaum15}.
 
 This type of attack is particularly efficient when the predicate has a low \emph{resiliency order}~\cite{DBLP:journals/tit/Siegenthaler84}, a property that quantifies its resistance to such approximations. A Boolean function is said to be $t$-resilient if  it cannot be approximated by a Boolean function on $t$ variables. For example, the predicate $P_5$ has resiliency order $t = 2$. In~\cite{DBLP:conf/coco/ODonnellW14}, the authors approximate $P_5$ using a function with $c = t + 1 = 3$ variables, which leads to an attack whenever the output length $m$ exceeds $n^{1.5}$.
 %\yr{En 2020 sur Arxiv, Garg, Kothari et Raz, montrent sécurité même avec un adversaire avec mémoire, ça me semble sortir du sujet. \url{https://arxiv.org/abs/2002.07235}}
@@ -151,7 +151,7 @@ Guess-and-decode & $\mathcal{O}(n^{\mathsf{s}} \cdot 2^{\frac{n^{2 - \mathsf{s}}
 \caption{\label{tab:subexpattacks}Subexponential and concrete cryptanalysis. The first technique applies to any predicate with locality $d$, while the three others specifically target the $P_5$ predicate.}
 \end{table}
 
-\gc{Pourquoi la table ne contient que les attaques non-algébriques ?}
+%\gc{Pourquoi la table ne contient que les attaques non-algébriques ?}
 
 
 \subsection{Targets for Cryptanalysis}
@@ -185,7 +185,7 @@ Seed size ($n$) & Stretch ($\mathsf{s}$) & Predicate ($P$)& Reference\\
 \subsection{Algorithmic Description}
 The PRG differs from the other shallow weak PRFs presented in this survey in that it does not rely on a secret key. Instead, the adversary is given the subsets $\sigma_i$, which are sampled uniformly at random from all subsets of size $d$. We denote $A_d^n$ the set of all ordered subsets of $\Z_n$ of size $d$. These subsets play a similar role to the inputs $x$ in the other constructions: they are public, but not adversarially chosen. The actual secret in this case is the seed, which was previously denoted by $x$. For clarity and consistency with the description of the other wsPRFs, we now refer to the seed as $k$, and the subsets as $x$.
 
-\yr{Je veux bien qu'on appelle $k,x$ comme les autres j'essaie un truc mais je suis pas si convaincu. J'utiliserais au moins $\sigma$ ?}\lp{moi ça me va, j'ai rajouté 2-3 trucs dans la description}
+%\yr{Je veux bien qu'on appelle $k,x$ comme les autres j'essaie un truc mais je suis pas si convaincu. J'utiliserais au moins $\sigma$ ?}\lp{moi ça me va, j'ai rajouté 2-3 trucs dans la description}
 
 \begin{algorithm}
   \caption{\label{alg:gar}The Goldreich's PRF/PRG \\
