@@ -1,4 +1,4 @@
-%\documentclass[journal=tosc,submission,nohyperref]{iacrtrans} % Fix for the following error I had: Package hyperxmp Error: hyperref must be loaded before hyperxmp.
+%\documentclass[journal=tosc,final]{iacrtrans}
 \documentclass[journal=tosc,submission]{iacrtrans}
 \pagestyle{plain}
 
@@ -9,8 +9,15 @@
 \newcommand\gc[1]{\textcolor{olive!80}{\textbf{Geoffroy:} #1}}
 \newcommand\yr[1]{\textcolor{brown!80}{\textbf{Yann:} #1}}
 
-\author{authors}
-\institute{institutions}
+\author{Christina Boura\inst{1} \and Geoffroy Couteau\inst{1} \and Léo Perrin\inst{2} \and Yann Rotella\inst{3}}
+\institute{
+  IRIF, CNRS, Université Paris Cité, Paris, France \\ \email{christina.boura@irif.fr, couteau@irif.fr}
+  \and
+  Inria, Paris, France\\ \email{leo.perrin@inria.fr}
+  \and
+  LMV, UVSQ, Université Paris-Saclay, Versailles, France \\ \email{yann.rotella@uvsq.fr}
+}
+
 \title{SoK: On Shallow Weak PRFs}
 \subtitle{A Common Symmetric Building Block for MPC Protocols}
 

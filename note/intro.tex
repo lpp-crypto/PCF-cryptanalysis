@@ -6,13 +6,11 @@
 Symmetric cryptography has provided other areas of cryptography and information security with a wide range of secure algorithms, from high-throughput stream ciphers to lightweight message authentication codes, and from low-latency block ciphers to zero-knowledge-friendly hash functions. Meanwhile,  another class of symmetric primitives has been gaining ground: \emph{shallow weak pseudo-random functions (swPRFs)}, which have so far mostly escaped the attention of the symmetric cryptography community. 
 
 
-%Symmetric cryptography has provided other areas of cryptography and information security with a wide variety of secure algorithms, from high throughput stream ciphers to lightweight message authentication codes, from low latency block ciphers to zero-knowledge friendly hash functions. Yet, another type of symmetric primitive is becoming more prevalent  has mostly escaped the attention of the symmetric community that we shall call \emph{weak shallow pseudo-random functions (wsPRF)}.
-
 These functions are symmetric in nature in the sense that they map a secret input to secure output using a procedure that depends only on a secret key, much like the ``usual'' pseudo-random functions. However, these primitives must also satisfy different properties.
 \begin{description}
 \item[Security Model.] They are \emph{weak} in the sense that the adversary is only allowed to perform random queries, and that the number of queries is severely limited. To put it differently, they are only intended to be secure in the known-plaintext setting, and under a low number of queries.
 \item[Input/Output Sizes.] The input and key of such functions typically consist of several hundred bits, while the output can be as small as a single bit. This stands in contrast to traditional PRFs, which are generally expected to produce outputs of a size comparable to their inputs.
-\item[Cost Model.] The main difference with classical constructions lies in the \emph{shallow} requirement: these functions are not iterated. They consist essentially in a single round.
+\item[Cost Model.] The main difference with classical constructions lies in the \emph{shallow} requirement: these functions are not iterated. They consist essentially of a single round.
 \end{description}
 It should then come as no surprise that such primitives look very different from what is usually considered in symmetric cryptography. For example, the mod-2/mod-3 function introduced in~\cite{TCC:BIPSW18} is fully specified by the following equation:
 \begin{equation*}
@@ -50,7 +48,7 @@ This definition is, in essence, based on the notion of \emph{computational indis
 
 In this setting, it is easy to define a \emph{weak} pseudorandom function (\wPRF). Such a function offers a relaxed guarantee: it is only required to be indistinguishable from a truly random function when the adversary is restricted to querying the function on uniformly random inputs.
 \begin{definition}[(Weak) Pseudorandom Function (\wPRF, \PRF), \cite{FOCS:GolGolMic84,FOCS:NaoRei95}]
-	Let $\secpar\in\N$ be a security parameter. A (weak) pseudorandom function with domain $\setX = \{\setX_{\lambda}\}_{\lambda \in \N}$, key space $\setK= \{\setK_{\lambda}\}_{\lambda \in \N}$, and range $\setY = \{\setY_{\lambda}\}_{\lambda \in \N}$, %\lp{c'est le même $\lambda$ qu'au-dessus?} 
+	Let $\secpar\in\N$ be a security parameter. A (weak) pseudorandom function with domain $\setX = \{\setX_{\lambda}\}_{\lambda \in \N}$, key space $\setK= \{\setK_{\lambda}\}_{\lambda \in \N}$, and range $\setY = \{\setY_{\lambda}\}_{\lambda \in \N}$, 
 	consists of the following two polynomial-time algorithms: 
 	\begin{itemize}
 		\item[$\bullet$]$\KeyGen(1^{\lambda}) \rightarrow \msk$, a probabilistic algorithm that takes as input the security parameter $\lambda$, and outputs a master secret key $\msk \in \mathcal{K}$, and
@@ -83,9 +81,6 @@ where the key $K$ is sampled uniformly at random from $\Z_2^k$, and $\mathcal{R}
 \end{definition}
 
 
-%\begin{definition}[PRF security]
-%  Let $n$ and $k$ be positive integers. The family of functions $F_K : \Z_2^n \to \Z_2^n$ where $K \in \Z_2^k$ achieves \emph{PRF security} against a distinguisher $\distinguisher$ if... \lp{écrire propremement}
-%\end{definition}
 Since the parameters of symmetric crypto-systems are fixed (e.g., the \aes{} operates on 128 bits), such definitions are better suited to their study.
 
 In this description, the attacker is allowed to do \emph{chosen plaintext} queries, meaning that the distinguishing algorithm $\distinguisher$ can choose on which $x$ to evaluate the black box. It is however possible to instead restrict the attacker to \emph{known plaintexts}, i.e., to enforce that the inputs $x$ for the black box are chosen uniformly using an external source of randomness. In this context, we can provide an alternative definition of a weak PRF that is not asymptotic.
@@ -111,10 +106,6 @@ where the key $K$ is sampled uniformly at random from $\Z_2^k$, and $\mathcal{R}
 \end{definition}
 
 
-%\begin{definition}[wPRF]
- % Let $n$ and $k$ be positive integers. A family $F_K : \Z_2^n\to\Z_2^n$ of functions indexed by a key $K \in \Z_2^k$ is a \emph{weak PRF} if the advantage of a distinguisher limited to a specific number $q \ll 2^n$ of known plaintext queries to the black box...\lp{écrire proprement}
-%\end{definition}
-
 \paragraph{Concrete Security.}
 In practice, defining and interpreting the runtime of the adversary remains a subtle issue for which we are not aware of any fully satisfactory answer. In many symmetric-key attack scenarios, such as differential or linear cryptanalysis, the dominating step is a final exhaustive search over a part of the key space. As a result, the total number of calls to the function under attack is often used as a proxy for the time complexity. Security claims are then made against adversaries performing up to $2^k$ such evaluations, assuming that the final brute-force phase is unavoidable.
 
@@ -126,20 +117,13 @@ In the rest of this paper, we aim to move beyond asymptotic reasoning and instea
 
 We note that in several existing proposals, the chosen parameters are justified post hoc to avoid trivial breakage, and the resulting security level is sometimes arbitrarily bounded (e.g., ``80 bits'') to compensate for performance issues. This practical “patching” approach highlights the need for a more rigorous study based on concrete cryptanalysis, something we actively advocate for by writing this survey.
 
-%A difficulty remains in practice, for which we are not aware of any satisfactory answer: what is the actual runtime of the distinguisher? In practice, the dominating step in, say, a differential cryptanalysis is often a final brute-force stage, meaning that the total number of calls to an intantiation of the primitive attacked is a priori a sensible time complexity metric. In fact, security claims often explicitly consider adversaries perform $2^k$ calls to the primitive. However, this approach does not work well for other attack techniques, for instance based on the resolution of polynomial systems. In this case, the dominating step is not a brute-force phase, meaning that a comparison between the efficiency of an attack and a security claim can be difficult.
-
-%Since the attack techniques against the weak PRFs we consider rarely involve any brute-force step, we consider  time complexity claims made in terms of number of basic operations to be more relevant.
-
-  
-%\lp{prendre en compte la proba de succès ($2^k/p$, $p$ la proba de succès par ex). pointer que parfois ils visent 80 bits de sécurité mais c'est du rabotage de bas étage pour limiter la casse en terme de perf $\implies$ motivation du papier et d'une approche basée sur la cryptanalyse}
-%\yr{Ici, on a la version poly/exponentielle. Est-e qu'ici on ne mettrait pas aussi et en parallèle que l'on veut en pratique qu'un adversaire n'ait pas de distingueur qui tourne en moins de $2^\lambda$ opérations strictement ? Opérations étant ici peut-être à déterminer en partie ? Cela permettrait de dire dès le début qu'aujourd'hui on cherche à fixer les paramètres concrets ?}
 
 
 \subsection{Practical Relevance}
 
 While figuring out the existence (or inexistence) of secure wPRFs in some complexity class could be seen as problem of  purely theoretic significance, it recently received renewed attention because of the very practical need for such functions in some protocols. We will provide more details on this topic further in Section~\ref{sec:applications}.
 
-In these contexts, the ``symmetric'' definitions of (weak) PRF security take precedence since the parameters are then fixed. This change of paradigme, from complexity theory to computer security, implies several significant changes.
+In these contexts, the ``symmetric'' definitions of (weak) PRF security take precedence since the parameters are then fixed. This change of paradigm, from complexity theory to computer security, implies several significant changes.
 \begin{description}
 \item[Irrelevance of Asymptotic Reasoning.] While figuring out the asymptotic behaviour of an adversary is the correct way to investigate complexity classes, it is hardly relevant when moving to concrete computer security since the aim in this case is not to let a parameter go to infinity, it is instead to fix it to a specific value. Thus, the attacks that were relevant asymptotically might be of lesser interest, while new attack vectors that were previously cast aside because they are exponential may instead become a threat. In a nutshell, an attack with a runtime equivalent to $2^{n/3}$ basic operations is, in practice, far more threatening than one with a runtime of $n^{10}$ similar operations when $n = 128$, where they amount roughly to $2^{42.7}$ and $2^{70}$, respectively.
 \item[Performance Trade-Offs.] When a function is intended to be implemented, adding structure can become necessary, or at least welcome, to decrease the cost of its implementation. On the other hand, such structure could potentially open new attack directions. The investigation of such trade-offs becomes much more relevant when leaving the world of complexity theory.
@@ -152,33 +136,9 @@ In these contexts, the ``symmetric'' definitions of (weak) PRF security take pre
 
 Weak pseudorandom functions have a broad range of applications in cryptography and beyond. Of particular relevance to this work is the notion of \emph{shallow} \wPRF. Informally, a \wPRF is said to be \emph{shallow} if it can be computed by a function of low depth in an appropriate computational model, which we introduce later in this paper. We call such a function \emph{swPRF}, which stands for \emph{shallow weak Pseudo-Random Functions}.
 
-Our aim in this Systematization of Knowledge (SoK) paper is to describe swPRFs—what they are and why they are relevant in practice. This involves both a detailed survey of the literature and a translation of their security goals away from asymptotics. To this end, we also propose cryptanalysis challenges, along with \texttt{Python} reference implementations of the swPRFs we describe: practical security can only be studied through cryptanalysis, and our goal is to simplify this analysis. The reference implementations are provided as supplementary material to our submission.
+Our aim in this Systematization of Knowledge (SoK) paper is to describe swPRFs—what they are and why they are relevant in practice. This involves both a detailed survey of the literature and a translation of their security goals away from asymptotics. To this end, we also propose cryptanalysis challenges, along with \texttt{SAGE} reference implementations of the swPRFs we describe: practical security can only be studied through cryptanalysis, and our goal is to simplify this analysis. The reference implementations are provided as supplementary material to our submission.
 
-\paragraph{Outline.} The rest of the article is organized as follows. Section~\ref{sec:notations} introduces preliminary notions on shallow weak PRFs, while Section~\ref{sec:applications} discusses their intended applications and outlines the associated cost and security models. We then present several families of shallow weak PRFs, providing both mathematical and algorithmic descriptions, known variants, any known cryptanalysis results and proposeed parameter sets that serve as targets for cryptanalysis. Specifically, we cover four distinct families, which are detailed in Sections~\ref{sec:bipsw},\ref{sec:goldreich},\ref{sec:vdlpn}, and~\ref{sec:ealpn}, respectively. We have attached to this submission a \textsf{SAGE} implementation of each of these families. These are intended to be published along with this paper in order to simplify the task of future cryptanalysts.
-
-
-% Possible outline:
-% \begin{enumerate}
-% \item What are ``Shallow Weak PRFs''?
-%   \begin{enumerate}
-%   \item Intended Applications (MPC-friendly in a precise sense, some examples)
-%   \item Cost Models: minimal depth where the operations allowed vary. Severe limitation on which operation are allowed, even without considering efficiency.
-%   \item Security Model: weak PRF
-%   \end{enumerate}
-% \item Inventory/Zoo
-%   \begin{enumerate}
-%   \item BIPSW and variants
-%   \item Goldreich (including FLIP as a variant)
-%   \item VDLPN/EALPN
-%   \end{enumerate}
-% \item On their Cryptanalysis
-%   \begin{enumerate}
-%   \item Discussion on the security (relying on the security of the PRNG is cheating, also, how much can this be relaxed? Asymptotic vs. precise, 128 bits of security doesn't really mean 128 bits, it's more of a guesstimate)
-%   \item Common cryptanalysis techniques (decoding)
-%   \item PRF implementations and cryptanalysis challenges
-%   \end{enumerate}
-% \item Conclusion
-% \end{enumerate}
+\paragraph{Outline.} The rest of the article is organized as follows. Section~\ref{sec:notations} introduces preliminary notions on shallow weak PRFs, while Section~\ref{sec:applications} discusses their intended applications and outlines the associated cost and security models. We then present several families of shallow weak PRFs, providing both mathematical and algorithmic descriptions, known variants, any known cryptanalysis results and proposed parameter sets that serve as targets for cryptanalysis. Specifically, we cover four distinct families, which are detailed in Sections~\ref{sec:bipsw},\ref{sec:goldreich},\ref{sec:vdlpn}, and~\ref{sec:ealpn}, respectively. We have attached to this submission a \textsf{SAGE} implementation of each of these families. These are intended to be published along with this paper in order to simplify the task of future cryptanalysts.
 
 
 
