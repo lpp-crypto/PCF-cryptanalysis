@@ -1,6 +1,8 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
+\input{summary-table}
+
 The goal of this Systematization of Knowledge (SoK) article was to unify and present four distinct families of weak pseudo-random functions (wPRFs) under a common lens. These families of wPRFs have emerged from the theoretical cryptography community in response to various application needs. Despite their differing origins, all the constructions we examined share a common characteristic: they are shallow, typically consisting of a single round of computation. Moreover, they operate within weakened security models when compared to standard PRFs or PRPs, notably by restricting the attacker from choosing inputs. More importantly, the inputs to these primitives  are sampled uniformly at random.
 
 This uniform randomness of public inputs, combined with the small domain sizes typically proposed, makes differential cryptanalysis largely impractical in this context. As a result, the main attack strategies that remain applicable seem to be linear cryptanalysis, based on exploiting statistical biases in (linear combinations of) the output, and algebraic or combinatorial techniques. However, the field currently lacks a comprehensive understanding of how effective such attacks can be in practice.

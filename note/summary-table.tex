@@ -1,0 +1,31 @@
+\begin{table}
+  \centering
+  {
+    \renewcommand\arraystretch{1.4}
+    \setlength\tabcolsep{0.4em}
+    \footnotesize
+    \begin{tabular}{ccc|ccc|cc}
+      \toprule
+      \multicolumn{3}{c|}{Description} & \multicolumn{3}{c|}{Spaces}  & \multirow{2}{*}{NL op.} &  \multirow{2}{*}{Best attack} \\
+      Name & Use Case & Ref. & Input & Key & Output \\
+      \midrule
+      % Alternating Moduli
+      \multirow{2}{*}{Alternating} & \multirow{3}{*}{MPC}
+      & \cite{TCC:BIPSW18} & $\Z_2^{384}$\dag & $\Z_2^{384}$\dag & $\Z_2$ & $\mod$ & ?? \\
+      \cline{3-8}
+      \multirow{2}{*}{Moduli} & &  \multirow{2}{*}{\cite{C:DGHIKS21}} & $\Z_2^{256}$\ddag & $(\Z_2^{256})^{256}$\ddag & \multirow{2}{*}{$\Z_2^{81}$} & \multirow{2}{*}{$\mod$} & ?? \\
+      & &  & $\Z_2^{320}$ & $(\Z_2^{320})^{320}$ & & & ?? \\
+      \midrule
+      % Goldreich
+      \multirow{1}{*}{Goldreich's} & \multirow{2}{*}{??} & \multirow{3}{*}{\cite{DBLP:journals/tit/YangGJL22}} & $(A_5^{1024})^{1176}$ & $\{0,1\}^{1024}$ & $\{0,1\}^{1176}$ & \multirow{3}{*}{$P_5$} & ?? \\ % m=n^1.02
+      \multirow{1}{*}{PRG} & & 
+      & $(A_5^{2048})^{4389}$ & $\{0,1\}^{2048}$ & $\{0,1\}^{4389}$ & & ?? \\ % m=n^1.10
+      & & & $(A_5^{4096})^{19893}$ & $\{0,1\}^{4096}$ & $\{0,1\}^{19893}$ & & ?? \\ % m=n^1.19
+      \cline{3-8}
+      & & \cite{EC:ABBS25} & $(A_5^{8192})^{45387}$ & $\{0,1\}^{8192}$ & $\{0,1\}^{45387}$ & $P_5$ & ?? \\ % m=n^1.19
+      \bottomrule
+    \end{tabular}
+  }
+  \caption{A summary of the wPRFs we present. The ``\dag'' symbol means the primitive is now considered unsafe, while ``\ddag'' indicates an ``aggressive'' set of parameters. The data limit for all such functions is at least $2^{40}$, and the intended security level at least 128 bits. ``NL op.'' refers to the non-linear operation.}
+  \label{tab:summary}
+\end{table}
