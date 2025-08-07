@@ -57,7 +57,7 @@ $$
 
 \paragraph{Majority function.} The majority function $\mathsf{MAJ} : \{0,1\}^t \to \{0,1\}$ is the special case of the threshold function where the threshold is set to half the input length (rounded up):
 $$
-\mathsf{MAJ}(x) = \mathsf{THR}_{\lfloor t/2 \rfloor}(x)~.
+\mathsf{MAJ}(x) = \mathsf{THR}_{\lceil t/2 \rceil}(x)~.
 $$
 
 
@@ -92,8 +92,10 @@ In particular, two main classes of attacks become relevant when the predicate ca
 In 2014, O'Donnell and Witmer~\cite{DBLP:conf/coco/ODonnellW14} showed that if the predicate can be approximated by a function that depends on only $c < d(n)$ variables, then the pseudorandom generator can be broken whenever $m \in \Omega(n^{c/2} + n \log n)$. This line of attack was further analyzed in~\cite{EPRINT:Applebaum15}.
 
 This type of attack is particularly efficient when the predicate has a low \emph{resiliency order}~\cite{DBLP:journals/tit/Siegenthaler84}, a property that quantifies its resistance to such approximations. A Boolean function is said to be $t$-resilient if  it cannot be approximated by a Boolean function on $t$ variables. For example, the predicate $P_5$ has resiliency order $t = 2$. In~\cite{DBLP:conf/coco/ODonnellW14}, the authors approximate $P_5$ using a function with $c = t + 1 = 3$ variables, which leads to an attack whenever the output length $m$ exceeds $n^{1.5}$.
-%\yr{En 2020 sur Arxiv, Garg, Kothari et Raz, montrent sécurité même avec un adversaire avec mémoire, ça me semble sortir du sujet. \url{https://arxiv.org/abs/2002.07235}}
 
+With this criteria and attack in mind, it is worth noting that any predicate of locality 4 would directly derive an insecure PRG. Indeed, it has been shown by Siegenthaler~\cite{DBLP:journals/tit/Siegenthaler84} that for any boolean function $f$ with $d$ variables, $\mathrm{res}(f) + \deg(f) \leq d - 1$. Therefore, for $d = 4$, it is not possible to have a resiliency order bigger than $2$ and an algebraic degree bigger than $2$. The smallest achievable locality is thus $5$ and it is an important theoretic question to answer if this choice is secure or not.
+%\yr{En 2020 sur Arxiv, Garg, Kothari et Raz, montrent sécurité même avec un adversaire avec mémoire, ça me semble sortir du sujet. \url{https://arxiv.org/abs/2002.07235}}
+\yr{Tried something here pour expliquer pourquoi $P_5$ ?}
 
 \subsubsection{Algebraic Attacks}
 

@@ -22,7 +22,7 @@ The presentation of {\sf EALPN} in this work differs significantly from the orig
 \paragraph{Equivalence with the original presentation.} The original description of {\sf EALPN} is as follows:
 \begin{itemize}
 	\item Pick a random \emph{$\ell$-sparse} matrix $H \in \F_2^{N\times 5N}$ (i.e., each row of $H$ is a random weight-$\ell$ vector\footnote{To simplify certain security arguments, rows are actually sampled from a Bernoulli distribution with parameter $p = \ell / 5N$, where each entry is independently set to $1$ with probability $p$, rather than being drawn as fixed-weight vectors. However,~\cite[Section~3.4]{C:BCGIKR22} explicitly conjectures that both variants offer equivalent security guarantees. The fixed-weight variant remains the most convenient for the target application discussed in Section~\ref{subsubsec:fss}}.
-	\item Sample a weight-$t$ \emph{regular noise vector} $e$ as a concatenation of $t$ length-$w$ random unit vectors.
+	\item Sample a weight-$t$ \emph{regular noise vector} $e$ as a concatenation of $t$ length-$w$ random unit vectors, that is $e$ is drawn at random from $\{1,2,4,\ldots,2^{w-1}\}^t$ \yr{the set if we represent as integers, that are those of Hamming weight 1, see line 1180 in reviews}.
 	\item Define $\Delta_{5N}$ to be the $5N$-by-$5N$ matrix filled with ones on and below the main diagonal.
 	\item The {\sf EALPN} assumption states that no efficient adversary can distinguish $(H, H\cdot \Delta_{5N} \cdot e)$ from $(H, y)$ where $y \sample \F_2^{N}$.
 \end{itemize}
@@ -111,7 +111,7 @@ With this alternative view, {\sf EALPN} becomes the problem of decoding the \emp
 \end{tikzpicture}
 \end{minipage}
 ~\\
-
+\yr{Write mathematically the light-red bands vector (once only)}
 
 The next observation is that if we take the odd-numbered blocks of $f = \Delta_{5N}\cdot e$ and \emph{turn them by 180°}, the assumption remains formally identical: indeed, we can divide each row of $H$ in a length-$5N/w$ block and flip identically the odd-numbered blocks (rewriting them right-to-left). Denoting $\tilde f$ and $\tilde H$ the resulting vector and matrix respectively, we have $H\cdot f = \tilde H \cdot \tilde f$. But since the rows of $H$ are random weight-$\ell$ vectors, the distribution induced on $\tilde H$ is identical to the original distribution of $H$. Therefore, the assumption can be equivalently stated as: $(H, H\cdot \tilde f)$ should be indistinguishable from $(H,y\sample \F_2^N)$. Now, representing this last version visually:
 
@@ -148,7 +148,7 @@ The next observation is that if we take the odd-numbered blocks of $f = \Delta_{
 
 \end{tikzpicture}
 \end{center}
-
+\yr{Write mathematically the light-red bands vector}
 We can rewrite this matrix-vector product as follows: for each red dot in the matrix row, we look at the corresponding block of $\tilde f$ and check whether the red dot is before or after the red bar. That is, if the $i$-th red dot lands at position $x_i$ in the $x'_i$-th block, and if we denote $k_{x'_i}$ the position of the red bar in this block, we compute
 \[\GT(x_i, k_{x'_i})\]
 for all of the $\ell$ nonzero entries of the row of $H$. Hence, sampling a random row $h$ of $H$ amounts to sampling $\ell$ pairs $(x_i, x'_i) \sample [1,w]\times [1,t]$ and returning
@@ -157,7 +157,7 @@ which matches the description given in Section~\ref{subsec:original-reference-ea
 
 \paragraph{Security arguments} Equipped with the above equivalence, we briefly overview the security argument of~\cite{C:BCGIKR22}. The argument investigates attacks in the \emph{linear test framework} against the syndrome decoding problem. An attack against {\sf EALPN} in this framework operates as follows:
 \begin{itemize}
-	\item The attacker is given $M = H\cdot \Delta_{5N}$ (the parity-check matrix of the code) and produces a nonzero \emph{test vector} $v$. This step can run in unbounded time.
+	\item The attacker is given $M = H\cdot \Delta_{5N}$ (the parity-check matrix of the code) and produces a nonzero \emph{test vector} $v$. This step can run in unbounded time. \yr{Explain how this test vector is produced. Je suppose que c'est juste un truc aléatoire ?}
 	\item The noise vector $e$ is sampled. The attacker's advantage is defined as the \emph{bias} of the distribution induced by $v^\intercal\cdot M\cdot e$ (the bias is the distance to $1/2$ of the probability that $v^\intercal\cdot M\cdot e = 0$).
 \end{itemize}
 For $\secpar$ bits of security, we aim for an advantage of $2^{-\secpar}$ in the above experiment. This abstract game captures the fact that most known attacks on code-based assumptions (such as information set decoding~\cite{Prange62}, generalized birthday attacks~\cite{C:Wagner02,EPRINT:Kirchner11}, the BKW algorithm~\cite{STOC:BluKalWas00,AR:L05}, and many more) amount to (are formally equivalent to) computing a linear function of the syndrome (with coefficients computed solely from the code matrix) and trying to detect a bias in the output.
