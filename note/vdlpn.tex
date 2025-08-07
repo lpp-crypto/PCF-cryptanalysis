@@ -44,19 +44,19 @@ x_{3,j,3} \oplus k_{3,j,3}
 \right).
 \]
 
-We provide also an alternative low-complexity variant of the above function, that was equally presented in~\cite{vdlpn}, which we now describe in detail. We will call this variant {\sf VDLPN}$^*$. Let $w$ and $D$ be two positive integers. Both the secret key $k \in \Z_2^{w \times D}$ and the input $x \in \Z_2^{w \times D}$ are viewed as binary matrices, represented as $(k_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$ and $(x_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$, respectively. The function $F_K(x)$ is then computed as:
+We provide also an alternative low-complexity variant of the above function, that was equally presented in~\cite{vdlpn}, which we now describe in detail. We will call this variant {\sf VDLPN}$^*$. Let $w$ and $D$ be two positive integers. Both the secret key $k \in \Z_2^{w \times D}$ and the input $x \in \Z_2^{w \times D}$ are viewed as binary matrices, represented as $(k_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$ and $(x_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$, respectively. The function $F_K(x)$ is then computed as: \yr{on enlève $F_K(x)$ ici dans le texte puisque c'est pas la même ? }
 
 \begin{equation} \label{eq:vdlpn_agg}
-    F_k(x) := \bigoplus_{i=1}^D \bigoplus_{j=1}^w\prod_{\ell=1}^i (x_{j,\ell} \oplus k_{j,\ell}).
+    F'_k(x) := \bigoplus_{i=1}^D \bigoplus_{j=1}^w\prod_{\ell=1}^i (x_{j,\ell} \oplus k_{j,\ell}).
 \end{equation}
-
+\yr{J'ai mis $F'$ comme demande le reviewer mais on appelle la variante VDLPN *, j'ai mis aussi après quand ça faisait à cette référence. Sinon on met une étoile ?}
 We observe that Eq.~\eqref{eq:vdlpn_agg} can also be rewritten in a different form—not as a sum of classical triangular functions, but rather as a sum of \emph{somewhat triangular functions} \( T'(z) \), defined as follows for a sequence of variables \( z = (z_1, z_2, z_3, \dots) \):
 \[
     T'(z) := z_1 \oplus z_1 z_2 \oplus z_1 z_2 z_3 \oplus \cdots.
 \]
 Specifically, we can express the function as:
 \[
-    F_k(x) = \bigoplus_{j=1}^w T'(X_j \oplus K_j),
+    F'_k(x) = \bigoplus_{j=1}^w T'(X_j \oplus K_j),
 \]
 where \( X_j \) is the vector \( (x_{j,\ell}) \) for \( 1 \leq \ell \leq D \), and similarly, \( K_j = (k_{j,\ell}) \) over the same index range. In other words, this can be seen as a variant of a triangular function in which variables are reused in higher-degree monomials.  This reuse introduces algebraic dependencies between the terms, which complicates attempts to formally prove security.
 
@@ -64,13 +64,13 @@ where \( X_j \) is the vector \( (x_{j,\ell}) \) for \( 1 \leq \ell \leq D \), a
 \paragraph{Example (toy instance of the low-complexity variant with $w = 2$, $D = 3$).}
 In this case, 
 \[
-F_k(x) = \bigoplus_{j = 1}^2 (x_{j,1} \oplus k_{j,1}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2} \oplus k_{j,2}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2}\oplus k_{j,2})(x_{j,3}\oplus k_{j,3}).
+F'_k(x) = \bigoplus_{j = 1}^2 (x_{j,1} \oplus k_{j,1}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2} \oplus k_{j,2}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2}\oplus k_{j,2})(x_{j,3}\oplus k_{j,3}).
 \]
 
 \subsection{The {\sf VDLPN}$'$ variant}
 
 While~\cite{FOCS:BCGIKS20} provides a detailed preliminary security analysis of {\sf VDLPN}, it is purely asymptotic. Couteau and Ducros~\cite{PKC:CouDuc23} revisited the original analysis of~\cite{FOCS:BCGIKS20} to obtain more concrete bounds achieving provable security guarantees against certain classes of attacks. In the course of refining these bounds, they suggested a variant of the original design, dubbed {\sf VDLPN}$'$, that enjoys the same applications but comes with much tighter security arguments. Intuitively, this is achieved by shaving the first few terms of the XOR $\bigoplus_{i=1}^D$ and replacing them with a random inner product with the key; this circumvent corner cases of the security analysis that caused the bounds to become loose due to bad events that had significant probability of ocurring at the lower levels. Concretely, {\sf VDLPN}$'$ is defined as follows:
-
+\yr{TODO: problème de définition ici à travailler. Je comprends pas trop d'ailleurs. line 1120, equation 5, the variables $x_{0,i}, k_{0,i}$ are not defined. Also, the second coordinate of $x = x_{j,l}\in Z_{w\times D}$ is in $D$, which is much smaller than r in table 4. Using the index i in $x_{0,i}$ makes it unclear. On a le problème en équation 6 aussi non ?}
 \begin{equation} \label{eq:vdlpn*}
     F_k(x) = \bigoplus_{i=1}^{r} x_{0,i}\cdot k_{0,i} \oplus \bigoplus_{i=5}^D \bigoplus_{j=1}^w \prod_{\ell=1}^i \left(x_{i,j,\ell} \oplus k_{i,j,\ell}\right),
 \end{equation}
