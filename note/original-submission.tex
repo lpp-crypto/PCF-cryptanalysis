@@ -1,0 +1,1581 @@
+%\documentclass[journal=tosc,submission,nohyperref]{iacrtrans} % Fix for the following error I had: Package hyperxmp Error: hyperref must be loaded before hyperxmp.
+\documentclass[journal=tosc,submission]{iacrtrans}
+\pagestyle{plain}
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{cmap}
+
+\usepackage[russian,english]{babel}
+
+\usepackage{hyperref}
+%\usepackage[a4paper,hmargin=1.5in,vmargin=1.5in]{geometry}
+\hypersetup{colorlinks = true, urlcolor = blue, linkcolor = blue, citecolor = red}
+\usepackage{cleveref}
+%\usepackage{hyperxmp}
+
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{mathrsfs}
+\usepackage[
+n,
+operators,
+advantage,
+sets,
+adversary,
+landau,
+probability,
+notions,
+logic,
+ff,
+mm,
+primitives,
+events,
+complexity,
+asymptotics,
+keys]{cryptocode}
+\usepackage{awesomebox}
+
+\usepackage{graphicx} % including pictures
+\usepackage[export]{adjustbox} % use max width and max height for figures
+\usepackage{xspace}
+
+% \usepackage{mathspec}
+% \setmainfont{Inria Serif}[Scale=MatchLowercase]
+% \setsansfont{Inria Sans}[Scale=MatchLowercase]
+% \setmathfont(Digits,Latin,Greek,Symbols)[Scale=MatchLowercase]{Inria Serif}
+% \setmathrm[Scale=MatchLowercase]{Inria Serif}
+%% \usepackage{mathastext}
+
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\algnewcommand{\LineComment}[1]{\State{\color{gray} \(\triangleright\) #1}}
+\usepackage{listings}
+
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfmath}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{patterns}
+\usetikzlibrary{shapes}
+\usetikzlibrary{shadows}
+\usetikzlibrary{calc}
+\usetikzlibrary{math}
+\tikzstyle{fun}=[draw,very thick,fill=white]
+\tikzstyle{fork}=[shape=circle,inner sep=0pt,minimum size=3pt,fill=black]
+\tikzstyle{op}=[inner sep=2pt]
+
+\usepackage{ifthen}
+\usepackage{comment}
+
+\usepackage{booktabs}
+\usepackage{multirow}
+
+% To use monospace font in arrays easily
+\usepackage{array}
+\newcolumntype{t}{>{\tt}c}
+
+\newcommand\todo[1]{{\color{red}\textbf{TODO:} #1}}
+
+\theoremstyle{theorem}
+% \newtheorem{theorem}{Theorem}
+% \newtheorem{maintheorem}{Main Theorem}
+% \newtheorem{proposition}{Proposition}
+% \newtheorem{conjecture}{Conjecture}
+% \newtheorem{observation}{Observation}
+% \newtheorem{goal}{Goal}
+% \newtheorem{lemma}{Lemma}
+% \newtheorem{corollary}{Corollary}
+% \newtheorem{openproblem}{Open Problem}
+
+% \theoremstyle{definition}
+% \newtheorem{definition}{Definition}
+
+% \theoremstyle{remark}
+% \newtheorem{remark}{Remark}
+
+\newcommand{\qbox}[1]{{\vspace{-.3cm}\awesomebox[gray]{2pt}{\faQuestionCircle}{gray}{#1}\vspace{-.3cm}}}
+\newcommand{\qboxx}[1]{\awesomebox[gray][\abShortLine]{2pt}{\faQuestionCircle}{gray}{#1}}
+\newcommand*{\algcomment}[1]{{\color{gray} \text{\hspace{.5cm}$\triangleright$ #1}}}
+
+\newcommand\adva{\ensuremath{\mathcal{A}}\xspace}
+\newcommand\setX{\ensuremath{\mathcal{X}}\xspace}
+\newcommand\setF{\ensuremath{\mathcal{F}}\xspace}
+\newcommand\setK{\ensuremath{\mathcal{K}}\xspace}
+\newcommand\ring{\ensuremath{\mathcal{R}}\xspace}
+\newcommand\setY{\ensuremath{\mathcal{Y}}\xspace}
+\newcommand\setI{\ensuremath{\mathcal{I}}\xspace}
+\newcommand\IPM{\ensuremath{\mathcal{IP\mkern-4mu M}}\xspace}
+\newcommand\class{\ensuremath{\mathcal{C}}\xspace}
+\newcommand\indeg{\ensuremath{\mathsf{in}}\xspace}
+\newcommand\outdeg{\ensuremath{\mathsf{out}}\xspace}
+\newcommand\bit{\ensuremath{\{0,1\}}\xspace}
+
+\newcommand\MOD{\ensuremath{\mathsf{MOD}}\xspace}
+\renewcommand\AC{\ensuremath{\mathsf{AC}}\xspace}
+\renewcommand\NC{\ensuremath{\mathsf{NC}}\xspace}
+\newcommand\NP{\ensuremath{\mathsf{NP}}\xspace}
+\newcommand\Lang{\ensuremath{\mathcal{L}}\xspace}
+\newcommand\Rel{\ensuremath{\mathcal{R}}\xspace}
+\newcommand\ACC{\ensuremath{\mathsf{ACC}}\xspace}
+\renewcommand\TC{\ensuremath{\mathsf{TC}}\xspace}
+\newcommand\PRF{\ensuremath{\mathsf{PRF}}\xspace}
+\newcommand\wPRF{\ensuremath{\mathsf{wPRF}}\xspace}
+\renewcommand\secpar{\ensuremath{\lambda}\xspace}
+\newcommand\msk{\ensuremath{\mathsf{msk}}\xspace}
+\renewcommand\key{\ensuremath{\mathsf{k}}\xspace}
+\renewcommand\negl{\ensuremath{\mathsf{negl}}\xspace}
+\newcommand\KeyGen{\ensuremath{\mathsf{KeyGen}}\xspace}
+\newcommand\Eval{\ensuremath{\mathsf{Eval}}\xspace}
+\newcommand\Hash{\ensuremath{\mathsf{H}}\xspace}
+\newcommand\GT{\ensuremath{\mathsf{GT}}\xspace}
+
+\newcommand\LL{\mathcal{L}}
+\newcommand\G{\mathbb{G}}
+\newcommand\Z{\mathcal{Z}}
+\newcommand\N{\mathbb{N}}
+\newcommand\F{\mathbb{F}}
+\newcommand\ftwo{\mathbb{F}_2}
+\newcommand\field[1]{\mathbb{F}_{2^{#1}}}
+\newcommand\Zmod[1]{\mathbb{Z}/ {#1} \mathbb{Z}}
+\newcommand\proba[1]{\mathrm{Pr}\left[ #1  \right]}
+\newcommand\bigoh{\mathrm{O}}
+\newcommand\trace{\mathrm{Tr}}
+\newcommand\traceSub[1]{\mathrm{Tr}_{#1}}
+\newcommand\charac[1]{\mathds{1}_{#1}}
+
+\renewcommand\xor{\textsc{xor}}
+\newcommand\xored{\textsc{xor}ed}
+\newcommand\xors{\textsc{xor}s}
+\newcommand\Tand{\textsc{And}}
+\newcommand\Tands{\textsc{And}s}
+
+\newcommand\kronecker[2]{\hat{\delta}\left( #1, #2 \right)}
+\newcommand\scalarprod[2]{#1 \cdot #2}
+\newcommand\walsh[1]{\mathcal{W}_{#1}}
+\newcommand\ddt[1]{\delta_{#1}}
+\newcommand\identity[1]{\mathcal{I}^{ #1 }}
+\newcommand\hweight[1]{\mathrm{hw}\left( #1 \right)}
+\newcommand\coveredby{\preccurlyeq}
+\newcommand\lat[1]{\mathcal{W}_{#1}}
+
+\renewcommand\ind[2]{\mathbf{1}_{#1}\left( #2 \right)}
+
+\newcommand\openbutterfly[3]{\mathsf{H}^{#1}_{#2, #3}}
+\newcommand\newbutterfly[1]{\mathsf{N}_{#1}}
+\newcommand\linearspan[1]{\langle #1 \rangle}
+\newcommand\rank{\mathrm{rank}}
+\newcommand\extract[1]{\mathcal{X}_{#1}}
+\newcommand\walshZeroes[1]{\mathcal{Z}_{#1}}
+\newcommand\ddtZeroes[1]{\mathcal{Z}^D_{#1}}
+
+\newcommand\spaceInput{\mathcal{V}}
+\newcommand\spaceOutput{\mathcal{V}^{\perp}}
+\newcommand\matSwap[1]{M_{#1}}
+\newcommand\maj{\mathrm{maj}}
+\newcommand\twistable[1]{#1-twistable}
+\newcommand\twotwoMat[4]{\left[ \begin{array}{cc} #1 & #2 \\ #3 & #4 \end{array} \right]}
+
+\newcommand\multInv{\mathcal{I}}
+
+\newcommand\Lstribog{\mathsf{L}}
+\newcommand\Sstribog{\mathsf{S}}
+\newcommand\Pstribog{\mathsf{P}}
+\newcommand\Kstribog{\mathsf{K}}
+\newcommand\Lfield{\mathsf{L}^{\mathsf{F}}}
+
+\newcommand\gen[1]{g_{#1}}
+\newcommand\pmin{p_{\mathrm{min}}}
+\newcommand\pkuz{p_{\mathrm{kuz}}}
+\newcommand\offset{\kappa}
+
+
+\newcommand\tklog{TKlog}
+\newcommand\tklogmath[1]{\mathscr{T}_{#1}}
+\newcommand\tkexp{TKexp}
+\newcommand\tkexpmath[1]{\mathscr{T}^{-1}_{#1}}
+\newcommand\fly{\log_{\alpha}^{\mathrm{FLY}}}
+\newcommand\logHN{\log_{\alpha}^{\mathrm{HN}}}
+
+\newcommand\qualDiff[1]{\mathsf{A}^{\mathrm{d}}_{ #1 }}
+\newcommand\qualLin[1]{\mathsf{A}^{\ell}_{ #1 }}
+
+\newcommand\addeq[2]{#1 \stackrel{\oplus}{\sim} #2}
+\newcommand\multeq[2]{#1 \stackrel{\odot}{\sim} #2}
+
+\newcommand\splitField[1]{\mathsf{Split}_{#1}}
+
+% \newcommand\jacobian[2]{\mathrm{Jac}_{#2}#1}
+\newcommand\jacobian[2]{\mathrm{Jac}\ \! #1 (#2)}
+\newcommand\Jlin[2]{\mathrm{Jac}_{\rm lin}\ \! #1 (#2)}
+\newcommand\partialDiff[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand\permSet[1]{\mathfrak{S}_{#1}}
+
+%% Macros Alain
+%% Vectors
+\newcommand{\word}[1]{\ensuremath{\boldsymbol{#1}}}
+\newcommand{\av}{\word{a}}
+\newcommand{\bv}{\word{b}}
+\newcommand{\cv}{\word{c}}
+\newcommand{\dv}{\word{d}}
+\newcommand{\ev}{\word{e}}
+\newcommand{\gv}{\word{g}}
+\newcommand{\hv}{\word{h}}
+\newcommand{\mv}{\word{m}}
+\newcommand{\pv}{\word{p}}
+\newcommand{\uv}{\word{u}}
+\newcommand{\vv}{\word{v}}
+\newcommand{\wv}{\word{w}}
+\newcommand{\xv}{\word{x}}
+\newcommand{\yv}{\word{y}}
+\newcommand{\zv}{\word{z}}
+
+\newcommand{\GL}[2]{\mathbf{GL}_{#1}(#2)}
+
+\newcommand\comatrice{\mathsf{Cof}}
+
+%% Comments
+\newcommand{\yann}[1]{\textcolor{green}{\bf [Yann : #1]}}
+\newcommand{\christina}[1]{\textcolor{blue}{\bf [Christina : #1]}}
+\newcommand{\leo}[1]{\textcolor{red}{\bf [Léo : #1]}}
+\newcommand{\geoffroy}[1]{\textcolor{magenta}{\bf [Geoffroy : #1]}}
+
+
+% notations
+\newcommand\aes{\textsf{AES}}
+%\newcommand\distinguisher{\mathcal{D}}
+
+
+\newcommand\lp[1]{\textcolor{blue!80}{\textbf{Léo:} #1}}
+\newcommand\cb[1]{\textcolor{red!80}{\textbf{Christina:} #1}}
+\newcommand\gc[1]{\textcolor{olive!80}{\textbf{Geoffroy:} #1}}
+\newcommand\yr[1]{\textcolor{brown!80}{\textbf{Yann:} #1}}
+
+\author{authors}
+\institute{institutions}
+\title{SoK: On Shallow Weak PRFs}
+\subtitle{A Common Symmetric Building Block for MPC Protocols}
+
+
+\begin{document}
+
+\maketitle
+
+\keywords{shallow weak PRFs \and alternating moduli \and Goldreich's PRG \and VDLPN \and EALPN}
+\begin{abstract}
+A growing number of advanced cryptographic protocols and constructions rely on symmetric primitives known as weak pseudo-random functions (wPRFs). These functions differ significantly from traditional PRFs: they operate in constrained models where inputs are sampled uniformly at random and are not chosen by the adversary. In practice, many of these functions are implemented as shallow, non-iterated constructions with simple circuit representations.
+
+This Systematization of Knowledge (SoK) provides a unified view of shallow wPRFs (swPRFs), which we define as wPRFs computable by low-depth circuits and primarily used in different secure computation protocols. We identify and classify four main families of swPRFs—alternating moduli wPRFs, Goldreich’s PRG family, and the {\sf VDLPN} and {\sf EALPN} constructions—presenting formal definitions, algorithmic descriptions, known variants, cryptanalytic results, and concrete parameter sets for each.
+
+In addition to surveying the literature, our goal is to shift the focus from asymptotic analyses to concrete cryptanalysis. To this end, we provide a set of cryptanalytic challenges along with reference {\tt SAGE} implementations for all the primitives discussed.  We aim to encourage the symmetric cryptography community—particularly cryptanalysts—to rigorously evaluate the practical security levels offered by swPRFs, as concrete analyses are currently lacking. Given their growing use in high-level protocols and constructions, any cryptanalytic breakthrough on these primitives could directly affect the security of the broader cryptographic systems that rely on them.
+\end{abstract}
+
+%\vfill
+%\tableofcontents
+%\newpage
+
+
+
+\section{Introduction}
+\label{sec:intro}
+
+Symmetric cryptography has provided other areas of cryptography and information security with a wide range of secure algorithms, from high-throughput stream ciphers to lightweight message authentication codes, and from low-latency block ciphers to zero-knowledge-friendly hash functions. Meanwhile,  another class of symmetric primitives has been gaining ground: \emph{shallow weak pseudo-random functions (swPRFs)}, which have so far mostly escaped the attention of the symmetric cryptography community. 
+
+
+%Symmetric cryptography has provided other areas of cryptography and information security with a wide variety of secure algorithms, from high throughput stream ciphers to lightweight message authentication codes, from low latency block ciphers to zero-knowledge friendly hash functions. Yet, another type of symmetric primitive is becoming more prevalent  has mostly escaped the attention of the symmetric community that we shall call \emph{weak shallow pseudo-random functions (wsPRF)}.
+
+These functions are symmetric in nature in the sense that they map a secret input to secure output using a procedure that depends only on a secret key, much like the ``usual'' pseudo-random functions. However, these primitives must also satisfy different properties.
+\begin{description}
+\item[Security Model.] They are \emph{weak} in the sense that the adversary is only allowed to perform random queries, and that the number of queries is severely limited. To put it differently, they are only intended to be secure in the known-plaintext setting, and under a low number of queries.
+\item[Input/Output Sizes.] The input and key of such functions typically consist of several hundred bits, while the output can be as small as a single bit. This stands in contrast to traditional PRFs, which are generally expected to produce outputs of a size comparable to their inputs.
+\item[Cost Model.] The main difference with classical constructions lies in the \emph{shallow} requirement: these functions are not iterated. They consist essentially in a single round.
+\end{description}
+It should then come as no surprise that such primitives look very different from what is usually considered in symmetric cryptography. For example, the mod-2/mod-3 function introduced in~\cite{TCC:BIPSW18} is fully specified by the following equation:
+\begin{equation*}
+  F_k(x) := \left(\sum_{i = 0}^{n-1} k_i x_i \mod 2 + \sum_{i = 0}^{n-1} k_i x_i \mod 3\right) \mod{2}, \quad \text{ for } x,k \in \Z_2^n~,
+\end{equation*}
+where $\Z_n$ denotes the set $\{0,\dots,n-1\}$. We provide more details about this specific function in Section~\ref{sec:bipsw}. As we can see, none of the usual building blocks are present: no round function, no S-box layer, no Feistel round... And yet the security goals are very reminiscent of what is usually expected in symmetric cryptography.
+
+To better understand these functions, we must first introduce their formal definition. This reveals one of the main challenges of this work: the vocabulary and notions used in complexity theory and symmetric cryptography differ. We begin by describing the security notion that shallow weak PRFs (swPRFs) are expected to satisfy, using both languages.
+
+
+
+\subsection{Security Definitions}
+
+The different definitions of PRFs intend to capture a similar concept that was already explicitly mentioned in the seminal work of Luby and Rackoff~\cite{LubRac88}. Consider a family of functions $h_k : \Z_2^{64} \to \Z_2^{64}$, where $k$ is a secret key. The intuitive notion to capture is, in their words, the following one.
+\begin{quote}
+  Say that we have two black boxes, one of which computes a fixed randomly chosen
+function from the set of functions of $\Z_2^{64}$ and the other computes $h_k$ for a fixed randomly chosen $k$.
+Then no algorithm which examines the boxes by feeding inputs to them and
+looking at the outputs can obtain, in a ``reasonable'' time, any ``significant'' idea
+about which box is which.
+\end{quote}
+We need to limit the power of the attackers using a definition of what ``reasonable'' means as an unbounded adversary could always just brute-force the key. Similarly, the output of the distinguishing algorithm has to be ``significant''. For example, systematically returning ``random function'' would be correct sometimes, but would not be interesting at all.
+
+Starting from this insight, two different definitions of ``reasonable'' have eventually solidified. The first was already present in~\cite{LubRac88}, and relies on complexity classes. The other, more common in modern symmetric cryptography, relies on precise upper bounds.
+
+\paragraph{Complexity Theory View.}
+
+A pseudorandom function (\PRF), as originally introduced in~\cite{FOCS:GolGolMic84}, is defined as follows.
+\begin{definition}[PRF in complexity theory]
+  A PRF is a family of efficiently computable keyed functions such that no polynomial-time adversary can distinguish the input-output behavior of a randomly chosen function from the family from that of a uniformly random function with the same domain and range.  
+\end{definition}
+Informally, the ``reasonable'' power of the adversary lies in the \emph{asymptotic} complexity of their attack: it has to \emph{scale} polynomially at most (and not exponentially).
+
+This definition is, in essence, based on the notion of \emph{computational indistinguishability}. Two families of sets $\{S_n\}_{n > 0}$ and $\{S'_n\}_{n > 0}$ are computationally indistinguishable if, for any probabilistic polynomial-time algorithm, the advantage in determining whether $x$ is from $S_n$ or $S'_n$ is a negligible function of $n$. This is denoted by $S_n \approx_c S'_n$.
+
+In this setting, it is easy to define a \emph{weak} pseudorandom function (\wPRF). Such a function offers a relaxed guarantee: it is only required to be indistinguishable from a truly random function when the adversary is restricted to querying the function on uniformly random inputs.
+\begin{definition}[(Weak) Pseudorandom Function (\wPRF, \PRF), \cite{FOCS:GolGolMic84,FOCS:NaoRei95}]
+	Let $\secpar\in\N$ be a security parameter. A (weak) pseudorandom function with domain $\setX = \{\setX_{\lambda}\}_{\lambda \in \N}$, key space $\setK= \{\setK_{\lambda}\}_{\lambda \in \N}$, and range $\setY = \{\setY_{\lambda}\}_{\lambda \in \N}$, %\lp{c'est le même $\lambda$ qu'au-dessus?} 
+	consists of the following two polynomial-time algorithms: 
+	\begin{itemize}
+		\item[$\bullet$]$\KeyGen(1^{\lambda}) \rightarrow \msk$, a probabilistic algorithm that takes as input the security parameter $\lambda$, and outputs a master secret key $\msk \in \mathcal{K}$, and
+		
+		\item[$\bullet$]$\Eval(\msk,x) \rightarrow y$, a deterministic algorithm that, given as input a  secret master key $\msk$ and a value $x \in \setX$, outputs a value $y \in \setY$.
+	\end{itemize}
+	
+	We say that the pair $(\KeyGen,\Eval)$ is a \textbf{weak pseudorandom function (\wPRF)} if for any Probabilistic Polynomial Time (PPT) adversary $\adva$ and any polynomially bounded number $Q \in \N$, representing the maximal number of authorised samples, it holds that 
+		\begin{multline*}
+		\resizebox{.95\hsize}{!}{$\left\{ \left( \left(x_i,\Eval(\msk,x_i)\right)_{i \in [Q]} \right)\middle| \begin{array}{c} \msk \sample \KeyGen(1^{\lambda})\\ \forall i \in [Q]: x_i \sample \setX \end{array}\right\} \approx_c \left\{ \left(\left(x_i,y_i \right)_{i \in [Q]} \right) \middle| \begin{array}{c}
+		\forall i \in [Q]: \\
+		x_i \sample \setX , \ y_i \sample \setY
+		\end{array} \right\}.$}
+		\end{multline*}
+\end{definition}
+
+In this context, the main goal of the designers of such primitives is to identify the asymptotic behavior of the best attack techniques in order to determine whether a polynomial-time adversary can gain an advantage.
+
+
+\paragraph{Symmetric Cryptography View.}
+
+In modern symmetric cryptography, PRFs are usually not intended to work for any block size $n$. Instead, the input and output size are fixed, and while the security definition also relies on a game, it differs in a crucial way: there is no asymptotic reasoning, we instead explicitly upper-bound the probability of success of a distinguishing algorithm $\distinguisher$ that is allowed at most $q$ queries to the function under scrutiny.
+
+\begin{definition}[PRF security]
+Let $n$ and $k$ be positive integers. Let $\{F_K\}_{K \in \Z_2^k}$ be a keyed function family with $F_K : \Z_2^n \to \Z_2^n$. We say that $F$ achieves $(q,T,\varepsilon)$-PRF security if for any distinguisher $\distinguisher$ running in time at most $T$ and making at most $q$ queries, the distinguishing advantage is at most $\varepsilon$, i.e.,
+\[
+\left| \Pr\left[\distinguisher^{F_K} = 1 \right] - \Pr\left[\distinguisher^{\mathcal{R}} = 1 \right] \right| \leq \varepsilon,
+\]
+where the key $K$ is sampled uniformly at random from $\Z_2^k$, and $\mathcal{R}$ is a uniformly random function from $\Z_2^n$ to $\Z_2^n$.
+\end{definition}
+
+
+%\begin{definition}[PRF security]
+%  Let $n$ and $k$ be positive integers. The family of functions $F_K : \Z_2^n \to \Z_2^n$ where $K \in \Z_2^k$ achieves \emph{PRF security} against a distinguisher $\distinguisher$ if... \lp{écrire propremement}
+%\end{definition}
+Since the parameters of symmetric crypto-systems are fixed (e.g., the \aes{} operates on 128 bits), such definitions are better suited to their study.
+
+In this description, the attacker is allowed to do \emph{chosen plaintext} queries, meaning that the distinguishing algorithm $\distinguisher$ can choose on which $x$ to evaluate the black box. It is however possible to instead restrict the attacker to \emph{known plaintexts}, i.e., to enforce that the inputs $x$ for the black box are chosen uniformly using an external source of randomness. In this context, we can provide an alternative definition of a weak PRF that is not asymptotic.
+
+
+
+\begin{definition}[wPRF security]
+Let $n$, $k$, and $q$ be positive integers. A family of functions $F_K : \Z_2^n \to \Z_2^n$, indexed by a key $K \in \Z_2^k$, is said to achieve $(q,T,\varepsilon)$-weak PRF security if, for every distinguisher $\distinguisher$ running in time at most $T$ and making at most $q$ queries on inputs $x_1, \dots, x_q \in \Z_2^n$ drawn independently and uniformly at random, we have:
+\begin{equation*}
+  \begin{split}
+    \Big| 
+    \Pr\big[ 
+    \distinguisher\left(x_1, \dots, x_q, \right.&\left(F_K(x_1), \dots, F_K(x_q)\right) = 1 
+    \big]
+    - \\
+    \Pr\big[ 
+    &\distinguisher\left(x_1, \dots, x_q, \mathcal{R}(x_1), \dots, \mathcal{R}(x_q)\right) = 1 
+    \big]
+    \Big| \leq \varepsilon~, \\
+  \end{split}
+\end{equation*}
+where the key $K$ is sampled uniformly at random from $\Z_2^k$, and $\mathcal{R}$ is a uniformly random function from $\Z_2^n$ to $\Z_2^n$.
+\end{definition}
+
+
+%\begin{definition}[wPRF]
+ % Let $n$ and $k$ be positive integers. A family $F_K : \Z_2^n\to\Z_2^n$ of functions indexed by a key $K \in \Z_2^k$ is a \emph{weak PRF} if the advantage of a distinguisher limited to a specific number $q \ll 2^n$ of known plaintext queries to the black box...\lp{écrire proprement}
+%\end{definition}
+
+\paragraph{Concrete Security.}
+In practice, defining and interpreting the runtime of the adversary remains a subtle issue for which we are not aware of any fully satisfactory answer. In many symmetric-key attack scenarios, such as differential or linear cryptanalysis, the dominating step is a final exhaustive search over a part of the key space. As a result, the total number of calls to the function under attack is often used as a proxy for the time complexity. Security claims are then made against adversaries performing up to $2^k$ such evaluations, assuming that the final brute-force phase is unavoidable.
+
+However, this reasoning breaks down for attack techniques based on algebraic methods, such as solving systems of equations. In such cases, the bottleneck is not a brute-force stage but rather the resolution of the underlying mathematical problem, which may not involve any calls to the primitive at all after a preprocessing phase. Comparing the performance of such attacks to brute-force-style security claims is therefore problematic.
+
+Because most of the attacks applicable to the weak PRFs we consider do not rely on exhaustive search, we argue that it is more relevant to express the time complexity in terms of the number of elementary operations, rather than just oracle calls. That is, we adopt the view that security should be measured in terms of the total cost (time or operations) required to distinguish the function from a random oracle.
+
+In the rest of this paper, we aim to move beyond asymptotic reasoning and instead adopt a concrete perspective: for a given target security level $\lambda$, we consider a weak PRF secure if no adversary can distinguish it from a random function with success probability greater than $\varepsilon = T/2^\lambda$ in less than $T$ operations\footnote{This is the traditional way to measure concrete security of symmetric primitives~\cite{C:DodSte09}. However, it was recently challenged by Micciancio and Walter~\cite{EC:MicWal18} who showed that $\varepsilon = \sqrt{T/2^\secpar}$ is more accurate for decision primitives, such as wPRFs. Nevertheless, we are typically interested in the setting where $\varepsilon$ is close to $1$, in which case both measures coincide.}. This includes both oracle queries and any algebraic or pre-processing steps the adversary may perform; however, a separate bound $q$ on the total number of oracle queries allowed to the adversary is also typically assumed (in real-world contexts, the number of queries is a number of samples observed by the adversary: it is not directly under its control and realistically often much lower than $2^\lambda$). The set of operations considered can depend on the context, but one must be clear and exact on what is being counted.
+
+We note that in several existing proposals, the chosen parameters are justified post hoc to avoid trivial breakage, and the resulting security level is sometimes arbitrarily bounded (e.g., ``80 bits'') to compensate for performance issues. This practical “patching” approach highlights the need for a more rigorous study based on concrete cryptanalysis, something we actively advocate for by writing this survey.
+
+%A difficulty remains in practice, for which we are not aware of any satisfactory answer: what is the actual runtime of the distinguisher? In practice, the dominating step in, say, a differential cryptanalysis is often a final brute-force stage, meaning that the total number of calls to an intantiation of the primitive attacked is a priori a sensible time complexity metric. In fact, security claims often explicitly consider adversaries perform $2^k$ calls to the primitive. However, this approach does not work well for other attack techniques, for instance based on the resolution of polynomial systems. In this case, the dominating step is not a brute-force phase, meaning that a comparison between the efficiency of an attack and a security claim can be difficult.
+
+%Since the attack techniques against the weak PRFs we consider rarely involve any brute-force step, we consider  time complexity claims made in terms of number of basic operations to be more relevant.
+
+  
+%\lp{prendre en compte la proba de succès ($2^k/p$, $p$ la proba de succès par ex). pointer que parfois ils visent 80 bits de sécurité mais c'est du rabotage de bas étage pour limiter la casse en terme de perf $\implies$ motivation du papier et d'une approche basée sur la cryptanalyse}
+%\yr{Ici, on a la version poly/exponentielle. Est-e qu'ici on ne mettrait pas aussi et en parallèle que l'on veut en pratique qu'un adversaire n'ait pas de distingueur qui tourne en moins de $2^\lambda$ opérations strictement ? Opérations étant ici peut-être à déterminer en partie ? Cela permettrait de dire dès le début qu'aujourd'hui on cherche à fixer les paramètres concrets ?}
+
+
+\subsection{Practical Relevance}
+
+While figuring out the existence (or inexistence) of secure wPRFs in some complexity class could be seen as problem of  purely theoretic significance, it recently received renewed attention because of the very practical need for such functions in some protocols. We will provide more details on this topic further in Section~\ref{sec:applications}.
+
+In these contexts, the ``symmetric'' definitions of (weak) PRF security take precedence since the parameters are then fixed. This change of paradigme, from complexity theory to computer security, implies several significant changes.
+\begin{description}
+\item[Irrelevance of Asymptotic Reasoning.] While figuring out the asymptotic behaviour of an adversary is the correct way to investigate complexity classes, it is hardly relevant when moving to concrete computer security since the aim in this case is not to let a parameter go to infinity, it is instead to fix it to a specific value. Thus, the attacks that were relevant asymptotically might be of lesser interest, while new attack vectors that were previously cast aside because they are exponential may instead become a threat. In a nutshell, an attack with a runtime equivalent to $2^{n/3}$ basic operations is, in practice, far more threatening than one with a runtime of $n^{10}$ similar operations when $n = 128$, where they amount roughly to $2^{42.7}$ and $2^{70}$, respectively.
+\item[Performance Trade-Offs.] When a function is intended to be implemented, adding structure can become necessary, or at least welcome, to decrease the cost of its implementation. On the other hand, such structure could potentially open new attack directions. The investigation of such trade-offs becomes much more relevant when leaving the world of complexity theory.
+\end{description}
+
+
+
+
+\subsection{Our Contributions}
+
+Weak pseudorandom functions have a broad range of applications in cryptography and beyond. Of particular relevance to this work is the notion of \emph{shallow} \wPRF. Informally, a \wPRF is said to be \emph{shallow} if it can be computed by a function of low depth in an appropriate computational model, which we introduce later in this paper. We call such a function \emph{swPRF}, which stands for \emph{shallow weak Pseudo-Random Functions}.
+
+Our aim in this Systematization of Knowledge (SoK) paper is to describe swPRFs—what they are and why they are relevant in practice. This involves both a detailed survey of the literature and a translation of their security goals away from asymptotics. To this end, we also propose cryptanalysis challenges, along with \texttt{Python} reference implementations of the swPRFs we describe: practical security can only be studied through cryptanalysis, and our goal is to simplify this analysis. The reference implementations are provided as supplementary material to our submission.
+
+\paragraph{Outline.} The rest of the article is organized as follows. Section~\ref{sec:notations} introduces preliminary notions on shallow weak PRFs, while Section~\ref{sec:applications} discusses their intended applications and outlines the associated cost and security models. We then present several families of shallow weak PRFs, providing both mathematical and algorithmic descriptions, known variants, any known cryptanalysis results and proposeed parameter sets that serve as targets for cryptanalysis. Specifically, we cover four distinct families, which are detailed in Sections~\ref{sec:bipsw},\ref{sec:goldreich},\ref{sec:vdlpn}, and~\ref{sec:ealpn}, respectively. We have attached to this submission a \textsf{SAGE} implementation of each of these families. These are intended to be published along with this paper in order to simplify the task of future cryptanalysts.
+
+
+% Possible outline:
+% \begin{enumerate}
+% \item What are ``Shallow Weak PRFs''?
+%   \begin{enumerate}
+%   \item Intended Applications (MPC-friendly in a precise sense, some examples)
+%   \item Cost Models: minimal depth where the operations allowed vary. Severe limitation on which operation are allowed, even without considering efficiency.
+%   \item Security Model: weak PRF
+%   \end{enumerate}
+% \item Inventory/Zoo
+%   \begin{enumerate}
+%   \item BIPSW and variants
+%   \item Goldreich (including FLIP as a variant)
+%   \item VDLPN/EALPN
+%   \end{enumerate}
+% \item On their Cryptanalysis
+%   \begin{enumerate}
+%   \item Discussion on the security (relying on the security of the PRNG is cheating, also, how much can this be relaxed? Asymptotic vs. precise, 128 bits of security doesn't really mean 128 bits, it's more of a guesstimate)
+%   \item Common cryptanalysis techniques (decoding)
+%   \item PRF implementations and cryptanalysis challenges
+%   \end{enumerate}
+% \item Conclusion
+% \end{enumerate}
+
+
+
+
+
+\section{General Background}
+\label{sec:notations}
+
+\subsection{Definitions and Notations}
+
+ \paragraph{Mathematics.} As stated before, we denote by $\Z_n$ the ring consisting of the integers in $\{0, \dots, n-1\}$. We also denote by $[N]$ the set $\{1, \dots, N\}$, and $[a,b]$ the interval $\{a, a+1, \dots, b\}$.
+
+A function mapping $\Z_2^n$ to $\Z_2$ is a \emph{binary} or \emph{Boolean} function. Every such function has a unique representation as a multivariate polynomial over $\Z_2$ in the variables $(x_0, \dots, x_{n-1})$, expressed as a sum of monomials of the form $\prod_{i=0}^{n-1} x_i^{u_i}$ with $u_i \in \Z_2$. The \emph{Hamming weight} of a vector $(u_0, \dots, u_{n-1}) \in \Z_2^n$ is the number of non-zero entries in the vector. The \emph{algebraic degree} of a Boolean function is the maximum number of variables appearing in any monomial with a non-zero coefficient in its polynomial representation.
+
+\paragraph{Parameters.}
+In practice, the message length and key lengths of the function we study depend on a security parameter $\lambda$. To simplify notations, we will  explicitly omit indexing all relevant parameters by $\lambda$. For instance, we will write $n$ instead of $n(\lambda)$ and $\mathcal{K}$ instead of $\mathcal{K}_{\lambda}$ for the key space.
+
+
+\subsection{Circuits}
+
+In order to formally define the notion of \emph{shallow} PRF, we need to introduce \emph{circuits}.
+
+\paragraph{Circuits.} A circuit is a directed acyclic graph composed of two types of nodes: \emph{input nodes}, which have indegree 0, and \emph{gates}, which have indegree at least 1. The indegree corresponds to the number of edges ending in this node, and the outdegree to the number of edges leaving it.
+
+Each gate with indegree~$\indeg$ and outdegree~$\outdeg$ is labeled by a function $g: \{0,1\}^\indeg \to \{0,1\}^\outdeg$. To evaluate a circuit~$C$ with $n$ input nodes on an input $x \in \{0,1\}^n$, we proceed as follows: each input node~$i$ is labeled with the corresponding bit~$x_i$. Then, for each gate whose $\indeg$ input wires have been assigned values $(z_1, \dots, z_\indeg)$, we compute the output $g(z_1, \dots, z_\indeg)$ and assign its $\outdeg$ bits to the outgoing wires of the gate. Gates with outdegree~0 are called \emph{output gates}, and the final output of the circuit is the bitstring composed of the values on these output wires. We define a \emph{circuit class} as a family $\mathcal{C} = \{\mathcal{C}_n\}_{n \in \mathbb{N}}$, where $\mathcal{C}_n$ denotes the set of allowed circuits with $n$ input nodes. Figure~\ref{fig:circuit} presents a very simple example of circuit.
+
+A circuit class typically restricts the set of allowed gate types, and may impose additional structural constraints, such as bounds on indegree, outdegree, depth, size, or overall topology.
+
+
+\begin{figure}
+\centering
+\include{figures/circuit}
+\caption{\label{fig:circuit}Graphical representation of a small circuit with two input nodes. The circuit has depth~2. The gate $g_0$ has indegree~2 and outdegree~1; $g_1$ has both indegree and outdegree equal to~1; and $g_2$ has indegree~2 and outdegree~3.}
+\end{figure}
+
+\paragraph{Shallow wPRF.}
+A shallow weak PRF (wPRF) is a construction whose evaluation can be performed by a circuit of small depth. Formally, fix a class of circuits $\mathcal{C}$ and a function $s: \mathbb{N} \to \mathbb{N}$. A pair of algorithms $(\KeyGen, \Eval)$ is said to define an \emph{$s$-shallow wPRF over $\mathcal{C}$} if for every secret key $\msk$ in the range of $\KeyGen$, the function $f : x \mapsto \Eval(\msk, x)$ can be computed by a circuit in $\mathcal{C}$ of depth at most $s(|x|)$.
+
+The function $s$ expresses how the allowed circuit depth grows with the input size. For instance, if $s(n) = \log n$, then the wPRF is said to be \emph{logarithmically shallow}. The notion of shallow wPRFs is relevant in contexts where parallel-time complexity is a constraint, since small-depth circuits can be computed in very few parallel steps, assuming enough computational units are available.
+
+%\paragraph{Shallow wPRF.} Fix a circuit class $\class$ and a function $s:\N\to\N$. We say that a pair $(\KeyGen,\Eval)$ is an $s$-shallow wPRF over $\class$ if for every $\msk$ in the range of $\KeyGen$, the function $f:x\mapsto \Eval(\msk,x)$ is computable by a depth-$s(|x|)$ circuit in $\class$. The notion of shallow wPRFs captures wPRFs that can be computed in parallel-time complexity $s$ given a sufficiently large number of computation units in the computational model defined by $\class$. \cb{On peut peut-être définir cela plus simplement ? Sinon je ne comprends pas le rôle de $s$ et ce que depth-$s(|x|)$ veut dire.}\gc{``Shallow'' veut dire ``de faible profondeur'', mais ``faible'' n'est pas formel, donc je définis ``$s$-shallow'' comme étant ``de profondeur $s$'' (depth-$s$, en anglais). Formellement, un circuit est une famille infinie de circuits (un pour chaque taille d'input possible) puisqu'il faut bien un paramètre de sécurité qui puisse grossir quelque part pour définir la sécurité asymptotique (un circuit seul est un objet de taille fixée). Les paramètres de la famille de circuit sont donc des fonctions de la taille de l'entrée. Par exemple, ``un circuit de profondeur logarithmique'' serait $\log$-shallow, puisque sur une entrée $x$ de taille $n$, il sera de profondeur au plus $\log n$.}
+
+
+
+
+
+\section{Shallow wPRFs in Higher-Level MPC Protocols}
+\label{sec:applications}
+
+%\gc{General comment: we only have a super-long 2.1 with the current structure. It might be better to rename this to indicate a general introduction to the use of wPRF in higher-level MPC applications, and upgrade the 3 categories (OPRFs, PCG/PCFs, ZK proofs) to subsections.}
+
+The existence of pseudorandom functions computable by low-depth circuits has a long history, with strong ties to fundamental questions in complexity theory such as circuit lower bounds~\cite{STOC:RazRud94,C:MilVio12,SerVio12}, derandomization~\cite{FOCS:NisWig88,STOC:Williams13}, and learning theory~\cite{valiant1984theory,kearns1994cryptographic,C:BCGIKS21}. These connections are not the focus of this work and will not be covered, as they are typically of little relevance to cryptanalysis and symmetric cryptography.\footnote{We do note, however, that the tools and results developped in these works have significantly influenced the design of shallow wPRFs that we will cover here. Therefore, on several occasions, we will refer to some of these early works to explain the security rationale underlying some candidates.} In this work, we focus on the use of low-depth weak pseudorandom functions in practically-minded higher-level secure computation protocols (we will use the terms secure computation and MPC, short for MultiParty Computation, interchangeably). More precisely, we will be mostly concerned with cryptographic constructions that use a wPRF as an \emph{inner component} within an \emph{outer component}, where the latter is a high-end cryptographic building block (a primitive or a protocol) that uses internally the \emph{circuit description} of the wPRF (that is, we do not consider cryptographic protocols that make a ``black-box'' use of a wPRF, since such protocols are not sensitive to low-level details of the computational model where the wPRF is computed). In equivalent terms, these constructions compile a wPRF whose circuit description meets specific structural constraints into a cryptographic primitive that fulfills a set of security and efficiency requirements.
+
+%\yr{est-ce qu'on a besoin de ces deux dernieres phrases ? Pas sûr que l'on s'en serve après, le design rationale de ces constructions peut se simplifier en "In a nutshell, all constructions taht we cover here come from theoretic questions on how ``small'' a cryptographic construction can be."} \gc{Pour BIPSW une partie des arguments de sécurité utilisent les résultats de Razborov, et une autre le framework de statistical learning de Linial et Mansour. Je ne sais pas si on les mentionne, on peut retirer les phrases si on ne le fait pas.}
+
+
+% !TODO! ajouter 2 mots sur ces notions de "component"
+% Geoffroy: added a reformulation, but it can hardly be very explicit without giving too much details, and the details are what follows in the section
+
+
+
+ Unlike the traditional study of shallow wPRFs, whose focus was generally on low-depth wPRFs in standard computational models of complexity theory\footnote{That is, the usual ``low-depth'' classes found in complexity-theory textbooks: $\AC^0$, $\AC^0[\oplus]$, $\ACC^0$, $\TC^0$, and related classes. They capture functions computable by constant-depth circuits operating with a certain set of gates, e.g., unbounded fan-in AND and OR gates for $\AC^0$.}, 
+%\cb{Le public de ToSC n'est sans doute pas familier avec ces classes de compexité} \gc{Oups. Est-ce que je les définis en deux phrases ? Ou est-ce qu'on vire juste cette phrase ? Je voulais juste être clair que ``shallow PRF'' est déjà utilisé régulièrement en théorie de la complexité, et le sens est le même qu'ici, au détail près que le focus est sur des classes de complexité différentes}\lp{à mon avis, une footnote de deux phrases fera l'affaire. On ne connaît pas ces notations ni leurs subtilités mais on sait ce que c'est qu'une classe de complexité donc on doit arriver à comprendre l'idée de haut niveau si on nous donne 2-3 pistes}
+ the computational models that best capture these target applications are slightly more exotic at first sight. Indeed, as will become clear next, there is a duality between the computational model in which a wPRF is implemented, and the class of functions that the outer cryptographic primitive or protocol can ``evaluate'' efficiently.
+
+\subsection{Why Weak Pseudorandom Functions?}
+
+Pseudorandom functions turn a short random key into a virtually unbounded number of pseudorandom strings. Advanced cryptographic protocols often consume a tremendous amount of randomness, as randomness is unavoidable to hide secret data used in complex interactions, but also to guarantee many other standard security properties (e.g., catching cheaters with random challenges, authenticating data with MACs...). As such, that pseudorandom functions can be leveraged in some of these higher-level protocols is not too surprising.
+
+What is perhaps less natural is the focus on \emph{weak} pseudorandom functions: by definition, wPRFs require the participants to be given access to a trusted source of randomness in the first place, as pseudorandomness holds only when the inputs are truly random. However, it turns out that wherever PRFs are used as an inner component in a higher-level MPC protocol, wPRFs also suffice, for in all such applications, the inputs can be easily \emph{preprocessed} (either by the party holding them, or by all participants when they are public). When one is allowed to preprocess inputs, there is an easy way to convert any wPRF into a PRF: given an arbitrary input $x$, hash $x$ into $\Hash(x)$ using your favorite hash function (e.g., $\mathsf{SHA}$-256) before feeding it to the wPRF. This general methodology, dubbed the hash-then-evaluate paradigm in~\cite{SCN:BCEKM24}, belongs to the large family of heuristic hash-based transforms that are provably secure when the hash is modeled as a random oracle (similar to the Fiat-Shamir transform, the Fischlin transform, the Fujisaki-Okamoto transform, and many more). In addition, the work of~\cite{SCN:BCEKM24} showed that for several wPRF candidates (in fact, for essentially those covered in this SoK), instantiating $\Hash$ with a PRF whose key is publicly known yields a candidate PRF whose security guarantees are comparable to that of the original wPRF.
+
+Therefore, if one is fine with relying on the random oracle methodology (for higher-level MPC protocol targeting real-world applications, this is usually the case) or on the security arguments outlined in~\cite{SCN:BCEKM24}, using a wPRF suffices. Furthermore, building shallow wPRFs turns out to be considerably easier than building shallow PRFs. This is a known general behavior both in theoretical cryptography\footnote{For example, it is known that PRFs cannot exist in $\AC^0$, even when the class is augmented with a constant number of xor and majority gates~\cite{SODA:Viola13}, while wPRFs in $\AC^0$ exist under standard assumptions such as factoring~\cite{STOC:Kharitonov93}.} and in concrete candidates design. In particular, all candidate wPRFs covered in this SoK are provably not PRFs (they are easily broken given chosen queries), and constructing shallow PRFs of a comparable complexity is an open question (or, in the case of Goldreich's PRG, is known to be impossible~\cite{SODA:Viola13,TCC:AppRay16b}).
+
+\paragraph{On computational models and cost metrics.} There are two types of restrictions that can be enforced by the computational model, that we will losely refer to as ``hard'' and ``soft'' restrictions:
+\begin{itemize}
+	\item An outer scheme induces a computational model with a hard restriction when a measure of the circuits in the model (e.g., depth, gate type) cannot exceed a fixed bound. As a simple example, using a linearly-homomorphic encryption scheme (e.g., Paillier encryption~\cite{EC:Paillier99}) as outer component restricts the inner component (the primitive being homomorphically evaluated) to be computable by a circuit computing a linear combination over a ring; using instead the Boneh-Goh-Nissim encryption scheme~\cite{TCC:BonGohNis05} restricts the inner component to be computable by a \emph{depth-1} arithmetic circuit with product gates of indegree 2 (i.e., a quadratic polynomial).
+	\item In other settings, the outer scheme induces a soft restriction on the circuits, where some measures (e.g., depth, gate count) can grow arbitrarily but are associated to a \emph{cost} (an efficiency metric of the final protocol, typically computation, communication, or round complexity) that increases as the measure increases. A typical example would be the use of BGV-style fully-homomorphic encryption~\cite{STOC:Gentry09,ITCS:BraGenVai12}: the inner component can be any Boolean circuit, but the computational cost (measured by noise growth, or number of necessary bootstrapping) grows with the multiplicative depth of the circuit.
+\end{itemize}
+Below, we cover the main target applications of these cryptographic constructions. For each target application, we provide some motivation, list the high-end cryptographic building blocks used as outer component to realize the application, and extract the computational model that captures the wPRFs that can be evaluated within each outer component, indicating whether it comes with soft or hard restrictions on the type of circuits that can be computed.
+
+\subsection{Oblivious Pseudorandom Functions}
+\label{subsec:oprf}
+
+An oblivious pseudorandom function (OPRF)~\cite{TCC:FIPR05} for a PRF family $\PRF = (\KeyGen, \Eval)$ is a two-party protocol where one party holds a key $\msk$ in the support of $\KeyGen$, and the other party holds an input $x$ to the PRF. At the end of the protocol, the party holding $x$ should learn $\Eval(\msk,x)$ (and nothing more), while the party holding $\msk$ should not learn anything. OPRFs enjoy many applications in settings such as obliviously searching databases~\cite{TCC:FIPR05}, private set intersection and pattern matching~\cite{TCC:HazLin08,CCS:KKRT16}, password-protected secret sharing and password-authenticated key exchange~\cite{AC:JarKiaKra14}, single sign-on with privacy~\cite{EUROSP:BFHLY20}, cloud key management~\cite{CCS:JarKraRes19}, and many more---see~\cite{EUROSP:CasHesLeh22} for a recent survey on the topic.
+
+\subsubsection{From General Secure Computation}
+
+The simplest way to build an OPRF is to take a PRF family $\PRF = (\KeyGen, \Eval)$, and to run a secure 2-party protocol that, on input $\msk$ from one party and $x$ from the other, securely computes $\Eval(\msk,x)$. Secure $2$-party computation (2PC) refers to a general set of techniques involving two participants with private inputs $x$ and $y$ who wish to compute a public function $f(x,y)$ on their joint private inputs (with the output being revealed to one participant, or both). The two main paradigms for modern secure 2-party computation are secret-sharing-based 2PC in the preprocessing model~\cite{STOC:GolMicWig87,AC:FKOS15,CCS:KelOrsSch16,C:DPSZ12,EC:KelPasRot18} and garbled-circuit-based secure computation~\cite{FOCS:Yao86,ICALP:KolSch08,EC:ZahRosEva15,CCS:WanRanKat17b,CCS:WanRanKat17a,C:DILO22,EC:CWYY23}, the latter being typically more expensive but requiring much less rounds of communication than the former, which can make it a better option over high-latency networks. Secure computation is a very active topic: there are many available protocols, and the cost metric can vary significantly from one protocol to the other. The metrics are typically of the ``soft restriction'' type: 2PC can theoretically evaluate any function. Nevertheless, the cost is mostly driven by the following properties.
+\begin{description}
+\item[Free Linear Operations.] Linear operations (e.g., XORs) are typically ``for free'' in such systems, either because they can be performed locally by the participants in secret-sharing-based 2PC, or due to the free-XOR trick for garbled circuits~\cite{ICALP:KolSch08}. In contrast, the number of nonlinear gates (e.g., AND gates) matters.
+\item[Low Depth.] In secret-sharing-based 2PC, the depth of the circuit (the length of the largest path from an input to an output, counted ignoring the ``free'' linear gates) is a major measure of efficiency, as it translates to a lower bound on the number of messages the participants must exchange. For example, when written as a Boolean circuit with XOR gates and AND gates, the \aes{} block cipher has depth 40~\cite{EC:ARSTZ15}. When the protocol takes place between distant machines, this incurs a significant latency: a single round trip between relatively close machines (e.g., in the same country) adds 50–100ms~\cite{SP:DKLS19}. For distant machines, latency can range from 100–260ms, up to 0.5 seconds in some cases~\cite{SP:DKLS19}. A 200ms roundtrip would result in 8s of delay for the \aes{} circuit.
+\item[Correlated Randomness.] In the preprocessing model, the participants initially run a secure protocol to distribute correlated randomness among them. Different types of correlated randomness can be used to implement efficiently some ``complex'' gates. Typical examples include gates converting between arithmetic values over different fields~\cite{TCC:BIPSW18}, matrix operations~\cite{C:BCGIKS20}, or some standard non-linear functions used in machine learning such as equality tests, threshold predicates, and ReLU~\cite{TCC:BoyGilIsh19,EC:BCGGIK21}.
+\end{description}
+As the methods and protocols for efficiently distributing complex forms of correlated randomness evolve rapidly, it is not feasible to pinpoint a specific computational model and cost metric that would faithfully capture the evolving state-of-the-art. Nevertheless, a good rule of thumb is that secure computations shine when evaluating \emph{low-depth} circuits that minimize the number of non-linear gates, and can rely on certain types of more complex gates such as equality tests, greater-than predicates, ReLU, splines, or linear algebra, among others.
+
+The performance gain obtained by using dedicated wPRFs to build OPRFs is significant. In Section~\ref{sec:bipsw}, we introduce the alternating moduli paradigm which is argued by its authors in~\cite[Table~2]{TCC:BIPSW18} to provide three orders of magnitude of improvement compared to OPRFs built on top of block ciphers such as \aes{}, {\sf LowMC}~\cite{EC:ARSTZ15}, or {\sf Rasta}~\cite{C:DEGLLL18}.
+
+\subsubsection{From TFHE}
+
+Fully-homomorphic encryption (FHE)~\cite{STOC:Gentry09} is a natural high-end outer component for building round-optimal OPRFs: using FHE, one user would encrypt $x$, let the other user compute an encryption of $\Eval(\msk,x)$ homomorphically, and decrypt the result. Unfortunately, FHE is typically considerably slower than general secure computation, and a significant effort is being invested both in optimizing FHE and in optimizing primitives for homomorphic evaluation via FHE (in the setting of ciphers, standard proposals include {\sf LowMC}~\cite{EC:ARSTZ15}, {\sf FLIP}~\cite{EC:MJSC16}, {\sf Rasta}~\cite{C:DEGLLL18}, {\sf Kreyvium}~\cite{FSE:CCFLNP16}, or {\sf Transistor}~\cite{add:Transistor}, among others). Among the best-performing FHE schemes is {\sf TFHE}~\cite{JC:CGGI20}. It features more compact ciphertexts and relatively fast linear operations, as well as a fast \emph{functional bootstrapping}~\cite{EPRINT:MicPol20,EPRINT:Joye21b} that takes only a few milliseconds.
+A simplified circuit model for {\sf TFHE} is the following (also of the soft restriction type, as {\sf TFHE} can in principle evaluate any function).
+
+\begin{description}
+\item[Underlying Algebra.] The circuit operates over a small integer ring $\Z_n$ (e.g. $n=2$, $n=17$).
+\item[Noise.] A quantity called ``noise'' is increased by every operation, and will lead to an incorrect decryption should it become too high. It is then crucial to prevent it from increasing too much.
+\item[Programmable Bootstrap (PBS).] Bootstrapping is a ``refreshing'' operation that brings the noise back down to a given base level. In the case of {\sf TFHE}, bootstrapping is ``programmable'', meaning that it is possible to evaluate an arbitrary function $f:\Z_n\to\Z_n$ implemented by a lookup table without increasing the cost of the bootstrap. This operation is by far the most expensive, so its total number must be minimized---and it is better if those that are used can be evaluated in parallel.
+\item[Free Linear Operations.] The evaluation of linear gates of arbitrary indegree is virtually ``free'' in terms of time, but it incurs a slight increase in the noise.
+%\item The circuit can include a number of arbitrary indegree-1 \emph{functional gates} $f:\Z_n\to\Z_n$.
+%\item The relevant cost metrics are the ``functional depth'' of the circuit (the largest number of functional gates on the path from an input to an output) and the number of functional gates: the former best capture the cost given a significant amount of parallel computing, was the latter best capture the cost when running on one thread.
+\end{description}
+
+Of course, a linear function over any integer ring cannot be a wPRF, hence any wPRF in the above circuit model must contain at least one functional gate. Therefore, a natural question to answer is the following.
+
+\qbox{Given a small integer $n$ (e.g., $n\leq 17$), are there efficient wPRF candidates computable by arithmetic circuits over $\Z_n$ with additions, multiplications by a constant, and a single layer of indegree-1 programmable bootstrapping gates? What is the smallest number of PBS gates required for a secure wPRF to exist in this model?}
+
+Recently, the work of~\cite{EC:ADDG24} identified that a wPRF of~\cite{TCC:BIPSW18}, while not originally designed with this circuit model in mind, is especially well-suited for evaluation within {\sf TFHE}, as each wPRF evaluation can be computed using solely linear operations together with a \emph{single} layer functional bootstrapping. In fact, it is not too hard to observe that the alternative design of~\cite{TCC:BIPSW18}, denoted \emph{alternative mod-2/mod-3 wPRF} in this writeup, is a (single-bit output) wPRF that uses a \emph{single} $f$-functional gate (we cover this wPRF in Section~\ref{sec:bipsw_original}). This illustrates a general behavior, also observed in other contexts, that shallow wPRFs that optimize to the extreme in some circuit model tend to also perform well in different circuit models (in the context of block ciphers, a similar observation was made for {\sf Kreyvium}~\cite{FSE:CCFLNP16} that performs well for {\sf TFHE} in spite of being originally optimized for BGV-style FHE).
+
+
+\subsection{Pseudorandom Correlation Generators and Functions}
+
+Pseudorandom correlation generators (PCG) and pseudorandom correlation functions (PCF) are related cryptographic primitives introduced and studied in a recent line of work~\cite{CCS:BCGI18,C:BCGIKS19,CCS:BCGIKR19,C:BCGIKS20,FOCS:BCGIKS20,C:CouRinRag21,C:BCGIKR22,C:BCCD23}. They play an important role in modern secure computation protocols: secure computation considers a scenario where $n$ parties, with respective secret inputs $(x_1, \ldots, x_n)$, wish to jointly compute $f(x_1,\ldots,x_n)$ for some public function $f$ without revealing anything more than the result of the computation. Modern secure computation protocols~\cite{STOC:GolMicWig87,AC:FKOS15,CCS:KelOrsSch16,C:DPSZ12,EC:KelPasRot18} rely on \emph{correlated randomness} to achieve high concrete efficiency: random strings are sampled according to a joint distribution (``correlated'') and are securely distributed among the parties prior to the protocol. Securely generating these strings has long been a major bottleneck in these protocols. PCGs and PCFs enable multiple participants, given short correlated keys, to generate long correlated pseudorandom strings \emph{without any communication}, effectively pushing the bulk of the correlated randomness distribution to an offline computation. Below, we will describe two recent paradigms for constructing PCGs and PCFs from weak pseudorandom functions. For both paradigms, and unlike Section~\ref{subsec:oprf}, the metrics are of the ``hard restriction'' type: the class of circuits handled by the frameworks are highly specific types of very low-depth circuits that can only handle a limited set of gates.
+
+
+\subsubsection{From Function Secret Sharing}
+\label{subsubsec:fss}
+
+Most constructions of PCGs and PCFs (in fact, all those cited above) follow a common template that combines a cryptographic primitive called \emph{function secret sharing} (FSS) with either a pseudorandom generator (for PCGs) or a wPRF (for PCFs). Roughly, an FSS for a function class $\setF$ is a high-level cryptographic primitive that allows sharing any function $f\in \setF$ into a pair of shares $(f_0, f_1)$ such that two parties with a common input $x$ and respective shares $f_0,f_1$ can compute $y_b = \Eval(f_b,x)$ for $b=0,1$ such that $y_0+y_1 = f(x)$. In other words, an FSS allows sharing a function $f\in\setF$ such that from the shares of $f$, two parties can obtain additive shares of $f(x)$ for any input $x$. At the heart of PCG and PCF constructions are variants of the following (semi-formal) theorem.
+\begin{theorem}[Theorem~5.3 in~\cite{FOCS:BCGIKS20}]
+\label{thm:pcf-ot}
+Let $\ring = \{\ring_n\}_{n\in \N}$ denote a family of commutative rings. Let $\PRF=(\KeyGen,\Eval)$ denote a weak pseudorandom function and let $\setF$ denote the family of all functions $x\mapsto c\cdot\Eval(\msk,x)$ for some constant $c$ and PRF key $\msk$. If there exists an FSS for $\setF$, then there exists a PCF for the OT correlation.
+\end{theorem}
+
+
+The ``OT correlation'' (short for oblivious transfer correlation) is, without going into details, the most standard correlation required by secure computation protocols. Hence, the theorem above says that PCFs for useful correlations can be constructed, provided that there are wPRFs that fit into a class of functions for which there exists an FSS scheme.\footnote{More formally, we need \emph{scalar multiples} of wPRFs to fit in the class, that is, functions of the form $x\to c\cdot \Eval(\msk,x)$ for some scalar $c$.} In turn, the class of functions for which we know \emph{efficient} FSS schemes\footnote{Theoretically, there exist advanced constructions of FSS for all polynomial-time functions from strong forms of fully-homomorphic encryption~\cite{C:DHRW16} that are known to exist from the LWE assumption. However, these results are purely of theoretical interest.} is fairly limited~\cite{CCS:BoyGilIsh16}, and corresponds to the set of functions that are linear combinations of ``interval functions'', as formally defined below.
+
+\begin{definition}
+Fix a ring $\ring$ and an integer $N \in \mathbb{N}$. Let $\setI = \setI_N(\ring) \subset \ring^{N}$ denote the set of \emph{interval functions} $f_{a,b,\Delta} : [N] \to \ring$, parameterized by $a,b \in [N]$ with $a \leq b$, and $\Delta \in \ring$, and defined as:
+\[
+f_{a,b,\Delta}(x) = 
+\begin{cases}
+\Delta & \text{if } x \in [a,b], \\
+0 & \text{otherwise}.
+\end{cases}
+\]
+
+For a given $t \in \mathbb{N}$, define $\setF_{t,N}(\ring)$ as the set of functions of the form
+\[
+(x_1, \dots, x_t) \mapsto L(f_1(x_1), \dots, f_t(x_t)),
+\]
+where each $f_i \in \setI$ and $L : \ring^t \to \ring$ is a linear function.
+\end{definition}
+
+
+Equivalently, the class $\setF_{t,N}(\ring)$ can be viewed as the class of functions computable by a depth-$2$ circuit with indegree-1 comparison gates on the bottom (that output a fixed payload if the input is above, or below, a given threshold) and a $t$-ary linear combination gate on top. In the following, we will slightly abuse the definition and view $\setF_{t,N}(\ring)$ both as a class of functions and as the corresponding class of circuits. The following informal lemma summarizes what is known about the existence of efficient FSS schemes for the class $\setF$ (a more formal statement can be found in~\cite{CCS:BoyGilIsh16}).
+\begin{lemma}[Informal]
+\label{lemma:efficient-fss}
+Assume the existence of a length-doubling pseudorandom generator. There exists an FSS for the class $\setF_{t,N}(\ring)$ where the shares $(f_0,f_1)$ of a function $f\in\setF_{t,N}(\ring)$ have size $t\cdot (\secpar\cdot \log N + \log|\ring|)$ and the cost of evaluating a share on an input $x$ is dominated by $2t(\log N + (\log|\ring|)/\secpar)$ invocations of the PRG.
+\end{lemma}
+
+In practice, the pseudorandom generator is typically instantiated using {\sf AES}, and the cost of evaluating the FSS becomes dominated by $2t(\log N + (\log|\ring|)/\secpar)$ calls to {\sf AES}, which is extremly efficient (for moderate values of $t$) using modern hardware with support for {\sf AES} instructions. 
+%Lemma~\ref{lemma:efficient-fss} can be generalized slightly (to multidimensional intervals, or fixed-topology decision trees).\lp{a-t-on besoin de la phrase précédente?}
+%Geoffroy : c'est une observation utile dans certaines applications de ce paradigme, mais probablement inutile dans ce contexte en effet
+FSS constructions for more complex classes are known, but they make a heavy use of public-key cryptography and are considerably less efficient. Therefore, past works on PCGs and PCFs have focussed on developping PRGs and wPRFs compatible with the FSS schemes promised by Lemma~\ref{lemma:efficient-fss}---that is, computable by a depth-$2$ circuit in the class $\setF$ over a suitable ring (typically, the field $\F_{2^\secpar}$, where the reader can think of $\secpar$ as being $128$):
+
+\qbox{Are there weak pseudorandom functions computable by a circuit in $\setF_{t,N}(\F_{2^\secpar})$ for $\lambda=128$ and for some value $t \ll N$?}
+
+In the PCF-from-FSS compiler, $N$ translates to an upperbound on the target number of samples from the correlation (for a wPRF, $N$ must be superpolynomial), and $t$ is a parameter that influences both the PCF key size and the evaluation time. The works of~\cite{FOCS:BCGIKS20,PKC:CouDuc23,C:BCGIKR22} introduced respectively the {\sf VDLPN-wPRF}, %a variant of the {\sf VDLPN-wPRF}, \cb{main et variant sont les mêmes …} 
+and the {\sf EALPN-wPRF}, as candidate solutions to the above challenge (with a value $t$ polylogarithmic in $N$). We cover these candidates in Section~\ref{sec:vdlpn} and Section~\ref{sec:ealpn} respectively.
+
+\subsubsection{From Constrained Pseudorandom Functions}
+
+Recently, an alternative paradigm for building PCFs has emerged in~\cite{EC:BCMPR24,AC:CDDKS24}. This paradigm replaces the outer FSS component with a constrained pseudorandom function (CPRF): a pseudorandom function equipped with a special ``constraining'' algorithm that, on the input of a constraint $C$ (a function with binary output from a target class of constraints $\class$) and a PRF key $\msk$, outputs a \emph{constrained key} $\key_C$ that allows evaluating the PRF on all inputs $x$ such that $C(x) = 1$, but leaks no information about the PRF output when $C(x)=0$. The PCFs built from this paradigm enjoy a number of appealing procedures compared to the traditional paradigm: most notably, they come with a \emph{public key setup} (a one-round protocol for securely generating the PCF keys), while efficient (one-round or multi-round) key distribution protocols for earlier PCF constructions are still an open problem. At the heart of this alternative paradigm is the following theorem:
+
+\begin{theorem}
+Let $\PRF = (\KeyGen,\Eval)$ denote a weak pseudorandom function with binary output and let $\setF$ denote the family of all functions $x\to \Eval(msk,x)$ and $x\to 1-\Eval(\msk,x)$ for some PRF key $\msk$. If there exists a CPRF for the class of constraints $\setF$, then there exists a PCF for the OT correlation.
+\end{theorem}
+
+The work of~\cite{EC:BCMPR24} additionally introduced an efficient CPRF construction where the cost of evaluating the CPRF (and therefore the PCF) is dominated by a single exponentiation over an elliptic curve (on a modern laptop and for the fastest {\sf OpenSSL} curves, this can be done in about $8\mu$s). This CPRF builds upon the seminal Naor-Reingold PRF~\cite{FOCS:NaoRei97}, and is restricted to constraints computable by an \emph{inner-product membership} predicate.
+\begin{definition}
+Fix a security parameter $\secpar$, integers $B,n \in \N$, and let $g:\bit^\secpar \to [B]^n$ be a function and $S \subset \N$ be a finite set. Let $\IPM = \IPM_{B,n}(S,g)$ denote the set of \emph{inner-product membership predicates over $S$}, i.e., the functions $P_{y}:[B]^n\to \bit$ for $y \in [B]^n$ defined as follows:
+\[P_{y}:x\mapsto \begin{cases} 1 \text{ if } \langle g(x),y\rangle \in S \algcomment{The inner product is computed over $\N$}\\
+0 \text{ otherwise}~.
+\end{cases}\]
+\end{definition}
+In other words, after fixing some public ``preprocessing'' function $g$ on the input, and a subset $S$, an IPM predicate is a depth-$3$ circuit with a $g$-gate at the bottom (that takes a single input $x$ and has $n$ outputs), an arbitrary $n$-ary linear combination gate in the middle, and an indegree-1 membership-test gate on top. A formal statement of the following informal lemma can be found in~\cite{EC:BCMPR24}.
+\begin{lemma}[Informal]
+\label{lemma:efficient-cprf}
+Assume the power-DDH assumption over a group $\G$ of prime order $p$. Then there exists a CPRF for the class of constraints $\IPM = \IPM_{B,n}(S,g)$ where the size of a constrained key is $(n+|S|)\cdot \log|\G|$, and the cost of evaluating the CPRF is dominated by $n$ multiplications over $\Z_p$ and one exponentiation over $\G$.
+\end{lemma}
+
+Above, the number of multiplications can be reduced to the Hamming weight of $g(x)$. Then, to obtain efficient PCFs, it remains to find wPRFs that can be computed by an inner-product membership predicate, called IPM-wPRF in~\cite{EC:BCMPR24}:
+
+\qbox{Are there weak pseudorandom functions computable by a circuit from $\IPM_{B,n}(S,g)$ where $B$ is some integer bound and $S$ is a small subset of integers?}
+
+In the PCF-from-CPRF compiler, a larger $S$ translates to a larger key size (as it grows linearly with $|S|$). The work of~\cite{EC:BCMPR24} showed that two wPRF from previous works are actually IPM-wPRF: the Boneh-Ishai-Passelègue-Sahai-Wu , or alternating moduli wPRF~\cite{TCC:BIPSW18} and the Goldreich-Applebaum-Raykov wPRF~\cite{DBLP:journals/eccc/ECCC-TR00-090,TCC:AppRay16b}. We cover both candidates in Section~\ref{sec:bipsw} and Section~\ref{sec:goldreich} respectively.
+
+\subsection{VOLE-Based Zero-Knowledge Proofs}
+
+Zero-knowledge proofs (ZKP) are fundamental cryptographic primitives that allow proving properties about a system that depends on secret values without revealing these values. While they were mainly an object of theoretical interest after their introduction in~\cite{GolMicRac89}, four decades of research have led to a plethora of highly practical ZKP that are now routinely used in real-world systems, from authentication to anonymous blockchains and cryptocurrencies (a recent example is Google's wallet).
+
+\paragraph{Definition.} An $\NP$-language is a set of strings $\Lang\subset \bit^*$ such that there is an algorithm $\Rel_\Lang$ (the \emph{relation}) that can verify proofs of membership to $\Lang$ in polynomial-time: a string $x$ is in $\Lang$ if and only if there exists a \emph{witness} $w$, of size polynomial in $x$, such that $\Rel_\Lang(x,w)$ returns ``accept'' in time polynomial in $|x|$. A zero-knowledge proof for an $\NP$-language $\Lang$ is a two-party secure computation protocol between a prover and a verifier with the following characteristics:
+\begin{itemize}
+	\item Both parties have as common input a word $x \in \Lang$, and the (honest) prover additionally holds a \emph{witness} for $x$---that is, a string $w$ such that $\Rel_\Lang(x,w)=1$.
+	\item At the end of the interaction, the verifier outputs 1 (``accept'') or 0 (``reject'').
+	\item An honest prover (with a witness $w$) should always cause the verifier to accept. However, if $x\notin\Lang$ (hence no valid witness $w$ exists), no prover can possibly cause the verifier to output 1 with non-negligible probability.
+	\item Eventually, the proof is \emph{zero-knowledge}, meaning that it leaks no information about $w$ (beyond the fact that $x\in \Lang$). This is formalized by requiring that the view of the verifier (the transcript of its interaction with the prover) could have been simulated without the witness $w$, and the simulation is indistinguishable from the real transcript (hence, in essence, the verifier cannot tell the transcript apart from a transcript computed independently of $w$).
+\end{itemize}
+
+\paragraph{Efficient zero-knowledge proof systems.} Modern zero-knowledge proof systems require tradeoffs and compromises. Typically, they will handle restricted types of algebraic statements~\cite{C:Schnorr89,EC:GroSah08}, or be fully generic and optimal on almost any aspect, but incur an often prohibitive computational overhead on the prover side~\cite{EC:BCCGP16,EC:Groth16,CCS:AHIV17,SP:BBBPWM18,ICALP:BBHR18,EC:BCRSVW19,CCS:MBKM19,C:Setty20,EC:CBBZ23} (the citations are a short sample from the vast SNARK/STARK ecosystem of proofs). Building on the seminal work of~\cite{STOC:IKOS07}, a recent line of work has put forth \emph{VOLE\footnote{Short for Vector Oblivious Linear Evaluation: a mechanism that distributes vectors $\vec u, \vec v$ to the prover and $\Delta, \vec u+\Delta\cdot \vec v$ to the verifier, where $\Delta$ acts as a MAC to ``authenticate'' the vector $\vec v$.}-based zero-knowledge} as a promising middle ground~\cite{CCS:BCGI18,SP:WYKW21,ITC:DitIshOst21,CCS:YSWW21,C:BMRS21}: VOLE-based ZKP can handle arbitrary statements, have reasonable proof sizes (though higher than SNARKs/STARKs for large statements), and small prover costs, confering them an overall highly competitive scalability. VOLE-based ZKP are deployed in real-world applications (e.g.\ TLSNotary~\cite{tlsnotary}), and in commercial solutions (such as {\sf zkPass}~\cite{zkpass} or {\sf zkTLS}~\cite{primus}).
+
+A typical ``pain point'' of zero-knowledge proofs are \emph{mixed statements}: proofs of statements that mix arithmetics over different structures (a typical example is neural network training, that often mixes arithmetic over large fields with Boolean operations). Mixed statements have been the focus of a significant attention, both in general secure computation~\cite{NDSS:DemSchZoh15,SP:GYKW24,EC:BCGGIK21} and in zero-knowledge proofs~\cite{C:ChaGanMoh16,CCS:BBMRS21,EPRINT:OKMZ24,DBLP:conf/eurocrypt/AgarwalBBS25}. A recent work~\cite{DBLP:conf/eurocrypt/AgarwalBBS25} observed that shallow wPRFs provide an ideal tool to handle mixed arithmetic in VOLE-based zero-knowledge proofs. At the high level, the key idea is the following: in VOLE-based zero-knowledge, the secret witness is authenticated to the verifier via an information-theoretic homomorphic MAC. Previous works had observed that when the secret witness must be used over two different structures, e.g., the field $\F_2$ and a larger field $\F_p$, it suffices to have pairs of identical bits MAC-authenticated both in $\F_2$ and $\F_p$ to securely ``switch'' between the two structures. The work of~\cite{DBLP:conf/eurocrypt/AgarwalBBS25} observes that an efficient way to achieve this is by first authenticating a short wPRF key over both fields and proving the equality. This is a mixed statement, so it can be expensive, but it is crucially independent of the size of the full statement since the key is short: it will get amortized away. Then, identical \emph{pseudorandom} bits are generated over both fields by evaluating the wPRF and proving (separately over each field) the correct evaluation. To make this procedure efficient, the key is to find a wPRF that admit short proofs of correct evaluation \emph{both over $\F_2$ and $\F_p$}.
+
+\paragraph{Cost model.} The basic cost model of modern VOLE-based zero-knowledge proofs is the usual ``pay-per-product'' MPC cost model, inherited from {\sf Quicksilver}~\cite{CCS:YSWW21} (the underlying proof system used in these works): when proving that an arithmetic circuit $C$ (with additions and multiplications over a field $\F$) evaluates to a certain value on a secret witness $w$, all linear operations (additions, multiplications by a constant) are for free (they do not incur any overhead in the proof size), while multiplications increase the proof size. Therefore, the wPRF must be of the standard ``MPC-friendly'' type: its circuit description must minimize the number of multiplication.
+
+In the setting of mixed statements, however, a subtlety arise: given a statement mixing operations over two fields $(\F,\F')$, the same wPRF must be computed by an arithmetic circuit over each of these fields. One must therefore be careful, as a low multiplication-gate count over one field does not typically translate to a low multiplication-gate count over the other field---in fact, the opposite is often true: linear operation over a field $\F_p$ are highly nonlinear over a field $\F_q$ when $q,p$ are coprime~\cite{Raz87,Smo87} (this behavior is actually a crucial component of the alternating moduli paradigm, that we cover in Section~\ref{sec:bipsw}). However, when $\F,\F'$ are prime order fields, a simple observation is that it suffices to have a wPRF computable by a circuit with a small number of multiplication \emph{over the integers}\footnote{the circuit operates directly on the input bits of the wPRF, and must output integers that are guaranteed to be bits as well.}: the natural arithmetization of this circuit (replacing additions and multiplications over the integers with the field operations) yields a valid arithmetic circuit for the wPRF over any prime-order field.
+ In turn, any wPRF computable by a $d$-\emph{local} Boolean circuit (i.e., such that each output bit depends on at most $d$ input bits) can be arithmetized into an arithmetic circuit over the integers with at most $d$ multiplications. Combining these two observations, we get the following target cost model.
+ \begin{description}
+\item[Underlying Algebra.] The circuit operates over the Boolean field $\F_2$.
+\item[Locality.] The circuit is ``$d$-local'' for some small quantity $d$: every output bit depends on at most $d$ input bits.
+\end{description}
+
+The question below summarizes the quest for the best possible candidate:
+
+\qbox{Given a target bound $n(\secpar)$ on the key size (for a security parameter $\secpar$) and a target number $N(\secpar)$ of samples, what is the smallest $d$ such that there exist weak pseudorandom functions with key size $n(\secpar)$ computable by a $d$-local Boolean circuit?}
+
+The study of local PRGs and wPRFs has a rich history in cryptography. We cover the main candidates in Section~\ref{sec:goldreich}.
+
+%\subsubsection{Other Settings}
+
+%\gc{might be worth to briefly mention iO and side channel, if time?}
+
+\begin{comment}
+\subsection{Cost Models}
+\label{sec:definition-cost}
+
+\lp{a voir si on garde cette sous-section (et la suivante) : à la refléxion, leur contenu est probablement mieux décrit au sein de la description de chaque cas d'utilisation}
+
+\subsection{Security Model}
+\label{sec:definition-security}
+\end{comment}
+
+
+
+\section{Alternating Moduli Constructions}
+\label{sec:bipsw}
+
+
+In 2018, Boneh, Ishai, Passelègue, Sahai, and Wu introduced a new design paradigm for constructing wPRFs, which was later described in the literature as the \emph{alternating moduli paradigm}~\cite{TCC:BIPSW18}. Constructions based on this paradigm are low-depth, but still exhibit a high algebraic degree. They are mathematically simple, built by combining linear functions over different moduli.
+
+The original paper~\cite{TCC:BIPSW18} presented two such constructions: a primary one outputting elements in $\Z_3$, and an alternative design that ultimately attracted more attention from the community. This second construction, referred to as the \emph{alternative mod-2/mod-3 weak PRF} and labeled as Construction 6.3 in the original paper, is the only one from this work that we describe below. 
+
+
+\subsection{Original Construction (\cite{TCC:BIPSW18})}
+\label{sec:bipsw_original}
+Let $n$ denote the key length and the input length. 
+The alternative mod-2/mod-3 wPRF as defined in~\cite{TCC:BIPSW18} is a function $F : \Z_2^n \times \Z_2^n \to \Z_2$, where the key space is $\mathcal{K} = \Z_2^n$, the domain is $\mathcal{X} = \Z_2^n$, and the output space is $\mathcal{Y} = \Z_2$. For a key $k \in \Z_2^n$, we use the notation $F_k(x)$ to represent the function $F(k, x)$.
+
+In its original formulation, $F_k$ is defined as follows:
+    \begin{equation} \label{eq:bipsw_orig}
+    F_k(x) := \left(\sum_{i = 0}^{n-1} k_i x_i \mod 2 + \sum_{i = 0}^{n-1} k_i x_i \mod 3\right) \mod{2}, \quad \text{ for } x \in \Z_2^n.  
+    \end{equation}
+
+
+As we can see, we first compute the inner product between the key $k$ and the input $x$. Then, this inner product is evaluated both modulo 2 and modulo 3, and the two results are finally added modulo 2 to produce the final result.  
+
+\paragraph{Alternative representation.} The above construction can be implemented by a depth-2 circuit: %$\mathsf{ACC}^0$ circuit:\lp{il faut qu'on définisse cette notion, ou alors qu'on vire ce commentaire}
+the first layer of this circuit consists of a $\mathsf{MOD}_2$ gate and a $\MOD_3$ gate, both connected to all inputs $x_i$ such that $k_i = 1$ (the $\MOD_3$ gate is additionally connected to a ``constant-2'': it checks whether $\sum_i k_ix_i+2$ is divisible by $3$), followed by a second layer with a single two-input $\MOD_2$-gate (by inspection, $F_k(x) = 0$ if and only if $\sum_i k_ix_i$ is $0 \bmod 2$ and $1 \bmod 3$, or $\sum_i k_ix_i$ is $1 \bmod 2$ and 0 or $2 \bmod 3$).
+
+However, as the designers point out, the above description can have the following alternative representation, that stems from the observation that $F_k(x) = 1$ if and only if the inner product $\langle k, x \rangle  \mod{6} = \sum_{i = 0}^{n-1} k_i x_i \mod{6} \in \{3,4,5\}$. For this, denote by $\lfloor \cdot \rceil_2 : \Z_6 \rightarrow \Z_2$ the rounding operator defined as:
+\begin{equation*}
+\lfloor u \rceil_2 = \left\{
+\begin{array}{rl}
+0 & \text{ if } u \in \{0,1,2\}~, \\
+1 & \text{ if } u \in \{3,4,5\}~.
+\end{array}
+\right.
+\end{equation*}
+Then, following the above remark, $F_k$ can alternatively be defined as
+ \begin{equation} \label{eq:bipsw}
+F_k(x) = \left\lfloor \sum_{i = 0}^{n-1} k_i x_i  \mod{6} \right\rceil_2~.
+\end{equation}
+
+
+One of the security arguments put forward by the designers of the above construction is that it cannot be approximated by any low-degree polynomial. This is supported by the classical results of Razborov and Smolensky~\cite{Raz87,Smo87}, which show that for two distinct primes $p$ and $q$, the $\mod{p}$ function cannot be approximated by low-depth $\mod{q}$ circuits. %\yr{Je suppose que c'est pour une taille d'espace assez grande par rapport à $p$ et $q$ sinon ça ne marche pas non ?} 
+While the moduli $p$ and $q$ can, \textit{a priori}, be chosen arbitrarily (as long as they are distinct), the most natural and simplest choice is $p = 2$ and $q = 3$. Although the versatility of the construction allows for different choices tailored to specific applications (e.g., in~\cite{TCHES:DMMS21, C:HMMRSU23}, the authors choose $p = 2^{31} - 1$), the concrete security level may vary depending on the specific instantiation of $p$ and $q$. Therefore, dedicated cryptanalysis is required to evaluate the security of the construction under different choices of moduli.
+ %In this construction, the moduli 2 and 3 were chosen not only because they are the simplest such primes, but also because they lead to the best efficiency in practice. Indeed, their use leads to more efficient modulus conversion protocols. \yr{Je comprends pas trop ces deux dernières phrases, et puis ça dépend du contexte d'utilisation ? Si je prends l'exemple de rekeying on a $p=2^{31}-1$ parce que c'est utilisé pour du masquage. Comme on est sur des trucs qui ne seront jamais utilisés seuls, je pense qu'il faut s'en tenir aux "premiers choix: les deux premiers premiers" ?} \cb{J'ai repris ce qui a été dit dans le papier d'origine et les généralisations qui ont suivi. On peut peut-être dire que que 2, 3 sont les choix les plus naturels, que à priori cela se généralise à n'importe quel p et q (ce qui est dit dans tous ces papiers) mais qu'une analyse de sécurité plus fine et dédiée est nécessaire et qu'il y a peut être des questions de complexité qui se posent. Reformulez comme vous le sentez !}
+
+%\subsubsection{Parameters}
+
+%In the original paper, for a target security of $\lambda = 128$ bits, the authors propose to set $n = 384$. This is considered to be a rather conservative choice, and is chosen so that the candidate resists known attacks based on solving the LPN problem. Indeed, this function resembles an LPN instance with a deterministic noise rate equal to 1/3.
+
+
+\subsection{Variants and Generalizations}
+
+The alternating moduli design paradigm quickly gained popularity as an approach for constructing weak shallow PRFs. Several subsequent works proposed generalized or alternative versions of the construction presented in the previous section. In this part, we describe two of the most notable and interesting variants.
+
+\subsubsection{A Generalized Construction~\cite{C:DGHIKS21}}
+\label{sec:bipsw_alt1}
+
+In 2021, Dinur, Goldfeder, Halevi, Ishai, Kelkar, Sharma, and Zaverucha revisited the alternative mod-2/mod-3 constructions from~\cite{TCC:BIPSW18} and proposed a generalized version. Their focus was primarily on the alternative variant (the one presented in the previous subsection), as having an output over $\Z_2$ is more convenient in many applications. The proposed generalization extends the original design in two main directions. First, the secret key is no longer a vector in $\Z_2^n$, but a matrix $K \in \Z_2^{m \times n}$. Second, a public compression matrix $B \in \Z_2^{t \times m}$ is applied before producing the output. This generalized construction has, among others, the advantage of outputting multiple bits at once instead of a single bit, resulting in improved throughput. 
+%\gc{Si tu prends le candidat originel et te contente d'utiliser $n$ clés différentes, toutes évaluées sur le même input, tu as en effet une matrice, mais rajouter $B$ permet d'éviter des attaques de type décodage (BKW), et donc d'avoir de bien meilleur paramètre (tu peux avoir une sécurité exponentielle au lieu de sous-exponentielle). En plus, tu peux aussi prendre une matrice $K$ structurée. C'est d'ailleurs ce qu'ils font en prenant une matrice circulante; dans ce cas, tu ne peux plus voir ça comme étant juste une répétition du candidat initial avec des clés différentes.}
+
+More precisely, the proposed construction is parameterized by positive integers $n$, $m$, and $t$, with the constraints $m \geq n$ and $m \geq t$. These parameters respectively represent the input vector size, the size of the intermediate vector(s), and the output vector size. As in the original design, they are functions of a security parameter $\lambda$.
+
+The variant described in~\cite{C:DGHIKS21} defines a function $F : \Z_2^{m \times n} \times \Z_2^{n} \to \Z_2^t$, where the key space is $\mathcal{K} = \Z_2^{m \times n}$, the input space is $\mathcal{X} = \Z_2^n$, and the output space is $\mathcal{Y} = \Z_2^t$. For a key $K \in \mathcal{K}$, we write $F_K(x)$ to denote $F(K, x)$.
+
+The first step of the construction is to compute an intermediate vector $w$ as follows:
+\[
+w = \big( (Kx \bmod 2) + \left((Kx \bmod 3) \bmod 2\right) \big) \bmod 2~.
+\]
+The final output is then computed as
+\[
+F_K(x) = Bw \bmod 2 \in \Z_2^t~,
+\]
+where $B \in \Z_2^{t \times m}$ is a public compression matrix, which can be chosen either uniformly at random or  as a full-rank random circulant matrix. This matrix can also be seen as a generator matrix for a linear code that has high minimum distance. Its application permits to resolve correlation issues between the key and the output, that would for example exploit linear biases in the output. Moreover, introducing the matrix $B$ helps prevent decoding-based attacks such as BKW, leading to significantly better parameter choices—for instance, achieving exponential rather than sub-exponential security. In addition, $K$ itself can be structured; this is precisely the approach taken in some instantiations where $K$ is chosen to be circulant.
+
+It is straightforward to verify that this construction is a generalization of the alternative scheme proposed in~\cite{TCC:BIPSW18}. Specifically, the original candidate described in the previous section corresponds to a special case of the construction in~\cite{C:DGHIKS21}, obtained by setting $m = 1$, $t = 1$, and choosing $B = 1$.
+
+%The authors of~\cite{C:DGHIKS21} also argue that the construction can be further generalized by replacing the moduli 2 and 3 with any distinct prime moduli $p$ and $q$.
+
+
+
+\subsubsection{A Further Generalization~\cite{C:APRR24}}
+
+In 2024, Alamati, Policharla, Raghuraman, and Rindal proposed a further generalization of the constructions in~\cite{TCC:BIPSW18} and~\cite{C:DGHIKS21}. Let $n$, $m$, and $t$ be non-negative integers. Both the input $x$ and the secret key $k$ are elements of $\Z_2^n$. Let $A \in \Z_2^{m \times n}$ and $B \in \Z_3^{t \times m}$ be public, random matrices.
+
+The construction, named the $(\mathbb{F}_2, \mathbb{F}_3)$-wPRF, proceeds in two steps. First, compute
+\[
+z = k \odot  x:= (k_0 x_0, k_1 x_1, \dots, k_{n-1} x_{n-1}) \in \Z_2^n~.
+\]
+Then, compute the output as
+\[
+F_k(x) = B(Az \bmod 2) \bmod 3 \in \Z_3^t~,
+\]
+where, as before, we write $F_k(x)$ for a key $k \in \Z_2^n$ to denote $F(k, x)$.
+As with the previous variants, the authors claim that the moduli 2 and 3 can be replaced with any distinct prime numbers $p$ and $q$.
+
+The core idea behind this generalization is to allow for a better mixing of the terms $k_i x_i$. In the previous alternating moduli constructions, these terms were combined in a highly structured manner. For example, in the construction from~\cite{C:DGHIKS21}, the matrix-vector product $Kx$ mixes  the key and input variables in a very regular  way. In contrast, the use of a random matrix $A$ in this construction results in random linear combinations over the variables composing the shared input vector $k \odot x$. As a result, each product term $k_i x_i$ is reused multiple times throughout the computation,  leading to a higher diffusion. On the other hand, as we briefly discuss in the next subsection, combining the key and input variables using an AND operation introduces a strong bias in the output, which can significantly weaken the security of the construction.
+
+The authors also propose a variant, named the \emph{reversed-moduli} or $(\mathbb{F}_3, \mathbb{F}_2)$ variant,  that produces binary output. For this variant, the key would be an element of $\Z_3^n$, but in practice it is seen an element of $\Z_2^n$. In this version, the vector $z$ is first interpreted as an element of $\Z_3^n$. The function output is then computed as:
+\[
+F_k(x) = B(Az \bmod 3) \bmod 2 \in \Z_2^t~,
+\]
+where $A \in \Z_3^{m \times n}$ and $B \in \Z_2^{t \times m}$.
+
+
+%parameters
+
+\subsection{Security Arguments and Cryptanalysis}
+\label{sec:bipsw_cryptanalysis}
+
+To date, two papers have analyzed the security of the original construction of~\cite{TCC:BIPSW18} that permit to better estimate the security level and guide the  choice of parameters.
+
+First, in~\cite{PKC:CCKK21}, Cheon, Cho, Kim, and Kim proposed a distinguishing attack with a complexity of $\mathcal{O}(2^{0.21n})$, where $n$ is the input length, by exploiting a statistical weakness of the construction. The authors used the observation that the function $F_k$ can be interpreted as operating over the space $\Z_6$. However, due to the binary nature of both the key $k$ and the input $x$, the function does not uniformly cover the entire space $\Z_6$. This distinguisher requires however a large number of samples to succeed and performs better when the Hamming weight of the key is low. To mitigate this issue, the authors suggested using keys with high Hamming weights as a patch. For instance, they recommended using keys with a Hamming weight of 310 when $n = 384$.
+
+Later, in~\cite{JMN23}, Johansson, Meier, and Nguyen introduced a different distinguishing attack against the original alternating modulo construction of~\cite{TCC:BIPSW18}. This attack has a better computational complexity than that of~\cite{PKC:CCKK21}, achieving $\mathcal{O}(2^{0.166n})$, where $n$ is the input length. Interestingly, unlike the attack in~\cite{PKC:CCKK21}, this approach, which can be interpreted as a differential attack, performs better when the Hamming weight of the key is high. This attack also suggests that $n = 384$ does not potentially offer a sufficient security margin.
+
+Recently, the security of the generalized construction introduced in~\cite{C:APRR24} was analyzed in~\cite{ToSC:AR25}. The authors present a key-recovery attack with a complexity of $\mathcal{O}(2^{\lambda/2} \log_2 \lambda)$ against the first (standard) variant described in that work, and an attack of complexity $\mathcal{O}(2^{0.84\lambda})$ against the reversed-moduli variant. Both attacks rely on a similar principle: they exploit the fact that key and input bits are combined using the AND operation, which causes any input bit multiplied by a zero key bit to have no influence on the output. This weakness leads to collisions after processing approximately $2^{\lambda/2}$ inputs, leading to a key recovery attack.
+
+
+
+\subsection{Use of the Alternating Moduli Construction within Cryptographic Protocols}
+\label{sec:bipsw_app}
+The original alternating moduli construction~\cite{TCC:BIPSW18} has been incorporated into at least two cryptographic protocols, each proposing a concrete, and basically identical, set of parameters. The approach of~\cite{EC:BCMPR24} for constructing Pseudorandom Correlation Functions (PCFs) for Oblivious Transfer (OT) correlations suggests using the construction with a key and input length of $n = 770$ to achieve a security level of $\lambda = 128$ bits. The choice of $n$ was guided by taking into account the attacks of~\cite{PKC:CCKK21} and~\cite{JMN23}. Similarly, the framework proposed in~\cite{AC:CDDKS24} recommends using the same construction, but with a key and input length of $n = 768$ instead of $n = 770$, for the simple reason that 768 is a multiple of 32 and therefore more suitable for software implementations.
+
+For other types of applications, the generalized construction from~\cite{C:DGHIKS21} has been used in re-keying protocols, such as those proposed in~\cite{TCHES:DMMS21} and~\cite{C:HMMRSU23}. The core idea behind these approaches is to use the secret matrix as a master key, generate randomness within a secure chip, and treat the output as a secret ephemeral symmetric key—even in the presence of an attacker who can observe linear leakages from the output. The motivation is that masking the matrix-vector product is relatively efficient, especially when working over the prime field~$\mathbb{F}_p$ with $p = 2^{31} - 1$. In the proposal from~\cite{TCHES:DMMS21}, the authors argue that modulus~3 is not a suitable choice, and instead suggest using a $4 \times 4$ matrix over~$\mathbb{F}_{2^{31}-1}$. However, the security of this approach depends on the assumed leakage model, and under certain models it may not be secure. In~\cite{C:HMMRSU23}, the authors provide a more detailed cryptanalysis by explicitly bounding the number of leakages accessible to an attacker. Their analysis supports the same parameter sets as proposed in~\cite{TCHES:DMMS21}.
+% \yr{page 424, toute fin de la section 5 de~\cite{C:HMMRSU23} dans CRYPTO 2023, pas forcément besoin de détailler, mais globalement, même paramètres, mais restriction du nombre de sample physiques d'un attaquant}
+
+
+More recently,~\cite{EC:ADDG24} introduced a novel application domain for this shallow weak PRF by combining it with the TFHE scheme~\cite{JC:CGGI20}, a fully homomorphic encryption construction based on programmable bootstrapping to reduce noise. In this context, the authors target a security level of $\lambda = 128$ bits and set $n = 256$, interpreting the key as a square matrix of dimension $n$.
+
+\subsection{Concrete Targets for Cryptanalysis}
+In this section, we provide explicit parameter sets for the alternative mod-2/mod-3 construction~\cite{TCC:BIPSW18} and for the generalization proposed in~\cite{C:DGHIKS21}, both of which we consider to be as good targets for cryptanalysis. All parameter sets aim for a 128-bit security level.
+
+For the first construction, the parameter $n = 384$ proposed in the original paper is now considered insecure, based on the cryptanalysis results summarized in Section~\ref{sec:bipsw_cryptanalysis}. As discussed in Section~\ref{sec:bipsw_app}, the use of $n = 768$ was later proposed in~\cite{AC:CDDKS24} as an alternative. However, this parameter may offer more than 128 bits of security, and a dedicated cryptanalysis is required to accurately estimate its concrete security level.
+
+Concerning the generalized construction given in~\cite{C:DGHIKS21}, its authors propose two parameter sets: one described as \emph{aggressive} and the other as more \emph{conservative}. For a target security level of $\lambda$ bits, the aggressive setting uses $n = m = 2\lambda$, while the conservative one sets $n = m = 2.5\lambda$. In both cases, the output size is chosen as $t = \lambda / \log_2(3)$. For the standard $128$-bit security level, this corresponds to $n = m = 256$ in the aggressive case and $n = m = 320$ in the conservative one, with $t \approx 81$ in both settings. The authors further impose a concrete upper bound of $N = 2^{40}$ on the number of samples available to an attacker under a single key.
+
+
+Table~\ref{tab:parameters_bipsw} summarizes the proposed parameter sets, where \( N \) denotes the maximum number of queries allowed under a single key. The upper bound \( N = 2^{44.5} \) corresponds to the data complexity of the attack presented in~\cite{JMN23}, and is also referenced in Nguyen’s thesis~\cite{nguyen2025} (p.~110). The parameters proposed in~\cite{AC:CDDKS24} and~\cite{EC:BCMPR24} are directly based on the results of~\cite{JMN23}.
+
+
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{cccc}
+\toprule
+Variant & Parameters & $N$ & Reference \\
+\midrule
+Section~\ref{sec:bipsw_original} (\cite{TCC:BIPSW18}) &$n = 768$& $2^{44.5}$ & \cite{AC:CDDKS24,JMN23,nguyen2025}\\
+\midrule
+\multirow{2}{*}{Section~\ref{sec:bipsw_alt1} (\cite{C:DGHIKS21})}& $n = m = 256$, $t = 81$ & $2^{40}$ & \multirow{2}{*}{\cite{C:DGHIKS21}}\\
+& $n = m = 320$, $t = 81$  & $2^{40}$ & \\
+\bottomrule
+\end{tabular}
+\caption{\label{tab:parameters_bipsw}Parameters for the alternative mod-2/mod-3 construction~\cite{TCC:BIPSW18} and the  \cite{C:DGHIKS21} generalization, intended as targets for cryptanalysis. }
+\end{table}
+
+\subsection{Implementation}
+The algorithmic description of the alternative mod-2/mod-3 wPRF (Section~\ref{sec:bipsw_original}) and of the generalization given in~\cite{C:DGHIKS21} are provided in Figure~\ref{fig:bispw_alg}.  
+
+\begin{figure}[ht]
+\centering
+\begin{minipage}[t]{0.47\textwidth}
+\begin{algorithm}[H]
+  \caption{\label{alg:bipsw}The mod-2/mod-3 wPRF} 
+  \begin{algorithmic} 
+    \State \textbf{Input:} $k,x \in \Z_2^n$
+    \State $u \leftarrow \sum_{i=0}^{n-1} k_i \cdot x_i \mod 6$ 
+    \If{$u \in \{0, 1, 2\}$} 
+      \State \Return 0 
+    \Else
+      \State \Return 1
+    \EndIf
+  \end{algorithmic}
+\end{algorithm}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.47\textwidth}
+\begin{algorithm}[H]
+  \caption{\label{alg:dgh_mod6}Mod-6 version of the \cite{C:DGHIKS21} construction}
+  \begin{algorithmic}
+    \State \textbf{Input:} $K \in \Z_2^{m \times n}$, $x \in \Z_2^n$, $B \in \Z_2^{t \times m}$
+    \State \textbf{Output:} $y \in \Z_2^t$
+    
+    \State $u \gets Kx \mod 6 \in \Z_6^m$ 
+    
+    \For{$i = 1$ to $m$}
+      \If{$u_i \in \{3,4,5\}$}
+        \State $u_i \gets 1$
+      \Else
+        \State $u_i \gets 0$
+      \EndIf
+    \EndFor
+    \State $y \gets B u \mod 2 \in \Z_2^t$
+     \State \Return $y$
+  \end{algorithmic}
+\end{algorithm}
+\end{minipage}
+\caption{\label{fig:bispw_alg} Algorithms of the two alternating moduli constructions proposed as targets for cryptanalysis}
+\end{figure}
+
+
+
+\section{Goldreich's Pseudorandom Generator}
+\label{sec:goldreich}
+
+Twenty-five years ago, Goldreich asked the question of whether it is possible to securely construct a very simple function that is hard to invert~\cite{DBLP:journals/eccc/ECCC-TR00-090}. By \emph{very simple}, we mean a function whose description is transparent and can be expressed using a concise, closed-form formula. This question led to the design of a minimalistic and elegant one-way function. Despite its simplicity, this function is conjectured to offer strong cryptographic guarantees, and has, over the years, become a central object of study in the theory of cryptography and complexity.  %While the function's structure is very simple, its security also relies on access to a large collection of public, uniformly random values. \cb{Il faut dire deux mots de plus sur ce que cette dernière phrase implique.}\yr{C'est bizarre de l'expliquer ici et surtout avant de décrire la fonction ? Je parle juste de ce qu'on s'est dit lundi: weak nonce et uniformly subsets, qui si on les a pas, la construction ne marche plus.}
+
+
+
+\subsection{Original Reference}
+
+
+Goldreich's proposal for constructing a one-way function is based on a very simple and elegant idea. Let $ n, m \in \mathbb{N}$, and let $ (\sigma_i)_{1 \leq i \leq m}$   be a sequence of ordered subsets of $\{1, \dots, n\}$, each of size $ d(n)$. The parameter $d(n)$ is referred to as the \emph{locality} of the construction. Let $P : \{0,1\}^{d(n)} \to \{0,1\}$ be a fixed Boolean predicate  (i.e., a function on $d(n)$ input bits).
+
+For any input $x \in \{0,1\}^n$, and for each $i \in \{1, \dots, m\}$, define  $x[\sigma_i] \in \{0,1\}^{d(n)}$   as the projection of $x$   onto the coordinates specified by $ \sigma_i$  :
+\[
+x[\sigma_i] = \left( x_{\sigma_i(1)},\; x_{\sigma_i(2)},\; \dots,\; x_{\sigma_i(d(n))} \right).
+\]
+
+The candidate one-way function $F: \{0,1\}^n \to \{0,1\}^m$   is then defined as:
+\[
+F(x) = \left( P(x[\sigma_1]),\; P(x[\sigma_2]),\; \dots,\; P(x[\sigma_m]) \right).
+\]
+
+We define the \emph{stretch} $\mathsf{s} \geq 1$ as the number in the expression  $m = \mathcal{O}(n^{\mathsf{s}})$, where $m$ denotes the output length of the function. A fundamental question in the study of Goldreich’s construction is: how large can the stretch be for a fixed locality parameter $d$, while still maintaining security?
+
+Goldreich's one-way function is defined by a fixed predicate and a public collection of access patterns. It can be instantiated to yield various cryptographic primitives, such as pseudo-random functions~\cite{TCC:AppRay16b} or pseudorandom generators with output size polynomial in the input (i.e., $m \in \mathcal{O}(n^\mathsf{s})$ for $\mathsf{s} > 1$), since the existence of local pseudorandom generators follows from the existence of one-way random local functions~\cite{STOC:Applebaum12}.
+
+
+\subsection{Goldreich's One Way Function as a Weak PRF}
+
+Given a locality parameter $d(n)$, the standard way to select the subsets $(\sigma_i)_{i\leq m}$ is to independently pick $m$ uniformly random size-$d(n)$ subsets of $\{1,\cdots, n\}$. We briefly overview the rationale behind this choice. It is convenient to view the ordered subsets as describing a bipartite graph with $n$ nodes on the left (numbered from $1$ to $n$), $m$ nodes on the right (numbered from $1$ to $m$). For each right node $i \leq m$, we draw an edge between $i$ and all left nodes in $\sigma_i$; the resulting bipartite graph is right $d(n)$-regular: all its right nodes have degree exactly $d(n)$. 
+
+For Goldreich's proposal to be hard to invert, it is necessary that the underlying bipartite graph is sufficiently \emph{expanding}\footnote{A bipartite graph is $(e,\alpha)$-expanding if for every subset $S\subseteq [n]$ with $|S| \leq e$, denoting $N(S) \subseteq [m]$ the set of all neighbors of the nodes in $S$, it holds that $|N(S)| > \alpha \cdot |S|$.}: independently of the predicate, whenever the bipartite graph is not sufficiently expanding, the candidate can be broken in polynomial-time via so-called \emph{shrinking set attacks}~\cite{applebaum2008pseudorandom,zichron2017locally}. In turn, being a good expander is conjectured to also be a \emph{sufficient} property for Goldreich's proposal to be secure (assuming that a suitable predicate is used)~\cite{TCC:AppRay16b}. While this conjecture was disproved in~\cite{ITCS:OliSanTel19} when $m$ is very large (superpolynomial in $n$) by exhibiting a specific expander bipartite graph for which Goldreich's construction fails to be secure, it remains plausible for smaller stretches, and for the vast majority of expanders.
+
+In general, we do not know of \emph{explicit} good bipartite expanders for Goldreich's construction. However, it is a well known application of the probabilistic method that a random $d(n)$-regular bipartite graph is a good expander with high probability: asymptotically, a random $d(n)$-regular bipartite graph fails to be a good expander with probability $1/n^{O(d(n))}$. Whenever $d(n)$ is a growing function of $n$, this translates to a negligible failure probability. In addition, the ``neighbour function'' of a random bipartite graph (the function $N$ that maps a right node to the set of its neighbors) has high circuit complexity, which provably circumvents the attack of~\cite{ITCS:OliSanTel19}, making random bipartite graph a well-motivated choice for Goldreich's construction. Concretely, given fixed parameters $n,m$, one can set a target failure probability $\varepsilon$ and infer the locality $d$ that will suffice to resist shrinking set attacks with probability $1-\varepsilon$ over the choice of the random graph. A simple and concrete procedure to select parameters was outlined in Ünal's recent work~\cite{EPRINT:Unal23b}.
+
+Given a random bipartite graph and a suitable predicate, Goldreich's construction is widely conjectured to be not only one-way, but also pseudorandom: for a uniformly random seed $x \in \{0,1\}^n$, the output sequence $y = F(x) \in \{0,1\}^m$ should be computationally indistinguishable from a uniformly random string of the same length. In fact, in some parameter regimes, the pseudorandomness of Goldreich's construction is \emph{implied} by its one-wayness~\cite{TCC:AppRay16b}. Hence, constructions based on Goldreich's template are generally referred to as  Goldreich's \emph{pseudorandom generator}. An additional benefit of using a random bipartite graph is that it provides an alternative view of Goldreich's PRG as a weak pseudorandom function: view the input $x$ (the seed of the PRG) as a key $k$ for the weak PRF, and view each random size-$d(n)$ subset $\sigma_i$ as a random input to the wPRF (a random string can be parsed as the description of a random fixed-sized subset by fixing a suitable parsing method). Then, given a predicate $P$, the candidate wPRF becomes
+\[F_x(\sigma) = P(x[\sigma]). \]
+The proof that the one-wayness of Goldreich's proposal implies that the above function is a weak PRF (again, for suitable parameters and predicate) is from Applebaum and Raykov~\cite{TCC:AppRay16b}. Therefore, the above weak PRF is sometimes referred to as the Goldreich-Applebaum-Raykov (GAR) weak PRF; see, e.g.,~\cite{EC:BCMPR24,AC:CDDKS24}.
+
+\subsection{Predicates for Goldreich's Proposal}
+
+While this construction may initially seem purely theoretical, its structure and constraints provide valuable insights for practical cryptographic applications. In particular, the \emph{locality} parameter $d(n)$ serves as a measure of the circuit's arithmetic depth or of the complexity of the circuit implementing the functions, and plays an important role in balancing efficiency and security. One of the most compact instantiations of this proposal uses locality $d = 5$ and the predicate
+\[
+P_5(x_1, x_2, x_3, x_4, x_5) = x_1 + x_2 + x_3 + x_4 x_5~.
+\]
+
+More generally, natural candidates for the predicate $P$ in Goldreich’s construction include the classes of \textsf{XOR-MAJ} and \textsf{XOR-THR} functions. These predicates operate on disjoint subsets of the input: the elements of the first subset are combined using XOR, while those of the second are processed by a nonlinear function, such as a majority or threshold function. The outputs of these two components are then XORed to produce the final result.
+
+\paragraph{Threshold function.} Let $\mathsf{w}(x)$ denote the Hamming weight of a vector $x \in \{0,1\}^t$. For a given threshold $\mathsf{th} \in [1, t+1]$, the threshold function $\mathsf{THR}_{\mathsf{th}} : \{0,1\}^t \to \{0,1\}$ is defined as:
+$$
+\mathsf{THR}_{\mathsf{th}}(x) = 
+\begin{cases}
+0 & \text{if } \mathsf{w}(x) < \mathsf{th}, \\
+1 & \text{otherwise}.
+\end{cases}
+$$
+
+\paragraph{Majority function.} The majority function $\mathsf{MAJ} : \{0,1\}^t \to \{0,1\}$ is the special case of the threshold function where the threshold is set to half the input length (rounded up):
+$$
+\mathsf{MAJ}(x) = \mathsf{THR}_{\lfloor t/2 \rfloor}(x)~.
+$$
+
+
+
+\paragraph{The $\mathsf{XOR}_{\ell_1}-\mathsf{MAJ}_{\ell_2}$ predicate.} Let $u = (u_1, \ldots, u_\ell) \in \{0,1\}^\ell$ be the input to the predicate, and let $\ell_1 + \ell_2 = \ell$ be a partition of the input. This predicate applies an XOR over the first $\ell_1$ input bits and a majority over the remaining $\ell_2$ bits, and XORs the two results:
+$$
+P(u) = \mathsf{XOR}_{\ell_1}-\mathsf{MAJ}_{\ell_2}(u) = \mathsf{XOR}(u_1, \ldots, u_{\ell_1}) \oplus \mathsf{MAJ}(u_{\ell_1+1}, \ldots, u_\ell)~.
+$$
+
+A similar definition can be given for the $\mathsf{XOR}_{\ell_1}-\mathsf{THR}_{\mathsf{th},\ell_2}$ predicate. These predicates are the two most popular choices, as they offer both high algebraic immunity~\cite{C:Courtois03,EC:CouMei03} and a high resiliency order~\cite{DBLP:journals/tit/Siegenthaler84}. Their cryptographic properties have been thoroughly analyzed in~\cite{DBLP:journals/ccds/Meaux21,DBLP:journals/dam/Meaux22}.  
+
+\subsection{Cryptanalysis}
+
+
+\subsubsection{Generic Cryptanalysis}
+
+Before focusing on the properties of specific predicates, it is useful to recall that some forms of generic cryptanalysis apply regardless of the exact function used. 
+A generic cryptanalytic result—meaning it does not rely on specific properties of the predicate—was proposed by Bogdanov and Qiao~\cite{DBLP:conf/approx/BogdanovQ09} in the case of linear stretch, i.e., when $m = \lambda n$ for some constant $\lambda$. They show that an adversary can succeed by finding a string $x'$ that is close to the secret $x$ in Hamming distance. This work led to a subexponential-time attack~\cite{EPRINT:Applebaum15}, which runs in time $\mathsf{poly}(n) \cdot 2^{2\varepsilon n}$ if $m \in \Omega(n / \varepsilon^{2d})$.
+
+Naturally, the choice of predicate plays a crucial role in resisting such attacks. At a minimum, the predicate should be non-degenerate: it must be unbiased and not linear. In the next section, we describe additional cryptographic criteria that a predicate should satisfy to ensure stronger resistance.
+
+In particular, two main classes of attacks become relevant when the predicate can either be approximated by a linear function with fewer than $d(n)$ variables, or when it has low degree or low algebraic immunity.
+
+
+%An other but more generic cryptanalysis \cb{Il y a "Another" mais rien qui précède ..} (that is without taking into considerations the specificities of the predicate) has been made by Bogdanov and Qiao~\cite{DBLP:conf/approx/BogdanovQ09} for linear stretch (that is $m=\lambda n$), where they show that one cryptanalyst wins when it finds an $x'$ that is close with respect to the Hamming distance to the secret value $x$. The work then led to a subexponential attack~\cite{EPRINT:Applebaum15} in time $\mathsf{poly}(n)\cdot 2^{2\varepsilon n}$ if $m\in\Omega (n/ \varepsilon^{2d})$.
+
+
+\subsubsection{Linearity Tests and Resiliency}
+
+%\yr{Not sure we need the provable side against linear tests, or at least only 1-2 sentences. It is \cite{FOCS:MosShpTre03} first up to $n^{1.25-\varepsilon}$ and \cite{DBLP:conf/coco/ODonnellW14} up to $n^{1.5-\varepsilon}$}
+
+In 2014, O'Donnell and Witmer~\cite{DBLP:conf/coco/ODonnellW14} showed that if the predicate can be approximated by a function that depends on only $c < d(n)$ variables, then the pseudorandom generator can be broken whenever $m \in \Omega(n^{c/2} + n \log n)$. This line of attack was further analyzed in~\cite{EPRINT:Applebaum15}.
+
+This type of attack is particularly efficient when the predicate has a low \emph{resiliency order}~\cite{DBLP:journals/tit/Siegenthaler84}, a property that quantifies its resistance to such approximations. A Boolean function is said to be $t$-resilient if  it cannot be approximated by a Boolean function on $t$ variables. For example, the predicate $P_5$ has resiliency order $t = 2$. In~\cite{DBLP:conf/coco/ODonnellW14}, the authors approximate $P_5$ using a function with $c = t + 1 = 3$ variables, which leads to an attack whenever the output length $m$ exceeds $n^{1.5}$.
+%\yr{En 2020 sur Arxiv, Garg, Kothari et Raz, montrent sécurité même avec un adversaire avec mémoire, ça me semble sortir du sujet. \url{https://arxiv.org/abs/2002.07235}}
+
+
+\subsubsection{Algebraic Attacks}
+
+Unsurprisingly, one of the most powerful classes of attacks on Goldreich's PRG is algebraic in nature. A straightforward observation is that the generator's output can be inverted in polynomial time whenever the output length satisfies $m \in \Omega(n^{\delta})$, where  $\delta$ is the algebraic degree of the predicate $P$. Beyond this basic observation, more refined algebraic attacks have been proposed.
+
+A first example appears in~\cite{STOC:AppLov16}, where the authors introduce the notion of \emph{bit-fixing degree} as an important criterion for resisting linear tests. This quantity refers to the highest degree that the predicate $P$ can attain when some of its input bits are fixed. Another important criterion discussed in the same work is the \emph{algebraic immunity} of the predicate~\cite{C:Courtois03,EC:CouMei03}, which measures the minimal degree of a nonzero Boolean function that annihilates $P$ or $P \oplus 1$. Low algebraic immunity implies that high-degree relations can be transformed into lower-degree equations, potentially leading to more efficient attacks.
+
+This is precisely why functions such as \( P_5 \), \textsf{XOR-MAJ}, and \textsf{XOR-THR} are often considered in this context: they offer both good algebraic immunity and high resiliency, as discussed in~\cite{DBLP:journals/ccds/Meaux21, DBLP:journals/dam/Meaux22}. Another interesting, though theoretical, question is whether there exists a predicate that simultaneously achieves optimal resiliency order and algebraic immunity for any given locality $d$~\cite{DBLP:journals/dcc/DupinMR23}.
+
+Finally, the output of Goldreich's PRG is \textit{a priori} defined over $\{0,1\}$, that is, the field with two elements $\mathbb{F}_2$. However, the construction can naturally be extended to larger alphabets, such as $\mathbb{Z}_q$, for an integer $q > 2$. In 2023, Akin Ünal proposed three distinguishing attacks~\cite{EC:Unal23}, each effective in different parameter regimes. More precisely, if the output length satisfies $m = n^{1+e}$, then the first attack achieves good distinguishing advantage with time and space complexity $n^{\mathcal{O}(n^{1 - \frac{e}{\delta - 1}})}$, where  $\delta$ is the algebraic degree of the predicate. A second attack is applicable when the alphabet size satisfies $q \in \mathcal{O}(n^{1 - \frac{e}{\delta - 1}})$. Finally, a third attack targets the case where the locality is $d$ and the alphabet size $q$ is constant. %\cb{Je ne comprends pas. La localité c'est toujours $d$ et $q$ est à priori toujours fixe, donc c'est quoi les requirements pour cette attaque ?}\yr{Dans son article, Akin dit que si la taille de l'alphabet est assez grande (mais en fonction de $n$, $\mathsf{s}$ et le degré)} 
+In this setting, the attack has complexity $2^{\mathcal{O}(n^{1 - \frac{e'}{(q - 1)d - 1}})}$, where $e' < e$, with a corresponding adjustment in the advantage of the distinguisher. In a follow-up work~\cite{EPRINT:Unal23b}, Ünal improved over these attacks, as well as over previous shrinking set attacks~\cite{applebaum2008pseudorandom,zichron2017locally}, by proposing a way to extend the outputs of $\mathbb{Z}_2$ into larger fields in order to find algebraic relations in the outputs. He also provided a general methodology to select parameters for Goldreich's proposal. Up to replacing the algebraic degree with the notion of algebraic immunity (to account for the existence of low-degree annihilators~\cite{STOC:AppLov16}), this is the methodology that was employed in recent works to select concrete parameters~\cite{EC:BCMPR24,AC:CDDKS24,DBLP:conf/eurocrypt/AgarwalBBS25}.
+
+
+%Eventually and building up on its work, Akin proposed a way to extend the outputs of $\mathbb{Z}_2$ into larger fields in order to find algebraic relations in the outputs. Indeed, all previous attacks work only other larger fields. Up to now, its work has not been published and is only on eprint~\cite{EPRINT:Unal23b}.
+%\yr{Ce papier est à sur eprint depuis deux ans: un peu de mal à le traiter comme si c'était tout ok... à décider si on laisse ce paragraphe ou pas.}
+%\gc{A priori le papier est correct, il a beaucoup de mal à passer parce que c'est un peu dur de vendre un n-ième papier follow-up sur le sujet, et Akin ne pousse pas beaucoup de ce côté, mais pas d'erreurs trouvées par des reviewers ou de soupçons sur la correctness}
+
+
+%\subsubsection{Analysis of Specific Predicates}
+
+%Eventually, this is exactly why $P_5$ or $\mathsf{XOR-MAJ}$ or $\mathsf{XOR-THR}$ functions are considered, as they provide both a good algebraic immunity and resiliency as explained in~\cite{DBLP:journals/ccds/Meaux21, DBLP:journals/dam/Meaux22}. Another interesting, though theoretical, question is whether there exists a predicate that simultaneously achieves optimal resiliency order and algebraic immunity for any given locality $d$~\cite{DBLP:journals/dcc/DupinMR23}.
+
+\subsubsection{Instantiations and Concrete Cryptanalysis}
+
+Up to this point, all the works discussed above provide insights into whether a polynomial-time attack exists, and offer criteria for determining when the predicate used in Goldreich's construction leads to a secure or insecure instance. As previously mentioned, many modern constructions now aim to target specific applications and are instantiated with concrete parameters. In this context, we need analyses that directly address this challenge and ultimately help build confidence in concrete instantiations for very specific security levels (e.g., 128-bit security).
+
+The first (but slightly different) family of constructions inspired by Goldreich's PRG is the {\sf FLIP} family of stream ciphers~\cite{EC:MJSC16}, along with its follow-ups: {\sf FiLIP}~\cite{INDOCRYPT:MCJS19, INDOCRYPT:HofMeaRic20} and {\sf Elisabeth-4}~\cite{INDOCRYPT:HofMeaSta23}. However, these proposals suffer from certain weaknesses—primarily algebraic in nature—as highlighted in~\cite{C:DuvLalRot16, AC:GBJR23}. In particular, addressing these vulnerabilities requires increasing the size of the secret key to achieve a satisfactory security level.
+
+For constructions without fixed parameters, a guess-and-determine approach is very unlikely to yield a polynomial-time attack. However, it proves to be a powerful tool for designing subexponential-time attacks. More importantly, such approaches can significantly reduce the complexity of attacks when concrete parameters are fixed. This strategy was first applied in~\cite{AC:CDMRR18}, where the “determine” phase consists of a simple Gaussian elimination step. The authors also performed experiments using Gröbner basis techniques. However, as is often the case with algebraic attacks, these methods did not allow the authors to prove or disprove the security of the construction at cryptographic parameter sizes.
+
+Four years later, the above cryptanalysis was improved in~\cite{DBLP:journals/tit/YangGJL22} by making adaptative guesses, which drastically reduce the number of required guesses. Building upon~\cite{AC:CDMRR18}, the authors successfully broke the original parameter sets proposed for the predicate $P_5$, and provided new ones as open challenges. To date, these revised parameters remain unbroken.
+In the same work, Yang, Guo, Johansson, and Lentmaier also introduced a very interesting variation: the \emph{guess-and-decode} strategy. While they also considered attacks on other predicates, no detailed analysis was provided in those cases, as each predicate requires a separate, in-depth study to evaluate its resistance to such methods.
+
+
+\subsubsection{Bit-Fixing Correlation Attack}
+
+While resiliency and algebraic immunity have long been regarded as the two most important criteria for selecting a secure predicate, recent work~\cite{EPRINT:FLLL24} has shown that these properties alone are not sufficient. In particular, for the \textsf{XOR-MAJ} and \textsf{XOR-THR} predicates—which exhibit good resiliency and algebraic immunity—the authors of~\cite{EPRINT:FLLL24} observed a new vulnerability: if certain input bits are guessed to be fixed to 0 or 1, the resulting output can be interpreted as a system of noisy linear equations, where the noise level is significantly lower than what is induced by the original function.
+This attack becomes increasingly effective as the number of input bits to the majority or threshold function grows. This article highlights the strength of such an approach and emphasizes the necessity of predicate-specific cryptanalysis. This work also naturally raises the question of identifying predicates that resist  algebraic, linearity-based attacks and naturally guess-and-determine strategies at the same time.
+
+Table~\ref{tab:subexpattacks} summarizes several known subexponential attacks. In this table, $d$ denotes the locality of the PRG, $\mathsf{s}$ is the stretch—meaning that the output size satisfies $m = \mathcal{O}(n^{\mathsf{s}})$—and $n$ is the size of the seed.
+
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{@{}lcl@{}}
+\toprule
+Technique & Complexity & Reference \\
+\midrule
+Hamming-distance test ($x'$ close to $x$) & $2^{\mathcal{O}(n^{1 - \frac{\mathsf{s} - 1}{2d}})}$ & \cite{EPRINT:Applebaum15,DBLP:conf/approx/BogdanovQ09} \\
+Guess-and-determine & $2^{\mathcal{O}(n^{2 - \mathsf{s}})}$ & \cite{AC:CDMRR18} \\
+Adaptive guess-and-determine & $\mathcal{O}(n^2 \cdot 2^{\frac{n^{2 - \mathsf{s}}}{4}})$ & \cite{DBLP:journals/tit/YangGJL22} \\
+Guess-and-decode & $\mathcal{O}(n^{\mathsf{s}} \cdot 2^{\frac{n^{2 - \mathsf{s}}}{4}})$ & \cite{DBLP:journals/tit/YangGJL22} \\
+\bottomrule
+\end{tabular}
+\caption{\label{tab:subexpattacks}Subexponential and concrete cryptanalysis. The first technique applies to any predicate with locality $d$, while the three others specifically target the $P_5$ predicate.}
+\end{table}
+
+%\gc{Pourquoi la table ne contient que les attaques non-algébriques ?}
+
+
+\subsection{Targets for Cryptanalysis}
+The high versatility of Goldreich's PRG raises several important questions. In particular, it remains unclear how to choose an optimal predicate that achieves the best possible stretch $\mathsf{s}$ for the smallest possible locality $d(n)$.
+
+Arguably the simplest and most natural instantiation is based on the $P_5$ predicate, for which concrete parameter sets are proposed in~\cite{DBLP:journals/tit/YangGJL22} and~\cite{DBLP:conf/eurocrypt/AgarwalBBS25}.
+
+For constructions based on \textsf{XOR-MAJ} predicates, several parameter sets have been proposed in~\cite{DBLP:conf/eurocrypt/AgarwalBBS25} and~\cite{EC:BCMPR24}. However, some of these were later broken by the bit-fixing correlation attack introduced in~\cite{EPRINT:FLLL24}. For the affected instances, we propose new parameters. Additional instantiations have also been suggested in~\cite{AC:CDDKS24}.
+
+All these parameter sets are summarized in Table~\ref{tab:paramgar}.
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{cccc}
+\toprule
+Seed size ($n$) & Stretch ($\mathsf{s}$) & Predicate ($P$)& Reference\\
+\midrule
+1024 & 1.02 & $P_5$ & \cite{DBLP:journals/tit/YangGJL22} \\
+2048 & 1.10 & $P_5$ & \cite{DBLP:journals/tit/YangGJL22} \\
+4096 & 1.19 & $P_5$ & \cite{DBLP:journals/tit/YangGJL22} \\
+8192 & 1.19 & $P_5$ & \cite{DBLP:conf/eurocrypt/AgarwalBBS25} \\
+1024 & 2 & $\mathsf{XOR}_4\textsf{-}\mathsf{MAJ}_7$ & \cite{DBLP:conf/eurocrypt/AgarwalBBS25} \\
+512 & 4.5 & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \cite{EC:BCMPR24, EPRINT:FLLL24} \\
+894 & 3.4 & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \cite{AC:CDDKS24} \\
+2048 & 3 & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \cite{AC:CDDKS24} \\
+\bottomrule
+\end{tabular}
+\caption{\label{tab:paramgar}Challenge parameter sets for Goldreich's PRG targeting a 128-bit security level.}
+\end{table}
+
+\subsection{Algorithmic Description}
+The PRG differs from the other shallow weak PRFs presented in this survey in that it does not rely on a secret key. Instead, the adversary is given the subsets $\sigma_i$, which are sampled uniformly at random from all subsets of size $d$. We denote $A_d^n$ the set of all ordered subsets of $\Z_n$ of size $d$. These subsets play a similar role to the inputs $x$ in the other constructions: they are public, but not adversarially chosen. The actual secret in this case is the seed, which was previously denoted by $x$. For clarity and consistency with the description of the other wsPRFs, we now refer to the seed as $k$, and the subsets as $x$.
+
+%\yr{Je veux bien qu'on appelle $k,x$ comme les autres j'essaie un truc mais je suis pas si convaincu. J'utiliserais au moins $\sigma$ ?}\lp{moi ça me va, j'ai rajouté 2-3 trucs dans la description}
+
+\begin{algorithm}
+  \caption{\label{alg:gar}The Goldreich's PRF/PRG \\
+    Parameters: $n$ (seed size), $m$ (output size), $d$ (locality) and $P:\{0,1\}^d \to \{0,1\}$ (predicate).}
+  \begin{algorithmic}
+  \State \textbf{Input:} $k\in\{0,1\}^n$, $x\in (A^n_d)^{m}$
+    \State $y \gets \varepsilon$ 
+    \For{$i = 1$ to $m$}
+        \State $z_i \gets \{k_{x_{i,j}}\}_{j \in \{1, ..., d\}}$
+    	\State $y \gets y~||~P(z_i)$
+	\EndFor  \\
+    \Return $y$
+  \end{algorithmic}
+\end{algorithm}
+
+
+
+
+\section{VDLPN}
+\label{sec:vdlpn}
+
+The candidates introduced in this section and in the next (Section~\ref{sec:ealpn}) are specifically designed for use in constructions of pseudorandom correlation functions that follow the paradigm outlined in Section~\ref{subsubsec:fss}. These constructions rely on the class $\setF_{t,N}(\F_{2^\secpar})$ of depth-2 circuits, consisting of indegree-1 ``interval membership'' gates at the bottom layer and a $t$-ary linear combination gate at the top, where $N$ is the target number of samples and $t$ is a parameter to be minimized. In fact, both candidate families lie within the more restricted class $\setF_{t,N}(\F_2)$. Recall that Theorem~\ref{thm:pcf-ot} relies on function secret sharing for functions of the form $x \mapsto c \cdot \Eval(\msk,x)$. In constructions based on {\sf VDLPN} and {\sf EALPN}, the evaluation $\Eval(\msk,x)$ is performed over $\F_2$, and only the scalar multiplier $c$ lies in the extension field $\F_{2^\secpar}$ (typically with $\secpar = 128$).
+
+In this section, we introduce the {\sf VDLPN} design. While we provide a direct description below—as a XOR of ANDs of XORs—this representation slightly obscures the connection to the class $\setF_{t,N}(\F_{2})$. To see the connection, observe that a point function (i.e., a function $f_a$ that outputs $0$ everywhere except at $f_a(a) = 1$) is a special case of an interval function where the interval reduces to a single point. Verifying that $f_a(x) = 1$ is equivalent to checking whether $x = a$, which can be expressed as $\prod_{i=1}^{|x|} (x_i \oplus \bar{a}_i)$, where the $\bar{a}_i$ are the bitwise complements of the bits of $a$. Therefore, a “XOR of products of XORs” is simply a linear combination (over $\F_2$) of point functions—which, again, are special cases of interval functions.
+
+
+\subsection{Original Reference}
+
+The {\sf VDLPN} design was proposed by Boyle, Couteau, Gilboa, Ishai, Kohl, and Scholl in 2020~\cite{vdlpn}. The main candidate introduced in their work, that we will refer to as {\sf VDLPN} (for \emph{variable-density learning parity with noise}), is defined as follows:
+
+\begin{equation} \label{eq:vdlpn_orig}
+    F_k(x) = \bigoplus_{i=1}^D \bigoplus_{j=1}^w \prod_{\ell=1}^i \left(x_{i,j,\ell} \oplus k_{i,j,\ell}\right),
+\end{equation}
+where $D$ and $w$ are parameters that depend on the desired security level $\lambda$.
+
+An interesting observation is that this function can also be interpreted as a sum of \emph{triangular functions}. Given a sequence of variables $ z = (z_1, z_2, z_3, \dots) $, a triangular function is defined as:
+\[
+T(z) := z_1 \oplus z_2 z_3 \oplus z_4 z_5 z_6 \oplus \cdots,
+\]
+where each term in the sum is a product of an increasing number of consecutive variables. 
+
+Using this definition, Equation~\eqref{eq:vdlpn_orig} can be rewritten more compactly as:
+\[
+F_k(x) = \bigoplus_{j=1}^w T(X_j \oplus K_j),
+\]
+where $ X_j $ is the vector $(x_{i,j,\ell})$ with indices $ 1 \leq i \leq D $, $ 1 \leq \ell \leq i $, and similarly, $ K_j $ is the vector $(k_{i,j,\ell})$ over the same index set.
+
+\paragraph{Example (toy instance of the main variant with $w = 2$, $D = 3$).}
+For $w = 2$ and $D = 3$, $F_k(x)$ can be written as 
+\[
+F_k(x) = T(Z_1) \oplus T(Z_2),
+\]
+where $T(Z_j) = z_1 \oplus z_2 z_3 \oplus z_4 z_5 z_6$, for $j = 1, 2$ and
+\[
+Z_j = \left(
+x_{1,j,1} \oplus k_{1,j,1},
+x_{2,j,1} \oplus k_{2,j,1}, 
+x_{2,j,2} \oplus k_{2,j,2},
+x_{3,j,1} \oplus k_{3,j,1}, 
+x_{3,j,2} \oplus k_{3,j,2}, 
+x_{3,j,3} \oplus k_{3,j,3}
+\right).
+\]
+
+We provide also an alternative low-complexity variant of the above function, that was equally presented in~\cite{vdlpn}, which we now describe in detail. We will call this variant {\sf VDLPN}$^*$. Let $w$ and $D$ be two positive integers. Both the secret key $k \in \Z_2^{w \times D}$ and the input $x \in \Z_2^{w \times D}$ are viewed as binary matrices, represented as $(k_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$ and $(x_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$, respectively. The function $F_K(x)$ is then computed as:
+
+\begin{equation} \label{eq:vdlpn_agg}
+    F_k(x) := \bigoplus_{i=1}^D \bigoplus_{j=1}^w\prod_{\ell=1}^i (x_{j,\ell} \oplus k_{j,\ell}).
+\end{equation}
+
+We observe that Eq.~\eqref{eq:vdlpn_agg} can also be rewritten in a different form—not as a sum of classical triangular functions, but rather as a sum of \emph{somewhat triangular functions} \( T'(z) \), defined as follows for a sequence of variables \( z = (z_1, z_2, z_3, \dots) \):
+\[
+    T'(z) := z_1 \oplus z_1 z_2 \oplus z_1 z_2 z_3 \oplus \cdots.
+\]
+Specifically, we can express the function as:
+\[
+    F_k(x) = \bigoplus_{j=1}^w T'(X_j \oplus K_j),
+\]
+where \( X_j \) is the vector \( (x_{j,\ell}) \) for \( 1 \leq \ell \leq D \), and similarly, \( K_j = (k_{j,\ell}) \) over the same index range. In other words, this can be seen as a variant of a triangular function in which variables are reused in higher-degree monomials.  This reuse introduces algebraic dependencies between the terms, which complicates attempts to formally prove security.
+
+
+\paragraph{Example (toy instance of the low-complexity variant with $w = 2$, $D = 3$).}
+In this case, 
+\[
+F_k(x) = \bigoplus_{j = 1}^2 (x_{j,1} \oplus k_{j,1}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2} \oplus k_{j,2}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2}\oplus k_{j,2})(x_{j,3}\oplus k_{j,3}).
+\]
+
+\subsection{The {\sf VDLPN}$'$ variant}
+
+While~\cite{FOCS:BCGIKS20} provides a detailed preliminary security analysis of {\sf VDLPN}, it is purely asymptotic. Couteau and Ducros~\cite{PKC:CouDuc23} revisited the original analysis of~\cite{FOCS:BCGIKS20} to obtain more concrete bounds achieving provable security guarantees against certain classes of attacks. In the course of refining these bounds, they suggested a variant of the original design, dubbed {\sf VDLPN}$'$, that enjoys the same applications but comes with much tighter security arguments. Intuitively, this is achieved by shaving the first few terms of the XOR $\bigoplus_{i=1}^D$ and replacing them with a random inner product with the key; this circumvent corner cases of the security analysis that caused the bounds to become loose due to bad events that had significant probability of ocurring at the lower levels. Concretely, {\sf VDLPN}$'$ is defined as follows:
+
+\begin{equation} \label{eq:vdlpn*}
+    F_k(x) = \bigoplus_{i=1}^{r} x_{0,i}\cdot k_{0,i} \oplus \bigoplus_{i=5}^D \bigoplus_{j=1}^w \prod_{\ell=1}^i \left(x_{i,j,\ell} \oplus k_{i,j,\ell}\right),
+\end{equation}
+where $D$ and $w$ are parameters that depend on the desired security level $\lambda$, and $r = h(15/2^D)\cdot 2^D + \secpar$ ($h(x) = -x\log x (1-x)\log(1-x)$ denotes the binary entropy function). 
+
+The candidate {\sf VDLPN}$'$ also admits a similar low-complexity variant as {\sf VDLPN}, that we denote{{\sf VDLPN}$'$}$^*$, where the triangular functions are replaced with ``shaved'' somewhat triangular functions. Denoting
+\[T'_5(z) = z_1z_2z_3z_4z_5 \oplus z_1z_2z_3z_4z_5z_6 \oplus \cdots,\]
+that is, the function $T'$ stripped of its four first terms, we have
+
+\begin{equation} \label{eq:vdlpn*_low}
+    F_k(x) = \bigoplus_{i=1}^{r} x_{0,i}\cdot k_{0,i} \oplus \bigoplus_{j=1}^w \prod_{\ell=1}^i T'_5(X_j \oplus K_j).
+\end{equation}
+
+\subsection{Targets for Cryptanalysis}
+
+In the original paper~\cite{vdlpn}, the authors suggested the following parameters to instantiate both versions of {\sf VDLPN} for achieving $\lambda$ bits of security: $w = 1.5\lambda$, $D = w/4$, and a restriction on the number of queries allowed to an attacker, limited to $N = 2^D$. However, as noted in~\cite{PKC:CouDuc23}, these parameter choices were purely heuristic and not supported by concrete cryptanalysis.
+
+This initial proposal was later revisited and refined in subsequent works. In~\cite{PKC:CouDuc23}, the authors conducted a detailed security analysis, allowing them to correct several errors from the original paper and to propose concrete parameters for achieving 128-bit security~: $w = 380$, $D = 30$, under the assumption that the adversary is limited to at most $2^D$ queries. No close formula was however provided. Finally, Ducros proposed in his thesis~\cite{Ducros24} a refined method that permitted to propose several good sets of parameters $(D,w)$. These parameters are given in Table~\ref{tab:vdlpn-param} and we suggest the related instances as targets for cryptanalysis for both {\sf VDLPN} and {\sf VDLPN}$'$.
+
+All variants are assumed to provide the same concrete security level: the differences between the variants amount to tradeoffs between efficiency (the low-complexity variant yields much better PCF constructions) and security arguments (the {\sf VDLPN}$'$ variant enjoys much tighter security arguments), but the easiness (or hardness) of providing formal security arguments is not necessarily expected to translate to a concrete weakness (or strength) of the candidate: rather, it reflects limitations of the probability arguments used to rule out certain classes of attacks in settings where the random variables satisfy some complex dependencies.
+
+
+%In the same work, the authors also explore more aggressive parameter choices. They notably propose $w = 120$ and $D = 30$, while maintaining the same upper bound on the number of allowed queries. They conjecture that these parameters likely still yield a secure instance for a security level of $\lambda = 80$ bits. A more comprehensive analysis can be found in~\cite{Ducros24}.
+
+%\yr{Je crois que la variante agressive n'est pas non plus prouvée quand l'original l'est avec une réduction}
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{cccc} 
+\toprule
+$r$ & $D$ &  $w$ & $N = 2^D$\\
+\midrule
+391 & 20 & 293 & $2^{20}$\\
+466 & 25 & 336 & $2^{25}$\\
+541 & 30 & 380 & $2^{30}$\\
+616 & 35 & 421 & $2^{35}$\\
+691 & 40 & 461 & $2^{40}$\\
+\bottomrule
+\end{tabular}
+\caption{\label{tab:vdlpn-param}Parameter sets for the {\sf VDLPN}, {\sf VDLPN}$^*$, {\sf VDLPN}$'$ and {{\sf VDLPN}$'$}$^*$ shallow wPRFs, intended as targets for cryptanalysis at the $\secpar = 128$ security level. The parameter $r$ is used only for {\sf VDLPN}$'$.}
+\end{table}
+
+\subsection{Algorithmic Description}
+
+The algorithmic descriptions of the {\sf VDLPN} shallow wPRF and its low-complexity variant {\sf VDLPN}$^*$ are provided in Algorithm~\ref{alg:vdlpn} and Algorithm~\ref{alg:vdlpn_simple}, respectively. The algorithmic descriptions of the {\sf VDLPN}$'$ shallow wPRF and its low-complexity variant {{\sf VDLPN}$'$}$^*$ are provided in Algorithm~\ref{alg:vdlpn_variant} and Algorithm~\ref{alg:vdlpn_simple_variant}, respectively.
+
+
+\begin{figure}[ht]
+\centering
+\begin{minipage}[t]{0.47\textwidth}
+\begin{algorithm}[H]
+  \caption{\label{alg:vdlpn}The {\sf VDLPN} wPRF\\Parameters: Integers $w, D$}
+  \begin{algorithmic}
+   \State \textbf{Input:} $x = (x_{i,j,\ell}) \in \Z_2^{D \times w \times D}$, $k = (k_{i,j,\ell}) \in \Z_2^{D \times w \times D}$
+    \State $y \gets 0$
+    \For{$i = 1$ to $D$}
+      \For{$j = 1$ to $w$}
+        \State $t \gets 1$
+        \For{$\ell = 1$ to $i$}
+          \State $t \gets t \cdot (x_{i,j,\ell} \oplus k_{i,j,\ell})$
+        \EndFor
+        \State $y \gets y \oplus t$
+      \EndFor
+    \EndFor
+    \State \Return $y$
+  \end{algorithmic}
+\end{algorithm}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.47\textwidth}
+\begin{algorithm}[H]
+  \caption{\label{alg:vdlpn_simple}The {\sf VDLPN}$^*$ wPRF\\Parameters: Integers $w, D$}
+  \begin{algorithmic}
+    \State \textbf{Input:} $x = (x_{j,\ell}) \in \Z_2^{w\times D}$,  $k = (k_{j,\ell}) \in \Z_2^{w\times D}$
+    \State $y \gets 0$
+    \For{$i = 1$ to $D$}
+      \For{$j = 1$ to $w$}
+        \State $t \gets 1$
+        \For{$\ell = 1$ to $i$}
+          \State $t \gets t \cdot (x_{j,\ell} \oplus k_{j,\ell})$
+        \EndFor
+        \State $y \gets y \oplus t$
+      \EndFor
+    \EndFor
+    \State \Return $y$
+  \end{algorithmic}
+\end{algorithm}
+\end{minipage}
+\caption{Algorithmic description of the original {\sf VDLPN} shallow wPRF and its low-complexity variant {\sf VDLPN}$^*$.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\begin{minipage}[t]{0.47\textwidth}
+\begin{algorithm}[H]
+  \caption{\label{alg:vdlpn_variant}The {\sf VDLPN}$'$ wPRF\\Parameters: Integers $r, w, D$}
+  \begin{algorithmic}
+   \State \textbf{Input:} $x = (x_{0,i}, x_{i,j,\ell}) \in \Z_2^{s}$, $k = (k_{0,i},k_{i,j,\ell}) \in \Z_2^{s}$ with $s=r+(D-5) w D$
+    \State $y \gets 0$
+    \For{$i = 1$ to $r$}
+      \State $y \gets y \oplus x_{0,i}\cdot k_{0,i}$
+    \EndFor
+    \For{$i = 5$ to $D$}
+      \For{$j = 1$ to $w$}
+        \State $t \gets 1$
+        \For{$\ell = 1$ to $i$}
+          \State $t \gets t \cdot (x_{i,j,\ell} \oplus k_{i,j,\ell})$
+        \EndFor
+        \State $y \gets y \oplus t$
+      \EndFor
+    \EndFor
+    \State \Return $y$
+  \end{algorithmic}
+\end{algorithm}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.47\textwidth}
+\begin{algorithm}[H]
+  \caption{\label{alg:vdlpn_simple_variant}The {{\sf VDLPN}$'$}$^*$ wPRF\\Parameters: Integers $r,w, D$}
+  \begin{algorithmic}
+    \State \textbf{Input:} $x = (x_{0,i}, x_{j,\ell}) \in \Z_2^{r+w\times D}$,  $k = (k_{0,i}, k_{j,\ell}) \in \Z_2^{r+w\times D}$
+    \State $y \gets 0$
+    \For{$i = 1$ to $r$}
+      \State $y \gets y \oplus x_{0,i}\cdot k_{0,i}$
+    \EndFor
+    \For{$i = 5$ to $D$}
+      \For{$j = 1$ to $w$}
+        \State $t \gets 1$
+        \For{$\ell = 1$ to $i$}
+          \State $t \gets t \cdot (x_{j,\ell} \oplus k_{j,\ell})$
+        \EndFor
+        \State $y \gets y \oplus t$
+      \EndFor
+    \EndFor
+    \State \Return $y$
+  \end{algorithmic}
+\end{algorithm}
+\end{minipage}
+\caption{Algorithmic description of the {\sf VDLPN}$'$ shallow wPRF and its low-complexity variant {{\sf VDLPN}$'$}$^*$.}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+\section{EALPN}
+\label{sec:ealpn}
+
+This shallow wPRF was intended as a successor to the {\sf VDLPN} wPRF: while it does not strictly subsume it (as {\sf VDLPN} enjoys other applications), it provides a candidate in the class $\setF_{t,N}(\F_2)$ that does not limit itself to point functions. Instead, it fully exploits the flexibility of the class to support general interval functions, yielding a significantly more efficient construction, where efficiency refers to the efficiency of the target high-level MPC application.
+
+\subsection{Original Reference}
+\label{subsec:original-reference-ealpn}
+
+This shallow weak PRF was proposed by Boyle, Couteau, Gilboa, Ishai, Kohl, Resch and Scholl in 2022~\cite{C:BCGIKR22}. It was subsequently analyzed in~\cite{C:RagRinTan23}. Fix a target number of samples $N$. Define $\GT$ to be the greater-than predicate: $\GT(a,b) = 1$ iff $a > b$. Then,
+
+\begin{equation}\label{eq:ealpn}
+F_k(x) = \bigoplus_{i=1}^\ell \GT(x_i, k_{x'_i}),
+\end{equation}
+where $\ell$ and $t$ are parameters that depend on the desired security level $\secpar$, and $x = (x_i,x'_i)_{i \leq \ell}$ is sampled from $([1,5N/t]\times [1,t])^\ell$. We assume that $N$ and $\ell$ are chosen such that $t$ divides $5N$ and $\ell$ divides $t$. We let $w = 5N/t$.
+
+\subsection{Security Arguments and Cryptanalysis}
+%!TODO! Write about security arguments and cryptanalysis
+
+The presentation of {\sf EALPN} in this work differs significantly from the original description given in~\cite{C:BCGIKR22}. Before outviewing the security arguments for {\sf EALPN}, we first clarify this discrepancy—highlighting that the alternative perspective adopted in~\cite{C:BCGIKR22} is particularly helpful for understanding the security rationale.
+
+
+\paragraph{Equivalence with the original presentation.} The original description of {\sf EALPN} is as follows:
+\begin{itemize}
+	\item Pick a random \emph{$\ell$-sparse} matrix $H \in \F_2^{N\times 5N}$ (i.e., each row of $H$ is a random weight-$\ell$ vector\footnote{To simplify certain security arguments, rows are actually sampled from a Bernoulli distribution with parameter $p = \ell / 5N$, where each entry is independently set to $1$ with probability $p$, rather than being drawn as fixed-weight vectors. However,~\cite[Section~3.4]{C:BCGIKR22} explicitly conjectures that both variants offer equivalent security guarantees. The fixed-weight variant remains the most convenient for the target application discussed in Section~\ref{subsubsec:fss}}.
+	\item Sample a weight-$t$ \emph{regular noise vector} $e$ as a concatenation of $t$ length-$w$ random unit vectors.
+	\item Define $\Delta_{5N}$ to be the $5N$-by-$5N$ matrix filled with ones on and below the main diagonal.
+	\item The {\sf EALPN} assumption states that no efficient adversary can distinguish $(H, H\cdot \Delta_{5N} \cdot e)$ from $(H, y)$ where $y \sample \F_2^{N}$.
+\end{itemize}
+
+With this alternative view, {\sf EALPN} becomes the problem of decoding the \emph{syndrome of a code} whose parity-check matrix is $H\cdot \Delta_{5N}$ and where the codeword is pertubated with a regular weight-$w$ noise $e$. We first explain why this formulation is equivalent to the formula given in Section~\ref{subsec:original-reference-ealpn}. First, observe that the left-product by $\Delta_{5N}$ is the \emph{accumulation} function, that maps $(x_1, \cdots, x_{5N})$ to $(x_1, x_1\oplus x_2, x_1\oplus x_2 \oplus x_3, \cdots)$. As $e$ is a weight-$t$ regular vector (i.e., a concatenation of $t$ unit vectors), $\Delta_{5N}\cdot e$ is an alternation of \emph{bands of zeroes} and \emph{bands of ones}. We can therefore rewrite the matrix equations as below: (red dots represent ones, white areas represent zeroes, light-red areas represent areas filled with ones):
+
+
+
+\begin{minipage}{.53\textwidth}
+\begin{tikzpicture}[x=1cm, y=1cm]
+
+  % Sparse matrix rectangle
+  \draw[thick] (0,0) rectangle (3,2);
+  \draw[thick] (0,0.8) -- (3,0.8);
+  \draw[thick] (0,1.2) -- (3,1.2);
+
+  % Dimensions for sparse matrix
+  \draw[dashed, <->] (0,-0.2) -- (3,-0.2) node[midway, below] {\small{$5N$}};
+  \draw[dashed, <->] (-0.2,0) -- (-0.2,2) node[midway, left] {\small{$N$}};
+  
+  % Matrix names
+  \node at (1.5,2.5) {\large \color{blue}{$H$}};
+   \node at (5,3.5) {\large \color{blue}{$\Delta_{5N}$}};
+     \node at (7,3.5) {\large \color{blue}{$e$}};
+
+  % Five red dots, horizontally spread, vertically centered
+  \foreach \x in {0.2, 1.0, 1.4, 1.6, 2.7} {
+    \fill[red] (\x,1.0) circle (1.2pt);
+  }
+
+  % First multiplication dot (reduced space)
+  \node at (3.2,1) {\Large$\cdot$};
+
+  % Diagonal square matrix
+  \draw[thick] (3.4,0) rectangle (6.4,3);
+  \draw[thick] (3.4,3) -- (6.4,0);
+  \fill[red, opacity=0.2] (3.4,3) -- (3.4,0) -- (6.4,0) -- cycle;
+
+  \node at (4.9,0.75) {\huge 1};
+  \node at (4.9,2.25) {\huge 0};
+
+  % Dimensions for diagonal matrix
+  \draw[dashed, <->] (3.4,-0.2) -- (6.4,-0.2) node[midway, below] {\small{$5N$}};
+  %\draw[<->] (6.8,0) -- (6.8,3) node[midway, right] {$m$};
+
+  % Second multiplication dot
+  \node at (6.6,1.5) {\Large$\cdot$};
+
+  % Vector: 5 stacked thin rectangles
+  \foreach \i/\offset in {0/0.65, 1/0.4, 2/0.7, 3/0.2, 4/0.85} {
+    \pgfmathsetmacro{\ymin}{0 + \i*0.6}
+    \pgfmathsetmacro{\ymax}{0.6 + \i*0.6}
+    \draw[thick] (6.8,\ymin) rectangle (7.1,\ymax);
+    \pgfmathsetmacro{\ydot}{\ymin + (\ymax - \ymin)*\offset}
+    \fill[red] (6.95,\ydot) circle (1.2pt);
+  }
+
+  % Dimension for vector
+  \draw[dashed,<->] (7.3,0) -- (7.3,3) node[midway, right] {\small{$5N$}};
+  \node at (8,1) {$=$};
+  
+  % Sparse matrix rectangle (shifted by 5)
+\draw[thick] (3.4+5,0) rectangle (6.4+5,2);
+\draw[thick] (3.4+5,0.8) -- (6.4+5,0.8);
+\draw[thick] (3.4+5,1.2) -- (6.4+5,1.2);
+
+  % Five red dots, horizontally spread, vertically centered
+\foreach \x in {3.6+5, 4.4+5, 4.8+5, 5.0+5, 6.1+5} {
+  \fill[red] (\x,1.0) circle (1.2pt);
+}
+% First multiplication dot (reduced space)
+\node at (6.6+5,1) {\Large$\cdot$};
+
+  % Vector: 5 stacked thin rectangles aligned to bottom of square
+  \foreach \i/\offset in {0/0.65, 1/0.4, 2/0.7, 3/0.2, 4/0.85} {
+    \pgfmathsetmacro{\ymin}{0 + \i*0.6}
+    \pgfmathsetmacro{\ymax}{0.6 + \i*0.6}
+    \draw[thick] (6.8+5,\ymin) rectangle (7.1+5,\ymax);
+    \pgfmathsetmacro{\ydot}{\ymin + (\ymax - \ymin)*\offset}
+    \draw[red, thick] (6.8+5,\ydot) -- (7.1+5, \ydot);
+  }
+\filldraw[red,opacity=0.15] (6.8+5, 2.9) rectangle (7.1+5, 1.91);
+\filldraw[red,opacity=0.15] (6.8+5, 1.63) rectangle (7.1+5, 0.85);
+\filldraw[red,opacity=0.15] (6.8+5, 0.39) rectangle (7.1+5, 0);
+
+\end{tikzpicture}
+\end{minipage}
+~\\
+
+
+The next observation is that if we take the odd-numbered blocks of $f = \Delta_{5N}\cdot e$ and \emph{turn them by 180°}, the assumption remains formally identical: indeed, we can divide each row of $H$ in a length-$5N/w$ block and flip identically the odd-numbered blocks (rewriting them right-to-left). Denoting $\tilde f$ and $\tilde H$ the resulting vector and matrix respectively, we have $H\cdot f = \tilde H \cdot \tilde f$. But since the rows of $H$ are random weight-$\ell$ vectors, the distribution induced on $\tilde H$ is identical to the original distribution of $H$. Therefore, the assumption can be equivalently stated as: $(H, H\cdot \tilde f)$ should be indistinguishable from $(H,y\sample \F_2^N)$. Now, representing this last version visually:
+
+\begin{center}
+\begin{tikzpicture}[x=1cm, y=1cm]
+
+% Sparse matrix rectangle (shifted by 3.4)
+\draw[thick] (3.4,0) rectangle (6.4,2);
+\draw[thick] (3.4,0.8) -- (6.4,0.8);
+\draw[thick] (3.4,1.2) -- (6.4,1.2);
+
+% Five red dots, horizontally spread, vertically centered
+\foreach \x in {3.6, 4.4, 4.8, 5.0, 6.1} {
+  \fill[red] (\x,1.0) circle (1.2pt);
+}
+
+% First multiplication dot (reduced space)
+\node at (6.6,1) {\Large$\cdot$};
+
+  % Vector: 5 stacked thin rectangles aligned to bottom of square
+  \foreach \i/\offset in {0/0.65, 1/0.4, 2/0.7, 3/0.2, 4/0.85} {
+    \pgfmathsetmacro{\ymin}{0 + \i*0.6}
+    \pgfmathsetmacro{\ymax}{0.6 + \i*0.6}
+    \draw[thick] (6.8,\ymin) rectangle (7.1,\ymax);
+    \pgfmathsetmacro{\ydot}{\ymin + (\ymax - \ymin)*\offset}
+    \draw[red, thick] (6.8,\ydot) -- (7.1, \ydot);
+  }
+
+\filldraw[red,opacity=0.15] (6.8, 2.9) rectangle (7.1,2.4);
+\filldraw[red,opacity=0.15] (7.1, 1.91) rectangle (6.8,1.8);
+\filldraw[red,opacity=0.15] (6.8, 1.63) rectangle (7.1, 1.2);
+\filldraw[red,opacity=0.15]  (7.1, 0.85) rectangle (6.8, 0.6);
+\filldraw[red,opacity=0.15] (6.8, 0.39) rectangle (7.1, 0);
+
+\end{tikzpicture}
+\end{center}
+
+We can rewrite this matrix-vector product as follows: for each red dot in the matrix row, we look at the corresponding block of $\tilde f$ and check whether the red dot is before or after the red bar. That is, if the $i$-th red dot lands at position $x_i$ in the $x'_i$-th block, and if we denote $k_{x'_i}$ the position of the red bar in this block, we compute
+\[\GT(x_i, k_{x'_i})\]
+for all of the $\ell$ nonzero entries of the row of $H$. Hence, sampling a random row $h$ of $H$ amounts to sampling $\ell$ pairs $(x_i, x'_i) \sample [1,w]\times [1,t]$ and returning
+$\bigoplus_{i=1}^\ell \GT(x_i, k_{x'_i})$,
+which matches the description given in Section~\ref{subsec:original-reference-ealpn}.
+
+\paragraph{Security arguments} Equipped with the above equivalence, we briefly overview the security argument of~\cite{C:BCGIKR22}. The argument investigates attacks in the \emph{linear test framework} against the syndrome decoding problem. An attack against {\sf EALPN} in this framework operates as follows:
+\begin{itemize}
+	\item The attacker is given $M = H\cdot \Delta_{5N}$ (the parity-check matrix of the code) and produces a nonzero \emph{test vector} $v$. This step can run in unbounded time.
+	\item The noise vector $e$ is sampled. The attacker's advantage is defined as the \emph{bias} of the distribution induced by $v^\intercal\cdot M\cdot e$ (the bias is the distance to $1/2$ of the probability that $v^\intercal\cdot M\cdot e = 0$).
+\end{itemize}
+For $\secpar$ bits of security, we aim for an advantage of $2^{-\secpar}$ in the above experiment. This abstract game captures the fact that most known attacks on code-based assumptions (such as information set decoding~\cite{Prange62}, generalized birthday attacks~\cite{C:Wagner02,EPRINT:Kirchner11}, the BKW algorithm~\cite{STOC:BluKalWas00,AR:L05}, and many more) amount to (are formally equivalent to) computing a linear function of the syndrome (with coefficients computed solely from the code matrix) and trying to detect a bias in the output.
+
+Then, if $M^\intercal$ generates a code with a large minimum distance (that is, the map $v \to M^\intercal v$ sends all nonzero vectors to vectors with a ``large'' Hamming weight, typically $\delta \cdot N$ for some constant $\delta$), it is easy to see that no such attack can possibly succeed: if $v^\intercal\cdot M$ has Hamming weight $\delta N$, then $(v^\intercal\cdot M)\cdot e$ has bias approximately $\delta^t$. Setting $t= \secpar/ \log(\delta)$ suffices to get $\secpar$ bits of security. Given this observation, proving resistance against most standard attacks on code-based assumptions amounts to proving a bound on the minimum distance of the code generated by $M^\intercal$, which~\cite{C:BCGIKR22} does:
+
+\begin{lemma}
+Fix a parameter $\ell = \omega(\log N)$. The code generated by the rows of  $M = H \cdot \Delta_{5N}$ has minimum distance at least $\Omega(N)$, with probability at least $1 - N^{-\omega(1)}$ over the choice of $H$.
+\end{lemma}
+
+A more precisely quantified version of this lemma is given in~\cite[Theorem 3.10]{C:BCGIKR22}. From there, the authors suggest conservative parameters, chosen to match the parameters for which the theorem guarantees 128 bits of security against linear tests, and aggressive parameters, based on the (empirically observed) assumption that the code generated by $M$ has much better minimum distance than guaranteed by the (somewhat loose) analysis. However, the minimum distances heuristically assumed to hold have been invalidated in a follow-up work~\cite{C:RagRinTan23}. Recent works have relied on an updated version of the agressive parameter set, where $\ell=7$ is replaced with $\ell=11$; we report this choice in the challenge parameter sets.
+
+\subsection{Parameters}
+
+Two sets of parameters are provided for a security level of $\lambda = 128$, one that can be considered as standard and an agressive one. These are summarized in Table~\ref{tab:parameters_ealpn}.
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{lccc}
+\toprule
+& $t$ & $\ell$ & $N$ \\
+\midrule
+&85 & $3\ln(5N)$ & $2^{45}$ \\ 
+&660 & $11$ & $2^{45}$ \\ 
+\bottomrule
+\end{tabular}
+\caption{\label{tab:parameters_ealpn}Suggested parameters for the {\sf EALPN} wPRF as targets for cryptanalysis.}
+\end{table}
+
+
+\subsection{Algorithmic Description}
+%!TODO! write about the implementation 
+
+Algorithm~\ref{alg:ealpn} provides an algorithmic description of the {\sf EALPN} wPRF.
+
+\begin{algorithm}
+  \caption{\label{alg:ealpn}The {\sf EALPN} wPRF \\
+    Parameters:  integers $N$, $t$, $\ell$,  $w = \lceil \frac{5N}{t} \rceil$}
+  \begin{algorithmic}
+  \State \textbf{Input:}  $x = ((x_1,x'_1), \dots, (x_\ell,x'_\ell)) \in ( \Z^*_{w}\times \Z^*_{t})^\ell$; $k = (k_1, \dots, k_{\ell}) \in (\Z_{w})^{\ell}$
+    \State $r \gets 0$
+\For{$i = 1$ to $\ell$}
+    \If{$x_i \geq k_{x'_i}$}
+        \State $r \gets r + 1$
+    \EndIf
+\EndFor\\
+\Return $r \bmod 2$
+ \end{algorithmic}
+\end{algorithm}
+
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+The goal of this Systematization of Knowledge (SoK) article was to unify and present four distinct families of weak pseudo-random functions (wPRFs) under a common lens. These families of wPRFs have emerged from the theoretical cryptography community in response to various application needs. Despite their differing origins, all the constructions we examined share a common characteristic: they are shallow, typically consisting of a single round of computation. Moreover, they operate within weakened security models when compared to standard PRFs or PRPs, notably by restricting the attacker from choosing inputs. More importantly, the inputs to these primitives  are sampled uniformly at random.
+
+This uniform randomness of public inputs, combined with the small domain sizes typically proposed, makes differential cryptanalysis largely impractical in this context. As a result, the main attack strategies that remain applicable seem to be linear cryptanalysis, based on exploiting statistical biases in (linear combinations of) the output, and algebraic or combinatorial techniques. However, the field currently lacks a comprehensive understanding of how effective such attacks can be in practice.
+
+In particular, a more comprehensive combinatorial analysis is needed to characterize the conditions under which an attack may succeed based on properties of the public inputs. Indeed, attacks may become feasible when public inputs fall within certain ``bad'' subsets. Identifying and understanding the structure of these subsets is an interesting and important research direction.
+
+More broadly, there is a remarkable lack of systematic cryptanalysis in this weak-function setting. Security claims for these constructions often rely on heuristic or partial evidence, and the distinction between exponential and polynomial-time attacks becomes blurred once concrete parameters are fixed. Despite this, many of these primitives are being integrated into advanced cryptographic protocols and proposed for real-world deployment. We therefore encourage the symmetric cryptography community to analyze these constructions, and aim to facilitate this task by providing reference implementations for each of them. Targeted and rigorous cryptanalysis is essential before these primitives can be confidently used inside high-level protocols. Bridging the gap between theoretical proposals and concrete security evaluation is not just desirable,  it is necessary to ensure the security of the advanced protocols that build upon them.
+
+%\begin{itemize}
+%\item On a besoin de quantifier précisément la complexité des algorithmes d'attaque histoire de pouvoir dimensionner correctement et précisément les instances sensées offrir un niveau de sécurité donné
+%\item en l'état, il n'y a pas de cryptanalyse dans le modèle ``weak nonce'' ou ``weak IV'' (demander à Anne ce qui existe), qu'on introduit
+%\end{itemize}
+
+
+%All constructions that we presented consist of a weakened security model than the standard one (PRF or PRP), as an attacker is not able to choose the public inputs. It is however somehow different than a known plaintext scenario, as the inputs here are taken uniformly at random.
+
+%The fact that public inputs are taken uniformly at random, combined with the proposed size makes the differential cryptanalysis unpractical. What remains seem to be, up to now likewise linear cryptanalysis, by observing biases in (linear combination of) the output or algebraic-like attacks. \yr{C'est les seules types d'attaques partout non ?}
+
+%Some combinatorial analysis is also missing to identify a success probability of an attack that is computable over the public inputs. Indeed, as Kerckhoff's principle states that the security should rely only on the secret of the key, this principle is not met in those constructions as it could appear than an attack could work when the public inputs lie in a specific subsets. The identification of ``bad'' public input set is thus a very interesting question that need to be answered.
+%\yr{Faut-il réinsister plus ?}
+
+%Eventually, we believe that this weak scenario drastically lacks of security analysis. Indeed, actual security relies on cryptanalysis. We believe this to not be fulfilled, specifically because when fixing parameters, the distinction between exponential/polynomial types of attacks do not make anymore sense. Nowadays, many of those proposals have a purpose to be used in practice in many advanced cryptographic protocols. Therefore a big gap is present and we think that the cryptographic community should collectively target those constructions, with careful analysis in order to gain confidence in advanced protocols before proposing them as being used and implemented.
+
+
+\bibliographystyle{alpha}
+\bibliography{biblio,abbrev3,crypto}
+
+\end{document}
