@@ -44,19 +44,19 @@ x_{3,j,3} \oplus k_{3,j,3}
 \right).
 \]
 
-We provide also an alternative low-complexity variant of the above function, that was equally presented in~\cite{vdlpn}, which we now describe in detail. We will call this variant {\sf VDLPN}$^*$. Let $w$ and $D$ be two positive integers. Both the secret key $k \in \Z_2^{w \times D}$ and the input $x \in \Z_2^{w \times D}$ are viewed as binary matrices, represented as $(k_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$ and $(x_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$, respectively. The function $F_K(x)$ is then computed as: \yr{on enlève $F_K(x)$ ici dans le texte puisque c'est pas la même ? }
+We provide also an alternative low-complexity variant of the above function, that was equally presented in~\cite{vdlpn}, which we now describe in detail. We will call this variant {\sf VDLPN}$^*$. Let $w$ and $D$ be two positive integers. Both the secret key $k \in \Z_2^{w \times D}$ and the input $x \in \Z_2^{w \times D}$ are viewed as binary matrices, represented as $(k_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$ and $(x_{j,\ell})_{1 \leq j \leq w, 1 \leq \ell \leq D}$, respectively. The associated function $F^*_k(x)$ is then computed as: 
 
 \begin{equation} \label{eq:vdlpn_agg}
-    F'_k(x) := \bigoplus_{i=1}^D \bigoplus_{j=1}^w\prod_{\ell=1}^i (x_{j,\ell} \oplus k_{j,\ell}).
+    F^*_k(x) := \bigoplus_{i=1}^D \bigoplus_{j=1}^w\prod_{\ell=1}^i (x_{j,\ell} \oplus k_{j,\ell}).
 \end{equation}
-\yr{J'ai mis $F'$ comme demande le reviewer mais on appelle la variante VDLPN *, j'ai mis aussi après quand ça faisait à cette référence. Sinon on met une étoile ?}
-We observe that Eq.~\eqref{eq:vdlpn_agg} can also be rewritten in a different form—not as a sum of classical triangular functions, but rather as a sum of \emph{somewhat triangular functions} \( T'(z) \), defined as follows for a sequence of variables \( z = (z_1, z_2, z_3, \dots) \):
+
+We observe that Eq.~\eqref{eq:vdlpn_agg} can also be rewritten in a different form—not as a sum of classical triangular functions, but rather as a sum of \emph{somewhat triangular functions} \( T^*(z) \), defined as follows for a sequence of variables \( z = (z_1, z_2, z_3, \dots) \):
 \[
-    T'(z) := z_1 \oplus z_1 z_2 \oplus z_1 z_2 z_3 \oplus \cdots.
+    T^*(z) := z_1 \oplus z_1 z_2 \oplus z_1 z_2 z_3 \oplus \cdots.
 \]
 Specifically, we can express the function as:
 \[
-    F'_k(x) = \bigoplus_{j=1}^w T'(X_j \oplus K_j),
+    F^*_k(x) = \bigoplus_{j=1}^w T^*(X_j \oplus K_j),
 \]
 where \( X_j \) is the vector \( (x_{j,\ell}) \) for \( 1 \leq \ell \leq D \), and similarly, \( K_j = (k_{j,\ell}) \) over the same index range. In other words, this can be seen as a variant of a triangular function in which variables are reused in higher-degree monomials.  This reuse introduces algebraic dependencies between the terms, which complicates attempts to formally prove security.
 
@@ -64,7 +64,7 @@ where \( X_j \) is the vector \( (x_{j,\ell}) \) for \( 1 \leq \ell \leq D \), a
 \paragraph{Example (toy instance of the low-complexity variant with $w = 2$, $D = 3$).}
 In this case, 
 \[
-F'_k(x) = \bigoplus_{j = 1}^2 (x_{j,1} \oplus k_{j,1}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2} \oplus k_{j,2}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2}\oplus k_{j,2})(x_{j,3}\oplus k_{j,3}).
+F^*_k(x) = \bigoplus_{j = 1}^2 (x_{j,1} \oplus k_{j,1}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2} \oplus k_{j,2}) \oplus (x_{j,1}\oplus k_{j,1})(x_{j,2}\oplus k_{j,2})(x_{j,3}\oplus k_{j,3}).
 \]
 
 \subsection{The {\sf VDLPN}$'$ variant}
@@ -76,7 +76,7 @@ While~\cite{FOCS:BCGIKS20} provides a detailed preliminary security analysis of 
 \end{equation}
 where $D$ and $w$ are parameters that depend on the desired security level $\lambda$, and $r = h(15/2^D)\cdot 2^D + \secpar$ ($h(x) = -x\log x (1-x)\log(1-x)$ denotes the binary entropy function). 
 
-The candidate {\sf VDLPN}$'$ also admits a similar low-complexity variant as {\sf VDLPN}, that we denote{{\sf VDLPN}$'$}$^*$, where the triangular functions are replaced with ``shaved'' somewhat triangular functions. Denoting
+The candidate {\sf VDLPN}$'$ also admits a similar low-complexity variant as {\sf VDLPN}, that we denote by {{\sf VDLPN}$'$}$^*$, where the triangular functions are replaced with ``shaved'' somewhat triangular functions. Denoting
 \[T'_5(z) = z_1z_2z_3z_4z_5 \oplus z_1z_2z_3z_4z_5z_6 \oplus \cdots,\]
 that is, the function $T'$ stripped of its four first terms, we have
 
