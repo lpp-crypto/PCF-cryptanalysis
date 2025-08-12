@@ -73,7 +73,8 @@ In this context, the main goal of the designers of such primitives is to identif
 In modern symmetric cryptography, PRFs are usually not intended to work for any block size $n$. Instead, the input and output size are fixed, and while the security definition also relies on a game, it differs in a crucial way: there is no asymptotic reasoning, we instead explicitly upper-bound the probability of success of a distinguishing algorithm $\distinguisher$ that is allowed at most $q$ queries to the function under scrutiny.
 
 \begin{definition}[PRF security]
-Let $n$ and $k$ be positive integers. Let $\{F_K\}_{K \in \Z_2^k}$ be a keyed function family with $F_K : \Z_2^n \to \Z_2^n$. We say that $F$ \cb{c'est $F$ ou $F_K$ ici ?} achieves $(q,T,\varepsilon)$-PRF security if for any distinguisher $\distinguisher$ running in time at most $T$ and making at most $q$ queries, the distinguishing advantage is at most $\varepsilon$, i.e.,
+Let $n$ and $k$ be positive integers. Let $F = \{F_K\}_{K \in \Z_2^k}$ be a keyed function family with $F_K : \Z_2^n \to \Z_2^n$. We say that $F$ %\cb{c'est $F$ ou $F_K$ ici ?}
+ achieves $(q,T,\varepsilon)$-PRF security if for any distinguisher $\distinguisher$ running in time at most $T$ and making at most $q$ queries, the distinguishing advantage is at most $\varepsilon$, i.e.,
 \[
 \left| \Pr\left[\distinguisher^{F_K} = 1 \right] - \Pr\left[\distinguisher^{\mathcal{R}} = 1 \right] \right| \leq \varepsilon,
 \]
@@ -166,5 +167,5 @@ Our aim in this Systematization of Knowledge (SoK) paper is to describe \emph{sh
 \url{https://lien-vers-le-git-avec-les-implems}
 \end{center}
 to simplify the task of future cryptanalysts.
-
+\gc{DOn't forget to add ^^}
 

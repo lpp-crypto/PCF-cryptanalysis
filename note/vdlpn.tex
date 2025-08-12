@@ -11,8 +11,9 @@ In this section, we introduce the {\sf VDLPN} design. While we provide a direct 
 The {\sf VDLPN} design was proposed by Boyle, Couteau, Gilboa, Ishai, Kohl, and Scholl in 2020~\cite{vdlpn}. The main candidate introduced in their work, that we will refer to as {\sf VDLPN} (for \emph{variable-density learning parity with noise}), is defined as follows:
 
 \begin{equation} \label{eq:vdlpn_orig}
-    F_k(x) = \bigoplus_{i=1}^D \bigoplus_{j=1}^w \prod_{\ell=1}^i \left(x_{i,j,\ell} \oplus k_{i,j,\ell}\right),
+    F_k(x) := \bigoplus_{i=1}^D \bigoplus_{j=1}^w \prod_{\ell=1}^i \left(x_{i,j,\ell} \oplus k_{i,j,\ell}\right),
 \end{equation}
+
 where $D$ and $w$ are parameters that depend on the desired security level $\lambda$.
 
 An interesting observation is that this function can also be interpreted as a sum of \emph{triangular functions}. Given a sequence of variables $ z = (z_1, z_2, z_3, \dots) $, a triangular function is defined as:
@@ -71,17 +72,18 @@ F^*_k(x) = \bigoplus_{j = 1}^2 (x_{j,1} \oplus k_{j,1}) \oplus (x_{j,1}\oplus k_
 
 While~\cite{FOCS:BCGIKS20} provides a detailed preliminary security analysis of {\sf VDLPN}, it is purely asymptotic. Couteau and Ducros~\cite{PKC:CouDuc23} revisited the original analysis of~\cite{FOCS:BCGIKS20} to obtain more concrete bounds achieving provable security guarantees against certain classes of attacks. In the course of refining these bounds, they suggested a variant of the original design, dubbed {\sf VDLPN}$'$, that enjoys the same applications but comes with much tighter security arguments. Intuitively, this is achieved by shaving the first few terms of the XOR $\bigoplus_{i=1}^D$ and replacing them with a random inner product with the key; this circumvent corner cases of the security analysis that caused the bounds to become loose due to bad events that had significant probability of ocurring at the lower levels. Concretely, {\sf VDLPN}$'$ is defined as follows:
 \yr{TODO: problème de définition ici à travailler. Je comprends pas trop d'ailleurs. line 1120, equation 5, the variables $x_{0,i}, k_{0,i}$ are not defined. Also, the second coordinate of $x = x_{j,l}\in Z_{w\times D}$ is in $D$, which is much smaller than r in table 4. Using the index i in $x_{0,i}$ makes it unclear. On a le problème en équation 6 aussi non ?}
+\gc{Je vois pas le problème. Les $x_{0,i}$ et $k_{0,i}$ sont simplement $r$ bits aléatoires additionnels. Ils n'ont pas de rapport avec les $x_{j,\ell}$ qui sont pris dans $\Z_{w\times D}$, parce que les indices $j$ et $\ell$ commencent à 1. J'ai rajouté une petite explication et changé l'indice $i$ en $m$ pour séparer visuellement (mais c'est mathématiquement identique puisque $i$ est une variable locale).}
 \begin{equation} \label{eq:vdlpn*}
-    F_k(x) = \bigoplus_{i=1}^{r} x_{0,i}\cdot k_{0,i} \oplus \bigoplus_{i=5}^D \bigoplus_{j=1}^w \prod_{\ell=1}^i \left(x_{i,j,\ell} \oplus k_{i,j,\ell}\right),
+    F_k(x) = \bigoplus_{m=1}^{r} x_{0,m}\cdot k_{0,m} \oplus \bigoplus_{i=5}^D \bigoplus_{j=1}^w \prod_{\ell=1}^i \left(x_{i,j,\ell} \oplus k_{i,j,\ell}\right),
 \end{equation}
-where $D$ and $w$ are parameters that depend on the desired security level $\lambda$, and $r = h(15/2^D)\cdot 2^D + \secpar$ ($h(x) = -x\log x (1-x)\log(1-x)$ denotes the binary entropy function). 
+where the $(x_{0,m}, k_{0,m})$ are $2r$ additional random bits sampled as part of the input $x$ and key $K$ respectively (that is, $x = (x_{0,1}, \cdots, x_{0,r}, (x_{i,j,\ell})_{i\in[5,D], j\in[1,w],\ell\in[1,i]})$, and $k$ has an identical distribution), $(D,w)$ are parameters that depend on the desired security level $\lambda$, and $r = h(15/2^D)\cdot 2^D + \secpar$ ($h(x) = -x\log x (1-x)\log(1-x)$ denotes the binary entropy function). 
 
 The candidate {\sf VDLPN}$'$ also admits a similar low-complexity variant as {\sf VDLPN}, that we denote by {{\sf VDLPN}$'$}$^*$, where the triangular functions are replaced with ``shaved'' somewhat triangular functions. Denoting
 \[T'_5(z) = z_1z_2z_3z_4z_5 \oplus z_1z_2z_3z_4z_5z_6 \oplus \cdots,\]
 that is, the function $T'$ stripped of its four first terms, we have
 
 \begin{equation} \label{eq:vdlpn*_low}
-    F_k(x) = \bigoplus_{i=1}^{r} x_{0,i}\cdot k_{0,i} \oplus \bigoplus_{j=1}^w \prod_{\ell=1}^i T'_5(X_j \oplus K_j).
+    F_k(x) = \bigoplus_{m=1}^{r} x_{0,m}\cdot k_{0,m} \oplus \bigoplus_{j=1}^w \prod_{\ell=1}^i T'_5(X_j \oplus K_j).
 \end{equation}
 
 \subsection{Targets for Cryptanalysis}
@@ -110,7 +112,7 @@ $r$ & $D$ &  $w$ & $N = 2^D$\\
 691 & 40 & 461 & $2^{40}$\\
 \bottomrule
 \end{tabular}
-\caption{\label{tab:vdlpn-param}Parameter sets for the {\sf VDLPN}, {\sf VDLPN}$^*$, {\sf VDLPN}$'$ and {{\sf VDLPN}$'$}$^*$ shallow wPRFs, intended as targets for cryptanalysis at the $\secpar = 128$ security level. The parameter $r$ is used only for {\sf VDLPN}$'$.}
+\caption{\label{tab:vdlpn-param}Parameter sets for the {\sf VDLPN}, {\sf VDLPN}$^*$, {\sf VDLPN}$'$ and {{\sf VDLPN}$'$}$^*$ shallow wPRFs, intended as targets for cryptanalysis at the $\secpar = 128$ security level. The parameter $r$ is used only for {\sf VDLPN}$'$. Parameters taken from~\cite{PKC:CouDuc23} and chosen to provably resist attacks from the linear test framework.}
 \end{table}
 
 \subsection{Algorithmic Description}
