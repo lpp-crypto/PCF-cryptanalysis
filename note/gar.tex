@@ -157,22 +157,25 @@ For constructions based on \textsf{XOR-MAJ} predicates, several parameter sets h
 All these parameter sets are summarized in Table~\ref{tab:paramgar}.
 
 \begin{table}[!ht]
-\centering
-\begin{tabular}{cccc}
-\toprule
-Seed size ($n$) & Stretch ($\mathsf{s}$) & Predicate ($P$)& Reference\\
-\midrule
-1024 & 1.02 & $P_5$ & \cite{DBLP:journals/tit/YangGJL22} \\
-2048 & 1.10 & $P_5$ & \cite{DBLP:journals/tit/YangGJL22} \\
-4096 & 1.19 & $P_5$ & \cite{DBLP:journals/tit/YangGJL22} \\
-8192 & 1.19 & $P_5$ & \cite{DBLP:conf/eurocrypt/AgarwalBBS25} \\
-1024 & 2 & $\mathsf{XOR}_4\textsf{-}\mathsf{MAJ}_7$ & \cite{DBLP:conf/eurocrypt/AgarwalBBS25} \\
-512 & 4.5 & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \cite{EC:BCMPR24, EPRINT:FLLL24} \\
-894 & 3.4 & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \cite{AC:CDDKS24} \\
-2048 & 3 & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \cite{AC:CDDKS24} \\
-\bottomrule
-\end{tabular}
-\caption{\label{tab:paramgar}Challenge parameter sets for Goldreich's PRG targeting a 128-bit security level.}
+  \centering
+  \begin{tabular}{cccc}
+    \toprule
+    Seed size ($n$) & Stretch ($\mathsf{s}$) & Predicate ($P$)& Reference\\
+    \midrule
+    1024 & 1.02 & $P_5$ & \multirow{3}{*}{\cite{DBLP:journals/tit/YangGJL22}} \\
+    2048 & 1.10 & $P_5$ &  \\
+    4096 & 1.19 & $P_5$ &  \\
+    \midrule
+    8192 & 1.19 & $P_5$ & \multirow{2}{*}{\cite{DBLP:conf/eurocrypt/AgarwalBBS25}} \\
+    1024 & 2 & $\mathsf{XOR}_4\textsf{-}\mathsf{MAJ}_7$ &  \\
+    \midrule
+    512 & 4.5 & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \cite{EC:BCMPR24, EPRINT:FLLL24} \\
+    \midrule
+    894 & 3.4 & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \multirow{2}{*}{\cite{AC:CDDKS24}} \\
+    2048 & 3 & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ &  \\
+    \bottomrule
+  \end{tabular}
+  \caption{\label{tab:paramgar}Challenge parameter sets for Goldreich's PRG targeting a 128-bit security level.}
 \end{table}
 
 \subsection{Algorithmic Description}
