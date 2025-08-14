@@ -19,18 +19,18 @@
       & &  & $\Z_2^{320}$ & $(\Z_2^{320})^{320}$ & & & \\
       \midrule
       % Goldreich
-       & \multirow{8}{*}{(T)FHE} & \multirow{3}{*}{\cite{DBLP:journals/tit/YangGJL22}} & $(A_5^{1024})^{1176}$ & $\{0,1\}^{1024}$ & $\{0,1\}^{1176}$ & \multirow{3}{*}{$P_5$} & \multirow{7}{*}{linearization,} \\ % m=n^1.02
+       & \multirow{8}{*}{(T)FHE} & \multirow{3}{*}{\cite{DBLP:journals/tit/YangGJL22}} & $(A_5^{1024})^{1176}$ & $\Z_2^{1024}$ & $\Z_2^{1176}$ & \multirow{3}{*}{$P_5$} & \multirow{7}{*}{linearization,} \\ % m=n^1.02
       & & 
-      & $(A_5^{2048})^{4389}$ & $\{0,1\}^{2048}$ & $\{0,1\}^{4389}$ & & \multirow{7}{*}{algebraic} \\ % m=n^1.10
-      & & & $(A_5^{4096})^{19893}$ & $\{0,1\}^{4096}$ & $\{0,1\}^{19893}$ & & \\ % m=n^1.19
+      & $(A_5^{2048})^{4389}$ & $\Z_2^{2048}$ & $\Z_2^{4389}$ & & \multirow{7}{*}{algebraic} \\ % m=n^1.10
+      & & & $(A_5^{4096})^{19893}$ & $\Z_2^{4096}$ & $\Z_2^{19893}$ & & \\ % m=n^1.19
       \cline{3-7}
-      Goldreich's & & \multirow{2}{*}{\cite{DBLP:conf/eurocrypt/AgarwalBBS25}} & $(A_5^{8192})^{45387}$ & $\{0,1\}^{8192}$ & $\{0,1\}^{45387}$ & $P_5$ & \\ % m=n^1.19
-      PRG & & & $(A_5^{1024})^{2^{20}}$ & $\{0,1\}^{1024}$ & $\{0,1\}^{2^{20}}$ & $\mathsf{XOR}_4\textsf{-}\mathsf{MAJ}_7$ &  \\ % m=n^2
+      Goldreich's & & \multirow{2}{*}{\cite{DBLP:conf/eurocrypt/AgarwalBBS25}} & $(A_5^{8192})^{45387}$ & $\Z_2^{8192}$ & $\Z_2^{45387}$ & $P_5$ & \\ % m=n^1.19
+      PRG & & & $(A_5^{1024})^{2^{20}}$ & $\Z_2^{1024}$ & $\Z_2^{2^{20}}$ & $\mathsf{XOR}_4\textsf{-}\mathsf{MAJ}_7$ &  \\ % m=n^2
       \cline{3-7}
-      & & \cite{EC:BCMPR24, EPRINT:FLLL24} & $(A_5^{512})^{2^{40.5}}$ & $\{0,1\}^{512}$ & $\{0,1\}^{2^{40.5}}$ & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \\ % m=n^4.5
+      & & \cite{EC:BCMPR24, EPRINT:FLLL24} & $(A_5^{512})^{2^{40.5}}$ & $\Z_2^{512}$ & $\Z_2^{2^{40.5}}$ & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \\ % m=n^4.5
       \cline{3-7}
-      & & \multirow{2}{*}{\cite{AC:CDDKS24}} & $(A_5^{894})^{2^{33.33}}$ & $\{0,1\}^{894}$ & $\{0,1\}^{2^{33.33}}$ & \multirow{2}{*}{$\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$} & \\ % m=n^3.4
-      & & & $(A_5^{2048})^{2^{33}}$ & $\{0,1\}^{2048}$ & $\{0,1\}^{2^{33}}$ & & \\ % m=n^3
+      & & \multirow{2}{*}{\cite{AC:CDDKS24}} & $(A_5^{894})^{2^{33.33}}$ & $\Z_2^{894}$ & $\Z_2^{2^{33.33}}$ & \multirow{2}{*}{$\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$} & \\ % m=n^3.4
+      & & & $(A_5^{2048})^{2^{33}}$ & $\Z_2^{2048}$ & $\Z_2^{2^{33}}$ & & \\ % m=n^3
       \midrule
       \multirow{1}{*}{VDLPN} & MPC & \cite{PKC:CouDuc23} & $\Z_2^{18840}$ & $\Z_2^{18840}$ & $\Z_2$ & $\land$ & Synd. dec. \\ % w=461, D=40 for a data complexity at least equal to 2^40
       \midrule
