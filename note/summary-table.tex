@@ -4,38 +4,44 @@
   \centering
   {
     \renewcommand\arraystretch{2.1}
-    \setlength\tabcolsep{0.3em}
+    \setlength\tabcolsep{0.4em}
     \tiny
-    \begin{tabular}{ccc|ccc|cc}
+    \begin{tabular}{ccc|ccc|c|cc}
       \toprule
-      \multicolumn{3}{c|}{Description} & \multicolumn{3}{c|}{Spaces}  & \multirow{2}{*}{NL op.} &  \multirow{2}{*}{Best attack} \\
-      Name & Use Case & Ref. & Input & Key & Output \\
+      \multicolumn{3}{c|}{Description} & \multicolumn{3}{c|}{Spaces} & max & \multirow{2}{*}{NL op.} &  \multirow{2}{*}{Best attack} \\
+      Name & Use Case & Ref. & Input & Key & Output & data & \\
       \midrule
       % Alternating Moduli
       \multirow{2}{*}{Alternating} & \multirow{3}{*}{MPC}
-      & \cite{TCC:BIPSW18} & $\Z_2^{384}$\dead & $\Z_2^{384}$\dead & $\Z_2$ & \multirow{3}{*}{$\mod$} & \multirow{3}{*}{ad hoc} \\
-      \cline{3-6}
-      \multirow{2}{*}{Moduli} & &  \multirow{2}{*}{\cite{C:DGHIKS21}} & $\Z_2^{256}$\aggressive & $(\Z_2^{256})^{256}$\aggressive & \multirow{2}{*}{$\Z_2^{81}$} &  & \\
-      & &  & $\Z_2^{320}$ & $(\Z_2^{320})^{320}$ & & & \\
+      & \multirow{2}{*}{\cite{TCC:BIPSW18}} & $\Z_2^{384}$\dead & $\Z_2^{384}$\dead & \multirow{2}{*}{$\Z_2$} & \multirow{2}{*}{$2^{44.5}$} & \multirow{4}{*}{$\mod$} & \multirow{4}{*}{ad hoc} \\
+      & & &  $\Z_2^{768}$ & $\Z_2^{768}$ & & & & \\
+      \cline{3-7}
+      \multirow{2}{*}{Moduli} & &  \multirow{2}{*}{\cite{C:DGHIKS21}} & $\Z_2^{256}$\aggressive & $(\Z_2^{256})^{256}$\aggressive & \multirow{2}{*}{$\Z_2^{81}$}  & \multirow{2}{*}{$2^{40}$} &  & \\
+      & &  & $\Z_2^{320}$ & $(\Z_2^{320})^{320}$  &  & & \\
       \midrule
       % Goldreich
-       & \multirow{8}{*}{(T)FHE} & \multirow{3}{*}{\cite{DBLP:journals/tit/YangGJL22}} & $(A_5^{1024})^{1176}$ & $\Z_2^{1024}$ & $\Z_2^{1176}$ & \multirow{3}{*}{$P_5$} & \multirow{7}{*}{linearization,} \\ % m=n^1.02
-      & & 
-      & $(A_5^{2048})^{4389}$ & $\Z_2^{2048}$ & $\Z_2^{4389}$ & & \multirow{7}{*}{algebraic} \\ % m=n^1.10
-      & & & $(A_5^{4096})^{19893}$ & $\Z_2^{4096}$ & $\Z_2^{19893}$ & & \\ % m=n^1.19
-      \cline{3-7}
-      Goldreich's & & \multirow{2}{*}{\cite{DBLP:conf/eurocrypt/AgarwalBBS25}} & $(A_5^{8192})^{45387}$ & $\Z_2^{8192}$ & $\Z_2^{45387}$ & $P_5$ & \\ % m=n^1.19
-      PRG & & & $(A_5^{1024})^{2^{20}}$ & $\Z_2^{1024}$ & $\Z_2^{2^{20}}$ & $\mathsf{XOR}_4\textsf{-}\mathsf{MAJ}_7$ &  \\ % m=n^2
-      \cline{3-7}
-      & & \cite{EC:BCMPR24, EPRINT:FLLL24} & $(A_5^{512})^{2^{40.5}}$ & $\Z_2^{512}$ & $\Z_2^{2^{40.5}}$ & $\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$ & \\ % m=n^4.5
-      \cline{3-7}
-      & & \multirow{2}{*}{\cite{AC:CDDKS24}} & $(A_5^{894})^{2^{33.33}}$ & $\Z_2^{894}$ & $\Z_2^{2^{33.33}}$ & \multirow{2}{*}{$\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$} & \\ % m=n^3.4
-      & & & $(A_5^{2048})^{2^{33}}$ & $\Z_2^{2048}$ & $\Z_2^{2^{33}}$ & & \\ % m=n^3
+      \multirow{8}{*}{Goldreich's} & \multirow{9}{*}{(T)FHE} & \multirow{3}{*}{\cite{DBLP:journals/tit/YangGJL22}} & $A_5^{1024}$ & $\Z_2^{1024}$ & $\Z_2$ & $1176$ & \multirow{3}{*}{$P_5$} & \multirow{8}{*}{linearization,} \\ % m=n^1.02
+      \multirow{8}{*}{PRG} & & & $A_5^{2048}$ & $\Z_2^{2048}$ & $\Z_2$ & $4389$ & &  \multirow{8}{*}{algebraic} \\ % m=n^1.10
+      & & & $A_5^{4096}$ & $\Z_2^{4096}$ & $\Z_2$ & $19893$ & \\ % m=n^1.19
+      \cline{3-8}
+       & & \multirow{2}{*}{\cite{DBLP:conf/eurocrypt/AgarwalBBS25}} & $A_5^{8192}$ & $\Z_2^{8192}$ & $\Z_2$ & $45387$ & $P_5$ & \\ % m=n^1.19
+      & & & $A_5^{1024}$ & $\Z_2^{1024}$ & $\Z_2$ & $2^{20}$ & $\mathsf{XOR}_4\textsf{-}\mathsf{MAJ}_7$ &  \\ % m=n^2
+      \cline{3-8}
+      & & \cite{EC:BCMPR24} & \multirow{2}{*}{$A_5^{512}$} & \multirow{2}{*}{$\Z_2^{512}$} & \multirow{2}{*}{$\Z_2$} & \multirow{2}{*}{$2^{40.5}$} & \multirow{2}{*}{$\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$} & \\ % m=n^4.5
+      & & \cite{EPRINT:FLLL24} & & & & & \\
+      \cline{3-8}
+      & & \multirow{2}{*}{\cite{AC:CDDKS24}} & $A_5^{894}$ & $\Z_2^{894}$ & $\Z_2$ & $2^{33.33}$ & \multirow{2}{*}{$\mathsf{XOR}_{10}\textsf{-}\mathsf{MAJ}_{64}$} & \\ % m=n^3.4
+      & & & $A_5^{2048}$ & $\Z_2^{2048}$ & $\Z_2$ & $2^{33}$ & & \\ % m=n^3
       \midrule
-      \multirow{1}{*}{VDLPN} & MPC & \cite{PKC:CouDuc23} & $\Z_2^{18840}$ & $\Z_2^{18840}$ & $\Z_2$ & $\land$ & Synd. dec. \\ % w=461, D=40 for a data complexity at least equal to 2^40
-      \midrule
+      \multirow{2}{*}{{\sf VDLPN},} & \multirow{5}{*}{MPC} & \multirow{5}{*}{\cite{PKC:CouDuc23}}
+      & $\Z_2^{5860}$ & $\Z_2^{5860}$ & $\Z_2$ & $2^{20}$ & \multirow{5}{*}{$\land$} & \multirow{6}{*}{Syndrome} \\ % w=293, D=20
+      \multirow{2}{*}{{\sf VDLPN}$'$,} & & & $\Z_2^{8400}$ & $\Z_2^{8400}$ & $\Z_2$ & $2^{25}$ & & \multirow{6}{*}{decoding} \\ % w=336, D=25
+      \multirow{2}{*}{{\sf VDLPN}$^*$,} & & & $\Z_2^{11400}$ & $\Z_2^{11400}$ & $\Z_2$ & $2^{30}$ & &  \\ % w=380, D=30
+      \multirow{2}{*}{{\sf VDLPN}$'^*$} & & & $\Z_2^{14735}$ & $\Z_2^{14735}$ & $\Z_2$ & $2^{35}$ & &  \\ % w=421, D=35
+      & & & $\Z_2^{18840}$ & $\Z_2^{18840}$ & $\Z_2$ & $2^{40}$ & &  \\ % w=461, D=40
+      \cline{1-8}
       \multirow{2}{*}{EALPN} & \multirow{2}{*}{MPC} & \multirow{2}{*}{\cite{C:BCGIKR22}}
-      & $(\Z_{2^{40.9}}^* \times \Z_{85}^*)^{142}$ & $(\Z_{2^{40.9}}^*)^{142}$ & \multirow{2}{*}{$\Z_2$} & \multirow{2}{*}{$<$} & \multirow{2}{*}{Synd. dec.} \\ % t=85, l=3log(5N)=142, w=5N/t=2^40.9, o
+      & $(\Z_{2^{40.9}}^* \times \Z_{85}^*)^{142}$ & $(\Z_{2^{40.9}}^*)^{142}$ & \multirow{2}{*}{$\Z_2$} & \multirow{2}{*}{$2^{45}$} & \multirow{2}{*}{$<$} & \\ % t=85, l=3log(5N)=142, w=5N/t=2^40.9, o
       & & &  $(\Z_{2^{38}}^* \times \Z_{660}^*)^{11}$\aggressive & $(\Z_{2^{38}}^*)^{11}$\aggressive & & \\ % t=660, l=11, w=5N/t=2^38
       \bottomrule 
     \end{tabular}
