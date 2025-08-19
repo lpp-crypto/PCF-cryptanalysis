@@ -22,7 +22,7 @@ In its original formulation, $F_k$ is defined as follows:
 
 As we can see, we first compute the inner product between the key $k$ and the input $x$. Then, this inner product is evaluated both modulo 2 and modulo 3, and the two results are finally added modulo 2 to produce the final result.  
 
-\paragraph{Alternative representation.} The above construction can be implemented by a depth-2 circuit: %$\mathsf{ACC}^0$ circuit:\lp{il faut qu'on définisse cette notion, ou alors qu'on vire ce commentaire}
+\paragraph{Alternative representation.} The above construction can be implemented by a depth-2 circuit: 
 the first layer of this circuit consists of a $\mathsf{MOD}_2$ gate and a $\MOD_3$ gate, both connected to all inputs $x_i$ such that $k_i = 1$ (the $\MOD_3$ gate is additionally connected to a ``constant-2'': it checks whether $\sum_i k_ix_i+2$ is divisible by $3$), followed by a second layer with a single two-input $\MOD_2$-gate (by inspection, $F_k(x) = 1$ if and only if $\sum_i k_ix_i$ is $0 \bmod 2$ and $1 \bmod 3$, or $\sum_i k_ix_i$ is $1 \bmod 2$ and 0 or $2 \bmod 3$).
 
 However, as the designers point out, the above description can have the following alternative representation, that stems from the observation that $F_k(x) = 1$ if and only if the inner product $\langle k, x \rangle  \mod{6} = \sum_{i = 0}^{n-1} k_i x_i \mod{6} \in \{3,4,5\}$. For this, denote by $\lfloor \cdot \rceil_2 : \Z_6 \rightarrow \Z_2$ the rounding operator defined as:
@@ -45,7 +45,7 @@ While the moduli $p$ and $q$ can, \textit{a priori}, be chosen arbitrarily (as l
  
 \subsection{Variants and Generalizations}
 
-The alternating moduli design paradigm quickly gained popularity as an approach for constructing weak shallow PRFs. Several subsequent works proposed generalized or alternative versions of the construction presented in the previous section. In this part, we describe two of the most notable and interesting variants.
+The alternating moduli design paradigm quickly gained popularity as an approach for constructing weak shallow PRFs. Several subsequent works proposed generalized or alternative versions of the construction presented in the previous subsection. In this part, we describe two of the most notable and interesting variants.
 
 \subsubsection{A Generalized Construction~\cite{C:DGHIKS21}}
 \label{sec:bipsw_alt1}
@@ -89,7 +89,7 @@ As with the previous variants, the authors claim that the moduli 2 and 3 can be 
 
 The core idea behind this generalization is to allow for a better mixing of the terms $k_i x_i$. In the previous alternating moduli constructions, these terms were combined in a highly structured manner. For example, in the construction from~\cite{C:DGHIKS21}, the matrix-vector product $Kx$ mixes  the key and input variables in a very regular  way. In contrast, the use of a random matrix $A$ in this construction results in random linear combinations over the variables composing the shared input vector $k \odot x$. As a result, each product term $k_i x_i$ is reused multiple times throughout the computation,  leading to a higher diffusion. On the other hand, as we briefly discuss in the next subsection, combining the key and input variables using an AND operation introduces a strong bias in the output, which can significantly weaken the security of the construction.
 
-The authors also propose a variant, named the \emph{reversed-moduli} or $(\mathbb{F}_3, \mathbb{F}_2)$ variant,  that produces binary output. For this variant, the key would be an element of $\Z_3^n$, but in practice it is seen as an element of $\Z_2^n$. In this version, the vector $z$ is first interpreted as an element of $\Z_3^n$. The function output is then computed as:
+The authors also propose a variant, named the \emph{reversed-moduli} or $(\mathbb{F}_3, \mathbb{F}_2)$-variant,  that produces binary output. For this variant, the key would be an element of $\Z_3^n$, but in practice it is seen as an element of $\Z_2^n$. In this version, the vector $z$ is first interpreted as an element of $\Z_3^n$. The function output is then computed as:
 \[
 F_k(x) = B(Az \bmod 3) \bmod 2 \in \Z_2^t~,
 \]

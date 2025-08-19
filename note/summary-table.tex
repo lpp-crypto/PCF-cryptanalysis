@@ -3,9 +3,10 @@
   \newcommand\aggressive{{\textcolor{orange}\ddag}}
   \centering
   {
-    \renewcommand\arraystretch{2.1}
-    \setlength\tabcolsep{0.4em}
-    \tiny
+    \renewcommand\arraystretch{1.8}   % less vertical spacing
+    \setlength\tabcolsep{0.25em}      % tighter column padding
+    \scriptsize                      % larger than tiny
+    \resizebox{\textwidth}{!}{       % scale to fit width
     \begin{tabular}{ccc|ccc|c|cc}
       \toprule
       \multicolumn{3}{c|}{Description} & \multicolumn{3}{c|}{Spaces} & max & \multirow{2}{*}{NL op.} &  \multirow{2}{*}{Best attack} \\
@@ -43,8 +44,10 @@
       \multirow{2}{*}{EALPN} & \multirow{2}{*}{MPC} & \multirow{2}{*}{\cite{C:BCGIKR22}}
       & $(\Z_{2^{40.9}}^* \times \Z_{85}^*)^{142}$ & $(\Z_{2^{40.9}}^*)^{142}$ & \multirow{2}{*}{$\Z_2$} & \multirow{2}{*}{$2^{45}$} & \multirow{2}{*}{$<$} & \\ % t=85, l=3log(5N)=142, w=5N/t=2^40.9, o
       & & &  $(\Z_{2^{38}}^* \times \Z_{660}^*)^{11}$\aggressive & $(\Z_{2^{38}}^*)^{11}$\aggressive & & \\ % t=660, l=11, w=5N/t=2^38
+
       \bottomrule 
     \end{tabular}
+    } % end resizebox
   }
   \caption{A summary of the wPRFs we present. The ``\dead'' symbol means the primitive is now considered unsafe, while ``\aggressive'' indicates an ``aggressive'' set of parameters. The data limit for all such functions is at least $2^{40}$, and the intended security level at least 128 bits. ``NL op.'' refers to the non-linear operation.}
   \label{tab:summary}
