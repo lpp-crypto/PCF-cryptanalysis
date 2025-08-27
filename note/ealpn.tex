@@ -14,7 +14,7 @@ F_k(x) = \bigoplus_{i=1}^\ell \GT(x_i, k_{x'_i}),
 where $\ell$ and $t$ are parameters that depend on the desired security level $\secpar$, and $x = (x_i,x'_i)_{i \leq \ell}$ is sampled from $([1,5N/t]\times [1,t])^\ell$. We assume that $N$ and $\ell$ are chosen such that $t$ divides $5N$ and $\ell$ divides $t$. We let $w = 5N/t$.
 
 \subsection{Security Arguments and Cryptanalysis}
-%!TODO! Write about security arguments and cryptanalysis
+
 
 The presentation of {\sf EALPN} in this work differs significantly from the original description given in~\cite{C:BCGIKR22}. Before outviewing the security arguments for {\sf EALPN}, we first clarify this discrepancy—highlighting that the alternative perspective adopted in~\cite{C:BCGIKR22} is particularly helpful for understanding the security rationale.
 
@@ -22,12 +22,12 @@ The presentation of {\sf EALPN} in this work differs significantly from the orig
 \paragraph{Equivalence with the original presentation.} The original description of {\sf EALPN} is as follows:
 \begin{itemize}
 	\item Pick a random \emph{$\ell$-sparse} matrix $H \in \F_2^{N\times 5N}$ (i.e., each row of $H$ is a random weight-$\ell$ vector\footnote{To simplify certain security arguments, rows are actually sampled from a Bernoulli distribution with parameter $p = \ell / 5N$, where each entry is independently set to $1$ with probability $p$, rather than being drawn as fixed-weight vectors. However,~\cite[Section~3.4]{C:BCGIKR22} explicitly conjectures that both variants offer equivalent security guarantees. The fixed-weight variant remains the most convenient for the target application discussed in Section~\ref{subsubsec:fss}}.
-	\item Sample a weight-$t$ \emph{regular noise vector} $e$ as a concatenation of $t$ length-$w$ random unit vectors, that is $e$ is drawn at random from $\{1,2,4,\ldots,2^{w-1}\}^t$, and each integer $2^i$ is viewed as a unit vector over $\bit^w$ via its binary encoding. %\yr{the set if we represent as integers, that are those of Hamming weight 1, see line 1180 in reviews}.
+	\item Sample a weight-$t$ \emph{regular noise vector} $e$ as a concatenation of $t$ length-$w$ random unit vectors, that is $e$ is drawn at random from $\{1,2,4,\ldots,2^{w-1}\}^t$, and each integer $2^i$ is viewed as a unit vector over $\bit^w$ via its binary encoding. 
 	\item Define $\Delta_{5N}$ to be the $5N$-by-$5N$ matrix filled with ones on and below the main diagonal.
 	\item The {\sf EALPN} assumption states that no efficient adversary can distinguish $(H, H\cdot \Delta_{5N} \cdot e)$ from $(H, y)$ where $y \sample \F_2^{N}$.
 \end{itemize}
 
-With this alternative view, {\sf EALPN} becomes the problem of decoding the \emph{syndrome of a code} whose parity-check matrix is $H\cdot \Delta_{5N}$ and where the codeword is pertubated with a regular weight-$w$ noise $e$. We first explain why this formulation is equivalent to the formula given in Section~\ref{subsec:original-reference-ealpn}. First, observe that the left-product by $\Delta_{5N}$ is the \emph{accumulation} function, that maps $(x_1, \cdots, x_{5N})$ to $(x_1, x_1\oplus x_2, x_1\oplus x_2 \oplus x_3, \cdots)$. As $e$ is a weight-$t$ regular vector (i.e., a concatenation of $t$ unit vectors), $\Delta_{5N}\cdot e$ is an alternation of \emph{bands of zeroes} and \emph{bands of ones}. We can therefore rewrite the matrix equations as below: (red dots represent ones, white areas represent zeroes, light-red areas represent areas filled with ones):
+With this alternative view, {\sf EALPN} becomes the problem of decoding the \emph{syndrome of a code} whose parity-check matrix is $H\cdot \Delta_{5N}$ and where the codeword is perturbed with a regular weight-$w$ noise $e$. We first explain why this formulation is equivalent to the formula given in Section~\ref{subsec:original-reference-ealpn}. First, observe that the left-product by $\Delta_{5N}$ is the \emph{accumulation} function, that maps $(x_1, \cdots, x_{5N})$ to $(x_1, x_1\oplus x_2, x_1\oplus x_2 \oplus x_3, \cdots)$. As $e$ is a weight-$t$ regular vector (i.e., a concatenation of $t$ unit vectors), $\Delta_{5N}\cdot e$ is an alternation of \emph{bands of zeroes} and \emph{bands of ones}. We can therefore rewrite the matrix equations as below: (red dots represent ones, white areas represent zeroes, light-red areas represent areas filled with ones):
 
 
 
@@ -113,7 +113,7 @@ With this alternative view, {\sf EALPN} becomes the problem of decoding the \emp
 ~\\
 %\yr{Write mathematically the light-red bands vector (once only)}
 
-In the above equation, the rightmost vector is a concatenation of vectors of the form $(0,\cdots, 0, 1\cdots, 1)$ (a string of 0's followed by a string of 1's) for every block at an odd position (the 1st, 3rd, 5th, etc, blocks), and vectors of the form $(1, \cdots, 1, 0, \cdots, 0)$ (a string of 1's followed by a string of 0's) for every block at an even position.
+In the above equation, the rightmost vector is formed by concatenating, for each block, a vector of the form $(0,\dots,0,1,\dots,1)$ (a sequence of 0’s followed by a sequence of 1’s) when the block is in an odd position (1st, 3rd, 5th, etc.), and a vector of the form $(1,\dots,1,0,\dots,0)$ (a sequence of 1’s followed by a sequence of 0’s) when the block is in an even position.
 
 The next observation is that if we take the odd-numbered blocks of $f = \Delta_{5N}\cdot e$ and \emph{turn them by 180°}, the assumption remains formally identical: indeed, we can divide each row of $H$ in a length-$5N/w$ block and flip identically the odd-numbered blocks (rewriting them right-to-left). Denoting $\tilde f$ and $\tilde H$ the resulting vector and matrix respectively, we have $H\cdot f = \tilde H \cdot \tilde f$. But since the rows of $H$ are random weight-$\ell$ vectors, the distribution induced on $\tilde H$ is identical to the original distribution of $H$. Therefore, the assumption can be equivalently stated as: $(H, H\cdot \tilde f)$ should be indistinguishable from $(H,y\sample \F_2^N)$. Now, representing this last version visually:
 
