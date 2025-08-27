@@ -68,8 +68,6 @@ where $B \in \Z_2^{t \times m}$ is a public compression matrix, which can be cho
 
 It is straightforward to verify that this construction is a generalization of the alternative scheme proposed in~\cite{TCC:BIPSW18}. Specifically, the original candidate described in the previous section corresponds to a special case of the construction in~\cite{C:DGHIKS21}, obtained by setting $m = 1$, $t = 1$, and choosing $B = 1$.
 
-%The authors of~\cite{C:DGHIKS21} also argue that the construction can be further generalized by replacing the moduli 2 and 3 with any distinct prime moduli $p$ and $q$.
-
 
 
 \subsubsection{A Further Generalization~\cite{C:APRR24}}
@@ -96,7 +94,6 @@ F_k(x) = B(Az \bmod 3) \bmod 2 \in \Z_2^t~,
 where $A \in \Z_3^{m \times n}$ and $B \in \Z_2^{t \times m}$.
 
 
-%parameters
 
 \subsection{Security Arguments and Cryptanalysis}
 \label{sec:bipsw_cryptanalysis}
@@ -116,7 +113,6 @@ Recently, the security of the generalized construction introduced in~\cite{C:APR
 The original alternating moduli construction~\cite{TCC:BIPSW18} has been incorporated into at least two cryptographic protocols, each proposing a concrete, and basically identical, set of parameters. The approach of~\cite{EC:BCMPR24} for constructing Pseudorandom Correlation Functions (PCFs) for Oblivious Transfer (OT) correlations suggests using the construction with a key and input length of $n = 770$ to achieve a security level of $\lambda = 128$ bits. The choice of $n$ was guided by taking into account the attacks of~\cite{PKC:CCKK21} and~\cite{JMN23}. Similarly, the framework proposed in~\cite{AC:CDDKS24} recommends using the same construction, but with a key and input length of $n = 768$ instead of $n = 770$, for the simple reason that 768 is a multiple of 32 and therefore more suitable for software implementations.
 
 For other types of applications, the generalized construction from~\cite{C:DGHIKS21} has been used in re-keying protocols, such as those proposed in~\cite{TCHES:DMMS21} and~\cite{C:HMMRSU23}. The core idea behind these approaches is to use the secret matrix as a master key, generate randomness within a secure chip, and treat the output as a secret ephemeral symmetric key—even in the presence of an attacker who can observe linear leakages from the output. The motivation is that masking the matrix-vector product is relatively efficient, especially when working over the prime field~$\mathbb{F}_p$ with $p = 2^{31} - 1$. In the proposal from~\cite{TCHES:DMMS21}, the authors argue that modulus~3 is not a suitable choice, and instead suggest using a $4 \times 4$ matrix over~$\mathbb{F}_{2^{31}-1}$. However, the security of this approach depends on the assumed leakage model, and under certain models it may not be secure. In~\cite{C:HMMRSU23}, the authors provide a more detailed cryptanalysis by explicitly bounding the number of leakages accessible to an attacker. Their analysis supports the same parameter sets as proposed in~\cite{TCHES:DMMS21}.
-% \yr{page 424, toute fin de la section 5 de~\cite{C:HMMRSU23} dans CRYPTO 2023, pas forcément besoin de détailler, mais globalement, même paramètres, mais restriction du nombre de sample physiques d'un attaquant}
 
 
 More recently,~\cite{EC:ADDG24} introduced a novel application domain for this shallow weak PRF by combining it with the TFHE scheme~\cite{JC:CGGI20}, a fully homomorphic encryption construction based on programmable bootstrapping to reduce noise. In this context, the authors target a security level of $\lambda = 128$ bits and set $n = 256$, interpreting the key as a square matrix of dimension $n$.

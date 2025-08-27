@@ -111,7 +111,6 @@ With this alternative view, {\sf EALPN} becomes the problem of decoding the \emp
 \end{tikzpicture}
 \end{minipage}
 ~\\
-%\yr{Write mathematically the light-red bands vector (once only)}
 
 In the above equation, the rightmost vector is formed by concatenating, for each block, a vector of the form $(0,\dots,0,1,\dots,1)$ (a sequence of 0’s followed by a sequence of 1’s) when the block is in an odd position (1st, 3rd, 5th, etc.), and a vector of the form $(1,\dots,1,0,\dots,0)$ (a sequence of 1’s followed by a sequence of 0’s) when the block is in an even position.
 
@@ -150,7 +149,7 @@ The next observation is that if we take the odd-numbered blocks of $f = \Delta_{
 
 \end{tikzpicture}
 \end{center}
-Above, the vector is a now a concatenation of vectors of the form $(\vec 0, \vec 1)$ (a vector of O's concatenated with a vector of 1's). That is, compared to the previous equation, we ``reversed'' (rewrote in the reverse order) all the even-positioned block so that all blocks are now of the form $(\vec 0, \vec 1)$ instead of alternating with vectors of the form $(\vec 1, \vec 0)$. We can rewrite this matrix-vector product as follows: for each red dot in the matrix row, we look at the corresponding block of $\tilde f$ and check whether the red dot is before or after the red bar. That is, if the $i$-th red dot lands at position $x_i$ in the $x'_i$-th block, and if we denote $k_{x'_i}$ the position of the red bar in this block, we compute
+Above, the vector is a now a concatenation of vectors of the form $(\vec 0, \vec 1)$ (a vector of 0's concatenated with a vector of 1's). That is, compared to the previous equation, we ``reversed'' (rewrote in the reverse order) all the even-positioned block so that all blocks are now of the form $(\vec 0, \vec 1)$ instead of alternating with vectors of the form $(\vec 1, \vec 0)$. We can rewrite this matrix-vector product as follows: for each red dot in the matrix row, we look at the corresponding block of $\tilde f$ and check whether the red dot is before or after the red bar. That is, if the $i$-th red dot lands at position $x_i$ in the $x'_i$-th block, and if we denote $k_{x'_i}$ the position of the red bar in this block, we compute
 \[\GT(x_i, k_{x'_i})\]
 for all of the $\ell$ nonzero entries of the row of $H$. Hence, sampling a random row $h$ of $H$ amounts to sampling $\ell$ pairs $(x_i, x'_i) \sample [1,w]\times [1,t]$ and returning
 $\bigoplus_{i=1}^\ell \GT(x_i, k_{x'_i})$,
@@ -190,7 +189,6 @@ Two sets of parameters are provided for a security level of $\lambda = 128$, one
 
 
 \subsection{Algorithmic Description}
-%!TODO! write about the implementation 
 
 Algorithm~\ref{alg:ealpn} provides an algorithmic description of the {\sf EALPN} wPRF.
 

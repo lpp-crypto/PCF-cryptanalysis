@@ -34,7 +34,6 @@ A circuit class typically restricts the set of allowed gate types, and may impos
 A shallow weak PRF (wPRF) is a construction whose evaluation can be performed by a circuit of small depth. Formally, fix a class of circuits $\mathcal{C}$ and a function $s: \mathbb{N} \to \mathbb{N}$. A pair of algorithms $(\KeyGen, \Eval)$ is said to define an \emph{$s$-shallow wPRF over $\mathcal{C}$} if for every secret key $\msk$ in the range of $\KeyGen$, the function $f : x \mapsto \Eval(\msk, x)$ can be computed by a circuit in $\mathcal{C}$ of depth at most $s(|x|)$.
 
 The function $s$ expresses how the allowed circuit depth grows with the input size. For instance, if $s(n) = \lfloor\log n\rfloor$ (where $\lfloor\cdot\rfloor$ denotes rounding down), 
-%\cb{Comme $\log n$ n'est pas forcement un entier, est-il correct d'avoir défini $s: \mathbb{N} \to \mathbb{N}$ ?} 
 then the wPRF is said to be \emph{logarithmically shallow}. The notion of shallow wPRFs is relevant in contexts where parallel-time complexity is a constraint, since small-depth circuits can be computed in very few parallel steps, assuming enough computational units are available.
 
 
