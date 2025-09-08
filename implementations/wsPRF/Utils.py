@@ -1,9 +1,9 @@
 #!/usr/bin/env sage
 #-*- Python -*-
-# Time-stamp: <2025-06-02 00:43:01>
+# Time-stamp: <2025-09-08 14:19:54>
 
-from sage.all import *
-from prg import *
+
+from .Prg import *
 
 MAX_ROW_LENGTH = 80
 
