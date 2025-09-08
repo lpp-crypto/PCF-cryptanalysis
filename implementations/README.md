@@ -7,17 +7,24 @@ This folder contains our implementations of multiple weak shallow pseudo-random 
 
 The expected structures of `x` and `k` are not identical due to the inner workings of these functions. In order to handle the unusual form they may take, we also implemented our pseudo-random generators that output different types of data, from single bits to subsets of an integer interval.
 
-
 To see how to use each wsPRF, we also provide various sets of parameters for each of them in the [tests](./tests) folder, along with examples of how to setup each of them.
+
+
+Up-to-date implementation can be found on the git repository corresponding to this project on [github](https://github.com/lpp-crypto/PCF-cryptanalysis/tree/main/implementations).
+
 
 ## Installation
 
-You can `cd` to the directory containing this README file and then run the following command to install this module in your SAGE installation.
+Move using `cd` to the directory containing this README file and then run the following command to install this module in SAGE.
 
 ``` shell
 sage -pip install .
 ```
 
+
+## Usage
+
+To see how each wsPRF can used, and in particular how to instantiate them with the relevant format for the random data, you can check the corresponding tests in the [corresponding folder](./tests). 
 
 
 ## Files
