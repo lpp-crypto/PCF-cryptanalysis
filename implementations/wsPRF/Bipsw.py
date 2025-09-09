@@ -3,7 +3,7 @@
 
 
 from sage.all import *
-from utils import *
+from .Utils import *
 
 
 def scalar_product(x, y):
