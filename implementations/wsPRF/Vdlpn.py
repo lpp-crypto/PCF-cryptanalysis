@@ -20,19 +20,24 @@ def triangular(_x):
 
 
 class VDLPN:
-    def __init__(
-            self,
-            d, # the degree of the boolean function 
-            w, # the number of binary variables that are simply added
-    ):
+    def __init__(self, d, w,):
         self.d = d
         self.w = w
         
         
     def __call__(self, k, x):
-        assert len(x) == self.w
-        assert len(k) == self.w
-        xors = [x[i] ^ k[i] for i in range(0, self.w)]
-        return sum(triangular(xors[i]) for i in range(0, self.w)) % 2
+        assert len(x) == self.w * self.d**2
+        assert len(k) == self.w * self.d**2
+        y = 0
+        for i in range(0, self.d):
+            for j in range(0, self.w):
+                t = 1
+                for l in range(0, i):
+                    index = i*self.d*self.w + j*self.d + l
+                    t = t*(x[index] ^ k[index])
+            y = y ^ t
+        return y
+
+
 
     
