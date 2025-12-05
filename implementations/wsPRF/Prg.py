@@ -1,6 +1,6 @@
 #!/usr/bin/env sage
 #-*- Python -*-
-# Time-stamp: <2025-06-02 00:25:29>
+# Time-stamp: <2025-12-05 15:23:45>
 
 
 from sage.all import *
@@ -10,20 +10,16 @@ from collections import defaultdict
 
 
 class ReproducibleBytePRG:
-    """A simple pseudo random number generator based on hashing an
-    increasing counter using SHA256, the state of the hash function
-    being initialized with the seed.
+    """A simple pseudo random number generator based on hashing an increasing counter using SHA256, the state of the hash function being initialized with the seed.
 
-    Generates directly bytes, can be used directly, or can be used to
-    build the higher level classes
-    # !TODO! classes 
+    It generates bytes. These can be used directly, or can be wrapped in higher level constructions.
 
     """
     def __init__(self, seed):
-        """We initialize the state of a SHA256 instance with the given
-        seed. This is a deterministic procedure.
+        """Initializes the state of a SHA256 instance with the given seed, and a counter. This is a deterministic procedure.
 
-        If mode is BYTE_BASED, then 
+        Args:
+            seed (bytearray or bytes): the seed to use
 
         """
         self.state = hashlib.sha256()
@@ -32,8 +28,9 @@ class ReproducibleBytePRG:
         self.inner_state = []
 
     def __call__(self):
-        """Outputs a single byte. If the internal state is empty, we
-        increment the counter and reinitialize a SHA-256 digest.
+        """Outputs a single pseudo-random byte.
+
+        If the internal state is empty, we increment the counter and reinitialize a SHA-256 digest. The first output of the state that has not been returned yet is then returned.
 
         """
         if len(self.inner_state) == 0:
@@ -47,18 +44,15 @@ class ReproducibleBytePRG:
 class ReproducibleRangePRG:
     """A reproducible PRG that outputs an integer in a specific range.
 
-    It works by obtaining random bytes from an inner
-    `ReproducibleBytePRG` instance, and building an integer of the
-    correct bit length, and then rejecting it if it is above the
-    wanted threshold (rejection sampling).
+    It works by obtaining random bytes from an inner `ReproducibleBytePRG` instance, and building an integer of the correct bit length, and then rejecting it if it is above the wanted threshold (rejection sampling).
 
     """
     def __init__(self, seed):
         self.inner_prg = ReproducibleBytePRG(seed)
         
     def __call__(self, lower_bound, upper_bound):
-        """Returns a pseudo random integer `d` such that lower_bound
-        <= d < upper_bound (like `range`).
+        """Returns:
+            int: a pseudo random integer `d` such that lower_bound <= d < upper_bound (like `range`).
 
         """
         # setting up the computation
@@ -83,9 +77,7 @@ class ReproducibleRangePRG:
 class ReproducibleBitPRG:
     """A PRNG that returns a single bit at each call.
 
-    It maintains a one byte state and extract one bit from it at each
-    call. Every eight calls, it queries a new byte from an inner
-    `ReproducibleBytePRG` instance.
+    It maintains a one byte state and extract one bit from it at each call. Every eight calls, it queries a new byte from an inner `ReproducibleBytePRG` instance.
 
     """
     def __init__(self, seed):
