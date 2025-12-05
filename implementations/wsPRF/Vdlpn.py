@@ -50,7 +50,7 @@ class VDLPN:
             x (list): a list of integers in [0,1] corresponding to the public input
 
         Returns:
-            int: an integer in [0,1] equal to F_k(x) = \\sum_{i=1}^D \\sum_{j=1}^w \\prod_{\ell=1}^i (x_{i,j,l} + k_{i,j,l})
+            int: an integer in [0,1] equal to F_k(x) = \\sum_{i=1}^D \\sum_{j=1}^w \\prod_{\\ell=1}^i (x_{i,j,l} + k_{i,j,l})
         
         """
         assert len(x) == self.w * self.d**2
