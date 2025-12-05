@@ -65,7 +65,11 @@ class XOR_MAJ:
 
 
 class GAR:
-    """An implementation of the GAR PRF. """
+    """An implementation of the GAR PRF, as specified in
+
+    Oded Goldreich. Candidate one-way functions based on expander graphs. Electron. Colloquium Comput. Complex., TR00-090, 2000.
+
+    """
 
     def __init__(self, n, predicate, m=None, s=None):
         """Initializes a GAR instance. Either `m` or `s` must be specified at construction.

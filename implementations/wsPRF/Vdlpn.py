@@ -7,8 +7,13 @@ from .Utils import *
 
 
 def triangular(_x):
-    """The Boolean function x_1(1 + x_2(1 + ... )) applied to the
-    binary list `_x`.
+    """The triangular function used in VDLPN. It is a Boolean function returning x_1(1 + x_2(1 + ... )).
+
+    Args:
+        _x (int): an integer whose binary representation is \\sum_i x_i 2^i
+
+    Returns:
+        int: an integer in [0,1] equal to x_1(1 + x_2(1 + x_3(1 + ...))).
 
     """
     x = _x
@@ -16,11 +21,22 @@ def triangular(_x):
     while ((x & 1) != 0) and (x != 0):
         counter += 1
         x = x >> 1
-    return counter % 2
+    return counter & 1
 
 
 class VDLPN:
-    def __init__(self, d, w,):
+    """The VDLPN weak PRF, as specified in
+
+    Elette Boyle, Geoffroy Couteau, Niv Gilboa, Yuval Ishai, Lisa Kohl, and Peter Scholl. Correlated pseudorandom functions from variable-density LPN. In 61st FOCS, pages 1069–1080. IEEE Computer Society Press, November 2020.
+
+    """
+    def __init__(self, d, w):
+        """Initializes the parameters of this VDLPN instance.
+
+        Args:
+            d (int):
+        # !CONTINUE! finish docstrings VDLPN 
+        """
         self.d = d
         self.w = w
         
@@ -35,8 +51,8 @@ class VDLPN:
                 for l in range(0, i):
                     index = i*self.d*self.w + j*self.d + l
                     t = t*(x[index] ^ k[index])
-            y = y ^ t
-        return y
+            y += t
+        return y & 1
 
 
 
