@@ -13,16 +13,22 @@ To see how to use each wsPRF, we also provide various sets of parameters for eac
 Up-to-date implementation can be found on the git repository corresponding to this project on [github](https://github.com/lpp-crypto/PCF-cryptanalysis/tree/main/implementations).
 
 
-## Installation
+## Usage
 
-Move using `cd` to the directory containing this README file and then run the following command to install this module in SAGE.
+### Project Inclusion
+
+You can simply copy the `wsPRF` folder and its content in your working directory, and then use `import wsPRF` to have access to our implementations.
+
+### Installation
+
+Alternatively, you can install this project using `pip` so that you can use from any project without copying or linking the `wsPRF` folder by hand. To do this, move using `cd` to the directory containing this README file and then run the following command to install this module in SAGE.
 
 ``` shell
 sage -pip install .
 ```
 
 
-## Usage
+### Programming
 
 To see how each wsPRF can used, and in particular how to instantiate them with the relevant format for the random data, you can check the corresponding tests in the [corresponding folder](./tests). 
 
